@@ -1,0 +1,1531 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta charset="utf-8">
+<title>SURG453 Study Hub</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: sticky tab bar · compact hero with drifting OR instruments + live ECG · one colour per specialty everywhere (checklist, study, questions, OSCE) · single reading column for lectures */
+:root{
+  --deep:#173a7a; --main:#3b6fd8; --light:#8fb1ef; --pale:#dfeaff; --bg:#f3f7fc;
+  --surface:#ffffff; --surface-2:#f7faff; --ink:#1d2a3d; --muted:#5d6b80; --faint:#8a96a8; --line:#dde5f1; --btn-shadow:#c9d8f3;
+  --hero-a:#dfeaff; --hero-b:#f0f5ff; --tool-fill:#a9c6f5; --tool-fill-2:#eef3fb;
+  --tick:#1f9d5c; --tick-bg:#dcf5e8; --tick-ink:#0f6b3d;
+  --wrong:#d3132b; --wrong-bg:#ffe3e7; --wrong-ink:#9b0d20;
+  --slide:#141a24; --note:#13804e; --note-bg:#e8f7ef; --hot:#d3132b; --hot-bg:#fff0f2; --dug:#7f8893; --dug-bg:#f4f5f7; --dug-line:#cfd5dc; --dug-new:#2563b8;
+  --warn-bg:#fff4dc; --warn-ink:#7a5200; --warn-line:#f1d79b;
+  --f-head:"Fredoka","Baloo 2",ui-rounded,system-ui,sans-serif;
+  --f-body:"Lexend",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:20px; --mix:13%;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --deep:#d2e2ff; --main:#7ea5f2; --light:#4b6fb3; --pale:#1b2c4d; --bg:#0c1322;
+  --surface:#131e34; --surface-2:#18253f; --ink:#e4ecf8; --muted:#9fb0ca; --faint:#7d8aa1; --line:#25375a; --btn-shadow:#09101e;
+  --hero-a:#18294a; --hero-b:#111d35; --tool-fill:#2e4f8f; --tool-fill-2:#1d3053;
+  --tick:#3fcf86; --tick-bg:#123828; --tick-ink:#8ff0bd;
+  --wrong:#ff6b7a; --wrong-bg:#3a1520; --wrong-ink:#ffb3bd;
+  --slide:#e4ecf8; --note:#5ad396; --note-bg:#11291f; --hot:#ff6f7e; --hot-bg:#2c141b; --dug:#9aa3af; --dug-bg:#161e2c; --dug-line:#334055; --dug-new:#8db8f2;
+  --warn-bg:#33270e; --warn-ink:#f5d58a; --warn-line:#5a4518; --mix:22%;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --deep:#d2e2ff; --main:#7ea5f2; --light:#4b6fb3; --pale:#1b2c4d; --bg:#0c1322;
+  --surface:#131e34; --surface-2:#18253f; --ink:#e4ecf8; --muted:#9fb0ca; --faint:#7d8aa1; --line:#25375a; --btn-shadow:#09101e;
+  --hero-a:#18294a; --hero-b:#111d35; --tool-fill:#2e4f8f; --tool-fill-2:#1d3053;
+  --tick:#3fcf86; --tick-bg:#123828; --tick-ink:#8ff0bd;
+  --wrong:#ff6b7a; --wrong-bg:#3a1520; --wrong-ink:#ffb3bd;
+  --slide:#e4ecf8; --note:#5ad396; --note-bg:#11291f; --hot:#ff6f7e; --hot-bg:#2c141b; --dug:#9aa3af; --dug-bg:#161e2c; --dug-line:#334055; --dug-new:#8db8f2;
+  --warn-bg:#33270e; --warn-ink:#f5d58a; --warn-line:#5a4518; --mix:22%;
+  color-scheme:dark}
+
+/* specialty colours (no green / red: those mean notes & high-yield) */
+[data-c="gs"]{--c:#3b6fd8} [data-c="be"]{--c:#d4579b} [data-c="hpb"]{--c:#cf8a12} [data-c="ugi"]{--c:#7a5cf0}
+[data-c="cr"]{--c:#e2772d} [data-c="em"]{--c:#c29a00} [data-c="neuro"]{--c:#4954c8} [data-c="thor"]{--c:#1f95cf}
+[data-c="vasc"]{--c:#b14db9} [data-c="card"]{--c:#9058d6} [data-c="peds"]{--c:#ee8a55} [data-c="uro"]{--c:#1997ae}
+[data-c="plastic"]{--c:#c4529f} [data-c="extra"]{--c:#64748b}
+[data-c]{--c-soft:color-mix(in srgb,var(--c) var(--mix),var(--surface));--c-line:color-mix(in srgb,var(--c) 35%,var(--line));--c-ink:color-mix(in srgb,var(--c) 70%,var(--ink))}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;font-weight:400}
+h1,h2,h3,h4{font-family:var(--f-head);color:var(--deep);text-wrap:balance;line-height:1.18;margin:0;font-weight:600}
+a{color:var(--main)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--main);outline-offset:2px;border-radius:8px}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* top bar */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:color-mix(in srgb,var(--surface) 93%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:12px;padding-block:9px}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--f-head);font-weight:700;font-size:18px;color:var(--deep);text-decoration:none;white-space:nowrap}
+.tabs{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{font-family:var(--f-head);font-weight:600;font-size:15px;text-decoration:none;color:var(--muted);padding:6px 12px;border-radius:12px;white-space:nowrap}
+.tabs a[aria-current="page"]{background:var(--pale);color:var(--deep)}
+@media (max-width:560px){.brand span{display:none}.tabs a{padding:6px 9px;font-size:14px}}
+
+main{padding-block:20px 64px}
+.view{display:flex;flex-direction:column;gap:20px}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-radius:28px;background:linear-gradient(135deg,var(--hero-a) 0%,var(--hero-b) 60%,var(--hero-a) 100%);border:1px solid var(--line);padding:28px 26px 80px}
+.hero h1{font-size:clamp(38px,7vw,62px);font-weight:700;line-height:.95;letter-spacing:-.01em;position:relative;z-index:2}
+.hero h1 small{display:block;font-size:.4em;font-weight:600;color:var(--main);letter-spacing:.02em;margin-bottom:6px}
+.hero p{position:relative;z-index:2;max-width:42ch;color:var(--muted);margin:12px 0 18px}
+.bigbtns{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-width:640px}
+.bigbtn{display:flex;flex-direction:column;gap:3px;align-items:flex-start;text-decoration:none;background:var(--c-soft);border:1.5px solid var(--c-line);border-radius:18px;padding:14px 16px 13px;box-shadow:0 4px 0 var(--c-line);color:var(--deep);transition:transform .15s,box-shadow .15s}
+.bigbtn:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--c-line)}
+.bigbtn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--c-line)}
+.bigbtn b{font-family:var(--f-head);font-weight:600;font-size:19px;line-height:1.1}
+.bigbtn small{color:var(--muted);font-size:12.5px;line-height:1.35}
+.bigbtn svg{margin-bottom:4px}
+@media (max-width:520px){.bigbtns{grid-template-columns:1fr}.bigbtn{flex-direction:row;align-items:center;gap:12px}.bigbtn svg{margin:0;flex:none}.bigbtn small{display:none}}
+.ekg{position:absolute;left:0;right:0;bottom:10px;height:62px;z-index:1;width:100%}
+.ekg path{stroke:var(--main);stroke-width:2.5;fill:none;stroke-linejoin:round;opacity:.6;stroke-dasharray:1000;stroke-dashoffset:1000;animation:draw 3.4s linear infinite}
+.ekg circle{fill:var(--main);offset-path:path("M0 36 H250 L270 36 L282 10 L296 56 L308 22 L320 36 H560 L580 36 L592 10 L606 56 L618 22 L630 36 H900");animation:ride 3.4s linear infinite}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes ride{from{offset-distance:0%}to{offset-distance:100%}}
+.tool{position:absolute;z-index:1;animation:bob 6s ease-in-out infinite}
+.t1{right:5%;top:20px}.t2{right:22%;top:112px;animation-delay:-1.4s}.t3{right:2%;top:150px;animation-delay:-3s}.t4{right:34%;top:22px;animation-delay:-4.2s}.t5{right:14%;top:84px;animation-delay:-2.2s}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-7deg)}50%{transform:translateY(-11px) rotate(5deg)}}
+@media (max-width:760px){.t4,.t2{display:none}}
+@media (max-width:520px){.tool svg{width:58px;height:58px}.t1{right:3%;top:14px}.t3,.t5{display:none}}
+
+/* credit */
+.credit{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px}
+.credit .by{font-family:var(--f-head);font-size:17px;color:var(--deep)}
+.credit .by small{display:block;font-family:var(--f-body);font-size:13px;color:var(--muted);font-weight:400}
+.wa{display:inline-flex;align-items:center;gap:10px;text-decoration:none;background:var(--pale);color:var(--deep);border:1.5px solid var(--btn-shadow);border-radius:14px;padding:8px 14px 8px 10px;font-weight:500}
+.wa span{display:flex;flex-direction:column;line-height:1.2}
+.wa small{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;user-select:all}
+
+/* progress */
+.exams{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px;display:grid;gap:10px}
+.exams h3{font-size:17px}
+.exams .row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.exams .ex{border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--surface-2);min-width:0}
+.exams .ex b{display:block;font-family:var(--f-head);font-weight:600;font-size:16px;color:var(--deep)}
+.exams .ex .d{font-size:13.5px;color:var(--ink);font-variant-numeric:tabular-nums}
+.exams .ex .left{display:inline-block;margin-top:4px;font-family:var(--f-head);font-weight:600;font-size:12.5px;color:var(--main);background:var(--pale);border-radius:8px;padding:1px 8px}
+.exams .ex small{display:block;font-size:12.5px;color:var(--muted);line-height:1.35;margin-top:4px}
+.exams .grades{font-size:13px;color:var(--muted)}
+.exams .grades b{color:var(--deep);font-weight:600}
+@media (max-width:560px){.exams .row{grid-template-columns:1fr}}
+.overall{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.ring{width:84px;height:84px;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-head);font-size:20px;color:var(--deep);font-variant-numeric:tabular-nums}
+.meters{display:grid;gap:10px;min-width:0}
+.meter{display:grid;grid-template-columns:104px 1fr auto;gap:10px;align-items:center;font-size:13.5px}
+.meter span:last-child{font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px}
+.track{height:10px;border-radius:99px;background:var(--pale);overflow:hidden}
+.track i{display:block;height:100%;border-radius:99px;background:var(--tick);transition:width .4s}
+.track.blue i{background:var(--main)}
+.save-state{grid-column:1/-1;font-size:12px;color:var(--muted);margin-top:-6px}
+@media (max-width:480px){.overall{grid-template-columns:1fr}.ring{display:none}}
+
+.sechead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.sechead h2{font-size:26px}
+.sechead p{margin:0;color:var(--muted);font-size:13.5px;flex-basis:100%}
+.mini{display:flex;gap:6px}
+.mini button{border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:4px 10px;font-size:12.5px;color:var(--muted);cursor:pointer}
+.mini button:hover{color:var(--deep);border-color:var(--light)}
+
+/* specialty cards (shared) */
+.speclist{display:grid;gap:12px}
+.spec{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.spec>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:13px 16px;background:var(--c-soft);border-bottom:1px solid transparent}
+.spec[open]>summary{border-bottom-color:var(--c-line)}
+.spec>summary::-webkit-details-marker{display:none}
+.dot{width:34px;height:34px;border-radius:11px;background:var(--c);display:grid;place-items:center;color:#fff;font-family:var(--f-head);font-weight:600;font-size:15px;flex:none}
+.spec>summary h3{font-size:17px;color:var(--c-ink);line-height:1.2}
+.spec>summary .count{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.chev{width:9px;height:9px;border-right:2.5px solid var(--c);border-bottom:2.5px solid var(--c);transform:rotate(-45deg);transition:transform .2s;flex:none}
+.spec[open] .chev{transform:rotate(45deg)}
+.spec>summary .bar2{grid-column:2/-1;height:6px;border-radius:99px;background:color-mix(in srgb,var(--c) 18%,var(--surface));overflow:hidden}
+.spec>summary .bar2 i{display:block;height:100%;background:var(--c);border-radius:99px;transition:width .4s}
+
+/* checklist rows */
+.cl{padding:4px 8px 10px}
+.clhead{display:grid;grid-template-columns:minmax(0,1fr) 62px 62px;gap:4px;padding:8px 10px 2px;font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.clhead span:not(:first-child){text-align:center}
+.grp{font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--c-ink);padding:10px 10px 2px;display:flex;align-items:center;gap:8px}
+.grp::after{content:"";flex:1;height:1px;background:var(--c-line)}
+.row{display:grid;grid-template-columns:minmax(0,1fr) 62px 62px;gap:4px;align-items:center;padding:5px 10px;border-radius:12px}
+.row:hover{background:var(--surface-2)}
+.row a{color:var(--ink);text-decoration:none;font-size:14.5px;line-height:1.35;display:flex;gap:9px;align-items:baseline;min-width:0}
+.row a:hover{color:var(--c-ink)}
+.num{font-family:var(--f-head);font-weight:600;font-size:12.5px;color:var(--c-ink);min-width:20px;font-variant-numeric:tabular-nums}
+.flag{display:inline-block;margin-left:6px;font-size:10px;font-weight:500;color:var(--warn-ink);background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:6px;padding:0 5px;vertical-align:1px;white-space:nowrap}
+.tk{justify-self:center;width:30px;height:30px;border-radius:50%;border:2px solid var(--c-line);background:var(--surface);cursor:pointer;display:grid;place-items:center;transition:all .15s;padding:0}
+.tk svg{opacity:0;transform:scale(.4);transition:all .18s}
+.tk:hover{border-color:var(--c)}
+.tk[aria-pressed="true"]{background:var(--tick);border-color:var(--tick)}
+.tk[aria-pressed="true"] svg{opacity:1;transform:scale(1)}
+.tkl{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:5px 12px 5px 6px;font-size:13px;color:var(--muted);cursor:pointer}
+.tkl .tk{width:22px;height:22px;pointer-events:none}
+.tkl[aria-pressed="true"]{background:var(--tick-bg);border-color:var(--tick);color:var(--tick-ink)}
+.tkl[aria-pressed="true"] .tk{background:var(--tick);border-color:var(--tick)}
+.tkl[aria-pressed="true"] .tk svg{opacity:1;transform:scale(1)}
+@media (max-width:420px){.clhead,.row{grid-template-columns:minmax(0,1fr) 46px 46px}}
+
+/* study index */
+.idx{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,310px),1fr));gap:12px;align-items:start}
+.idx ol{list-style:none;margin:0;padding:6px 8px 10px;display:grid;gap:1px}
+.idx li a{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:8px;align-items:center;text-decoration:none;color:var(--ink);font-size:14px;padding:7px 8px;border-radius:10px;line-height:1.3}
+.idx li a:hover{background:var(--surface-2)}
+.idx li .nb{width:26px;height:26px;border-radius:8px;background:var(--c-soft);color:var(--c-ink);display:grid;place-items:center;font-family:var(--f-head);font-weight:600;font-size:13px}
+.idx li a.done .nb{background:var(--tick);color:#fff}
+.idx li small{display:block;color:var(--faint);font-size:11.5px}
+.pill{font-size:10.5px;font-weight:500;border-radius:99px;padding:1px 8px;white-space:nowrap}
+.pill.todo{background:var(--pale);color:var(--muted)}
+.pill.ready{background:var(--c-soft);color:var(--c-ink);border:1px solid var(--c-line)}
+
+/* lecture */
+.lechead{border-radius:var(--r);background:var(--c-soft);border:1px solid var(--c-line);padding:18px 20px;display:grid;gap:8px}
+.crumb{font-size:12.5px;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap}
+.crumb a{color:var(--muted)}
+.lechead h1{font-size:clamp(26px,5vw,38px);color:var(--c-ink)}
+.doc{font-size:12.5px;color:var(--faint)}
+.lecticks{display:flex;gap:8px;flex-wrap:wrap}
+.key{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px}
+.key span{display:inline-flex;align-items:center;gap:6px}
+.key i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.gap{background:var(--warn-bg);color:var(--warn-ink);border:1px solid var(--warn-line);border-radius:14px;padding:11px 15px;font-size:14px;max-width:820px}
+.gap b{font-weight:600}
+.article{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:8px 24px 22px;max-width:820px;color:var(--slide);line-height:1.68}
+.article h2{font-size:22px;margin:26px 0 8px;color:var(--c-ink);padding-bottom:6px;border-bottom:2px solid var(--c-line)}
+.article h3{font-size:18px;margin:20px 0 6px;color:var(--deep)}
+.article h4{font-size:15.5px;margin:14px 0 4px;color:var(--deep);font-family:var(--f-body);font-weight:600}
+.article ul{margin:6px 0;padding-left:20px}
+.article li{margin:3px 0}
+.article li::marker{color:var(--c)}
+.article p{margin:8px 0}
+.article .n,.article li.n{color:var(--note)}
+.article li.n::marker{color:var(--note)}
+.article p.n{background:var(--note-bg);border-left:3px solid var(--note);padding:8px 12px;border-radius:0 10px 10px 0}
+.article .r{color:var(--hot);font-weight:600}
+.article .hy{background:var(--hot-bg);border:1px solid color-mix(in srgb,var(--hot) 35%,transparent);color:var(--hot);border-radius:12px;padding:9px 13px;margin:10px 0;font-weight:500}
+.article .hy::before{content:"HIGH-YIELD";display:block;font-size:10px;letter-spacing:.1em;font-weight:700;opacity:.8}
+.article .dvb{background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);border-radius:12px;padding:9px 13px;margin:10px 0;font-size:14px}
+.article .dvb::before{content:"DOCTOR vs BOOK — follow the doctor";display:block;font-size:10px;letter-spacing:.1em;font-weight:700}
+.article .add{background:var(--surface-2);border:1.5px dashed color-mix(in srgb,var(--main) 45%,transparent);border-radius:12px;padding:9px 13px;margin:10px 0;font-size:14.5px;color:var(--ink)}
+.article .addtag{display:block;font-size:10px;letter-spacing:.1em;font-weight:700;text-transform:uppercase;color:var(--main);margin-bottom:2px}
+.article details.rv{padding:0}
+.article details.rv>summary{cursor:pointer;padding:9px 13px;font-weight:600;color:var(--main);list-style:none}
+.article details.rv>summary::before{content:"▸ ";}
+.article details.rv[open]>summary::before{content:"▾ ";}
+.article details.rv>div{padding:0 13px 10px}
+.article details.gal{margin:14px 0;border:1px solid var(--line);border-radius:12px;background:var(--surface-2)}
+.article details.gal>summary{cursor:pointer;padding:9px 13px;font-size:13.5px;font-weight:600;color:var(--muted);list-style:none}
+.article details.gal>summary::before{content:"▸ ";}
+.article details.gal[open]>summary::before{content:"▾ ";}
+.article .galg{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;padding:0 12px 12px}
+.article .galg img{width:100%;height:96px;object-fit:cover;border-radius:8px;margin:0}
+.article figure{margin:14px 0;display:grid;gap:6px;justify-items:center}
+.article figure img{max-width:100%;border-radius:12px;border:1px solid var(--line);background:#fff}
+.article figcaption{font-size:12.5px;color:var(--muted);text-align:center}
+.article .imgrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px;margin:12px 0;align-items:start}
+.article .imgrow figure{margin:0}
+.tbw{overflow-x:auto;margin:10px 0}
+.article table{border-collapse:collapse;font-size:13.5px;min-width:100%}
+.article th,.article td{border:1px solid var(--line);padding:6px 9px;vertical-align:top;text-align:left}
+.article th{background:var(--c-soft);color:var(--c-ink);font-weight:600}
+.qref{display:inline-block;font-size:10.5px;font-weight:600;color:var(--hot);border:1px solid color-mix(in srgb,var(--hot) 40%,transparent);border-radius:6px;padding:0 5px;margin-left:4px;text-decoration:none;vertical-align:1px;white-space:nowrap}
+.empty{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;color:var(--muted);padding:18px 0}
+.dugbox{border:1.5px dashed var(--dug-line);border-radius:14px;background:var(--dug-bg);max-width:820px}
+.dugbox summary{cursor:pointer;padding:12px 16px;font-weight:500;color:var(--dug);list-style:none;display:flex;gap:8px;align-items:center}
+.dugbox summary::-webkit-details-marker{display:none}
+.dugbox summary::before{content:"";width:7px;height:7px;border-right:2px solid var(--dug);border-bottom:2px solid var(--dug);transform:rotate(-45deg);transition:transform .2s}
+.dugbox[open] summary::before{transform:rotate(45deg)}
+.dugbox>div{padding:0 18px 16px;color:var(--dug);font-size:14px;line-height:1.6}
+.dugbox h3,.dugbox h4{color:var(--dug);font-size:15px;margin:12px 0 4px}
+.dugbox img{max-width:100%;border-radius:10px;margin:8px 0;opacity:.95}
+.dugbox ul{padding-left:18px;margin:4px 0}
+.dugbox .new,.dugbox tr.new td{color:var(--dug-new)}
+.dugbox li.new::marker{color:var(--dug-new)}
+.dugkey{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;margin:0 0 10px;padding:8px 12px;border-radius:10px;background:var(--surface)}
+.dugkey span{display:inline-flex;align-items:center;gap:6px}
+.dugkey i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.lecfoot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;max-width:820px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-head);font-weight:600;font-size:15px;text-decoration:none;border-radius:14px;padding:10px 16px;border:1.5px solid var(--btn-shadow);background:var(--surface);color:var(--deep);box-shadow:0 3px 0 var(--btn-shadow);cursor:pointer}
+.btn.primary{background:var(--c,var(--main));border-color:var(--c,var(--main));color:#fff;box-shadow:0 3px 0 color-mix(in srgb,var(--c,var(--main)) 60%,#000)}
+.btn.small{font-size:13.5px;padding:7px 12px;border-radius:12px}
+.pn{display:flex;justify-content:space-between;gap:10px;max-width:820px;font-size:13px}
+.pn a{color:var(--muted);text-decoration:none;max-width:48%}
+.pn a:hover{color:var(--main)}
+.pn a b{display:block;color:var(--ink);font-weight:500}
+#endMark{height:1px}
+
+/* gifts */
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:10px 12px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 56px);z-index:5}
+.chip{border:1.5px solid var(--line);background:var(--surface);border-radius:99px;padding:5px 14px;font-size:13.5px;cursor:pointer;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--deep);border-color:var(--deep);color:var(--bg)}
+.filters select{font:inherit;font-size:13.5px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:5px 12px}
+.filters .sum{margin-left:auto;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pqlec{border-top:1px solid var(--c-line)}
+.pqlec:first-child{border-top:0}
+.pqlec>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px 16px;scroll-margin-top:120px}
+.pqlec>summary::-webkit-details-marker{display:none}
+.pqlec>summary b{font-weight:500;font-size:14.5px}
+.pqlec>summary small{display:block;font-size:11.5px;color:var(--faint)}
+.pqlec>summary .nb{width:26px;height:26px;border-radius:8px;background:var(--c-soft);color:var(--c-ink);display:grid;place-items:center;font-family:var(--f-head);font-weight:600;font-size:13px}
+.pqlec.hl>summary{background:var(--c-soft)}
+.prog{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.prog i{display:block;width:72px;height:5px;border-radius:9px;background:var(--pale);margin-top:3px;overflow:hidden;margin-left:auto}
+.prog i b{display:block;height:100%;background:var(--tick)}
+.qs{display:grid;gap:12px;padding:4px 14px 16px}
+.q{background:var(--surface-2);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:grid;gap:10px}
+.qmeta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:11.5px;color:var(--muted)}
+.qmeta .n{font-family:var(--f-head);font-weight:600;color:var(--c-ink);font-size:13px;margin-right:2px}
+.tag{display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.04em;border-radius:6px;padding:1px 7px;background:var(--pale);color:var(--deep)}
+.tag.rep{background:var(--c-soft);color:var(--c-ink)}
+.tag.mid{background:color-mix(in srgb,#3b6fd8 16%,var(--surface));color:var(--deep)}
+.tag.final{background:color-mix(in srgb,#7a5cf0 18%,var(--surface));color:var(--deep)}
+.stem{margin:0;font-size:15px;line-height:1.55;white-space:pre-line}
+.q img{max-width:100%;border-radius:10px;border:1px solid var(--line);background:#fff;justify-self:start}
+.opts{display:grid;gap:7px}
+.opt{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 12px;cursor:pointer;font-size:14.5px;line-height:1.4}
+.opt:hover:not([disabled]){border-color:var(--c)}
+.opt .k{width:26px;height:26px;border-radius:8px;background:var(--pale);display:grid;place-items:center;font-family:var(--f-head);font-weight:600;font-size:13px;color:var(--deep)}
+.opt[disabled]{cursor:default}
+.opt.ok{border-color:var(--tick);background:var(--tick-bg);color:var(--tick-ink)}
+.opt.ok .k{background:var(--tick);color:#fff}
+.opt.bad{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong-ink)}
+.opt.bad .k{background:var(--wrong);color:#fff}
+.opt .mk{font-size:12px;font-weight:600}
+.fb{border-radius:12px;padding:12px 14px;display:grid;gap:8px;font-size:14px;background:var(--surface);border:1px solid var(--line)}
+.fb .verdict{font-family:var(--f-head);font-weight:600;font-size:16px}
+.fb .verdict.ok{color:var(--tick)} .fb .verdict.bad{color:var(--wrong)}
+.fb ul{margin:0;padding-left:0;list-style:none;display:grid;gap:5px}
+.fb li{display:grid;grid-template-columns:22px 1fr;gap:6px}
+.fb li .k{font-family:var(--f-head);font-weight:600}
+.fb li.right .k{color:var(--tick)} .fb li.wrongopt .k{color:var(--wrong)}
+.fb .src{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:6px}
+.fb .added{font-size:11px;color:var(--warn-ink);background:var(--warn-bg);border-radius:6px;padding:1px 6px;justify-self:start}
+.qactions{display:flex;gap:8px;flex-wrap:wrap}
+.open-ans{white-space:pre-line}
+
+/* OSCE */
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}
+.how div{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 15px}
+.how b{font-family:var(--f-head);font-weight:600;color:var(--main);font-size:13px;letter-spacing:.04em}
+.how p{margin:3px 0 0;font-size:13.5px}
+.addedx{display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;background:var(--pale);color:var(--main);border:1px dashed var(--main);border-radius:6px;padding:0 7px}
+.st{border-top:1px solid var(--c-line)}
+.st:first-child{border-top:0}
+.st>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:center;padding:12px 16px}
+.st>summary::-webkit-details-marker{display:none}
+.cnt{width:50px;height:50px;border-radius:14px;background:var(--c-soft);border:1.5px solid var(--c-line);display:grid;place-items:center;text-align:center;line-height:1;color:var(--c-ink)}
+.cnt b{font-family:var(--f-head);font-size:19px;display:block}
+.cnt small{font-size:8.5px;letter-spacing:.06em;text-transform:uppercase}
+.st>summary h4{font-family:var(--f-body);font-weight:500;font-size:15px;color:var(--ink);line-height:1.3}
+.yrs{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.yr{font-size:10.5px;border-radius:6px;padding:1px 6px;background:var(--pale);color:var(--deep);font-variant-numeric:tabular-nums}
+.yr.arch{background:color-mix(in srgb,#9058d6 15%,var(--surface))}
+.stbody{padding:2px 16px 18px;display:grid;gap:12px}
+.scen{background:var(--c-soft);border:1px solid var(--c-line);border-radius:14px;padding:12px 14px;font-size:14.5px}
+.scen b{display:block;font-size:10.5px;letter-spacing:.1em;color:var(--c-ink);margin-bottom:4px}
+.scen p{margin:4px 0}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:10px}
+.figs figure{margin:0;display:grid;gap:5px}
+.figs img{max-width:100%;border-radius:12px;border:1px solid var(--line);background:#fff}
+.figs figcaption{font-size:12px;color:var(--muted)}
+.oq{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--surface-2);display:grid;gap:8px}
+.oq .qq{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;font-weight:500}
+.oq .qc{font-family:var(--f-head);font-size:12px;border-radius:7px;padding:1px 6px;background:var(--c-soft);color:var(--c-ink);white-space:nowrap}
+.oq .ans{border-left:3px solid var(--c);padding:2px 0 2px 12px;display:grid;gap:4px}
+.oq .ans p{margin:0}
+.oq .why{background:var(--pale);border-radius:10px;padding:8px 12px;font-size:14px;display:grid;gap:4px}
+.tipbox{background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);border-radius:12px;padding:8px 12px;font-size:13.5px}
+.tipbox b{font-size:10.5px;letter-spacing:.1em;display:block}
+.extra{border:1.5px dashed var(--line);border-radius:12px;padding:10px 12px;font-size:13.5px;color:var(--muted)}
+.stnav{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.stnav .sp{flex:1}
+.src2{font-size:11.5px;color:var(--faint)}
+
+.emptybig{background:var(--surface);border:1.5px dashed var(--light);border-radius:var(--r);padding:22px;color:var(--muted)}
+footer{color:var(--muted);font-size:12.5px;padding-block:20px 0;border-top:1px solid var(--line);margin-top:20px}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(30px);opacity:0;background:var(--deep);color:var(--bg);padding:10px 16px;border-radius:14px;font-size:14px;z-index:20;transition:all .3s;pointer-events:none;max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+
+/* ===== v20: tabs, hero, gifts, OSCE, flashcards, PDF ===== */
+.tabs .sm{display:none}
+@media (max-width:680px){.tabs .lg{display:none}.tabs .sm{display:inline}}
+@media (max-width:400px){.tabs a{padding:6px 7px;font-size:13.5px}}
+.bigbtns{grid-template-columns:repeat(4,minmax(0,1fr));max-width:880px}
+@media (max-width:860px){.bigbtns{grid-template-columns:repeat(2,minmax(0,1fr));max-width:600px}}
+@media (max-width:520px){.bigbtns{grid-template-columns:1fr}}
+.track.osce i{background:#e2772d}
+
+/* lecture: PDF + flashcards buttons */
+.pdfrow{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.pdfrow .btn{background:var(--surface)}
+.pdfrow .btn[disabled]{opacity:.7;cursor:progress}
+.pdfq{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer}
+.pdfq input{width:16px;height:16px;accent-color:var(--c,var(--main))}
+
+/* gifts */
+#v-past{--pqtop:170px}
+.pqbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 53px);z-index:6;background:color-mix(in srgb,var(--surface) 96%,transparent);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:18px;padding:10px 14px;display:grid;gap:8px;box-shadow:0 10px 24px -20px rgba(20,40,80,.6)}
+.pqbar-top{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap}
+.pqbar h1{font-size:24px;margin-right:auto}
+.score{display:flex;gap:6px;flex-wrap:wrap}
+.sp{display:inline-flex;align-items:baseline;gap:5px;border-radius:99px;padding:3px 11px;font-size:12.5px;background:var(--pale);color:var(--deep);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sp b{font-family:var(--f-head);font-size:16px;font-weight:600}
+.sp.ok{background:var(--tick-bg);color:var(--tick-ink)}
+.sp.bad{background:var(--wrong-bg);color:var(--wrong-ink)}
+.sp.due{background:var(--warn-bg);color:var(--warn-ink)}
+.pqbar .filters{position:static;border:0;border-radius:0;padding:0;background:none;gap:6px}
+.pqbar .chip,.pqbar select{padding:3px 12px;font-size:13px}
+.tocbtn{display:none}
+.pqgrid{display:grid;grid-template-columns:286px minmax(0,1fr);gap:18px;align-items:start}
+.pqside{position:sticky;top:var(--pqtop);max-height:calc(100vh - var(--pqtop) - 16px);overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:6px 6px 10px;scrollbar-width:thin}
+.sidehd{display:none}
+.sgrp{padding:2px 0}
+.side-spec{display:flex;align-items:center;gap:8px;padding:10px 8px 4px;font-family:var(--f-head);font-weight:600;font-size:12.5px;color:var(--c-ink);line-height:1.2;position:sticky;top:-6px;background:var(--surface);z-index:1}
+.side-spec i{width:9px;height:9px;border-radius:3px;background:var(--c);flex:none}
+.side-lec{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:8px;align-items:center;border-radius:10px;padding:6px 8px;font-size:13.5px;line-height:1.3;color:var(--ink);text-decoration:none}
+.side-lec:hover{background:var(--surface-2)}
+.side-lec[aria-current="true"]{background:var(--c-soft);box-shadow:inset 3px 0 0 var(--c);font-weight:500}
+.side-lec .nb{width:22px;height:22px;border-radius:7px;background:var(--c-soft);color:var(--c-ink);display:grid;place-items:center;font-family:var(--f-head);font-weight:600;font-size:11.5px}
+.side-lec.done .nb{background:var(--tick);color:#fff}
+.side-lec .pc{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.scrim{position:fixed;inset:0;background:rgba(8,16,32,.38);z-index:29}
+@media (max-width:860px){
+  .pqgrid{grid-template-columns:minmax(0,1fr)}
+  .tocbtn{display:inline-flex}
+  .pqbar h1{font-size:20px}
+  .pqside{position:fixed;left:0;top:0;bottom:0;width:min(86vw,330px);max-height:none;z-index:30;border-radius:0 20px 20px 0;transform:translateX(-106%);transition:transform .25s ease;padding-top:calc(6px + env(safe-area-inset-top,0px));padding-left:max(6px,env(safe-area-inset-left,0px))}
+  .pqside.open{transform:none;box-shadow:0 0 50px rgba(0,0,0,.35)}
+  .sidehd{display:flex;align-items:center;justify-content:space-between;padding:6px 8px 2px;font-family:var(--f-head);font-size:17px;color:var(--deep)}
+  .xbtn{border:0;background:var(--pale);color:var(--deep);width:32px;height:32px;border-radius:10px;font-size:20px;cursor:pointer;line-height:1}
+}
+.score .i{display:none}
+.pqbar .filters>*{flex:none}
+@media (max-width:560px){.score .w{display:none}.score .i{display:inline}.pqbar-top{flex-wrap:nowrap}.tocbtn{padding:6px 10px}.pqbar{padding:8px 10px;border-radius:14px}.pqbar h1{display:none}.pqbar .filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.pqbar .filters::-webkit-scrollbar{display:none}.sp{padding:3px 9px}.sp b{font-size:15px}}
+.pqmain{display:grid;gap:14px;min-width:0}
+.pqhead{background:var(--c-soft);border:1px solid var(--c-line);border-radius:var(--r);padding:16px 18px;display:grid;gap:8px}
+.pqhead h2{font-size:clamp(22px,4vw,28px);color:var(--c-ink)}
+.pqmeta{font-size:13px;color:var(--muted)}
+.lscore{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.lscore .sp{background:var(--surface)}
+.lscore .sp.ok{background:var(--tick-bg)} .lscore .sp.bad{background:var(--wrong-bg)}
+.lbar{flex:1 1 120px;height:7px;border-radius:99px;background:color-mix(in srgb,var(--c) 18%,var(--surface));overflow:hidden;min-width:80px}
+.lbar i{display:block;height:100%;background:var(--c);border-radius:99px;transition:width .4s}
+.pqlinks{display:flex;flex-wrap:wrap;gap:8px}
+.pqmain .qs{padding:0;gap:14px}
+.pqmain .q{background:var(--surface);padding:16px 18px;scroll-margin-top:calc(var(--pqtop) - 10px)}
+.q.target{outline:3px solid var(--hot);outline-offset:2px}
+.vd{margin-left:auto;font-family:var(--f-head);font-weight:600;font-size:12.5px;border-radius:99px;padding:1px 10px}
+.vd.ok{background:var(--tick-bg);color:var(--tick-ink)} .vd.bad{background:var(--wrong-bg);color:var(--wrong-ink)}
+.optw{border:1.5px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+.optw .orow{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:8px 12px;font-size:14.5px;line-height:1.4}
+.optw .k{width:26px;height:26px;border-radius:8px;background:var(--pale);display:grid;place-items:center;font-family:var(--f-head);font-weight:600;font-size:13px;color:var(--deep)}
+.optw .mk{font-size:11.5px;font-weight:600;white-space:nowrap}
+.optw .why{padding:0 14px 10px 50px;font-size:13.5px;line-height:1.55;color:var(--muted)}
+.optw .why .more{display:block;margin-top:4px}
+.optw.ok{border-color:var(--tick);background:var(--tick-bg)}
+.optw.ok .orow{color:var(--tick-ink);font-weight:500}
+.optw.ok .k{background:var(--tick);color:#fff}
+.optw.ok .why{color:var(--ink)}
+.optw.bad{border-color:var(--wrong);background:var(--wrong-bg)}
+.optw.bad .orow{color:var(--wrong-ink)}
+.optw.bad .k{background:var(--wrong);color:#fff}
+.optw.bad .why{color:var(--ink)}
+.optw.dim .orow{color:var(--muted)}
+@media (max-width:480px){.optw .why{padding-left:14px}.optw .orow{grid-template-columns:28px 1fr}.optw .mk{grid-column:2}}
+.qfoot{display:grid;gap:6px;font-size:13px}
+.qfoot .src{font-size:12.5px;color:var(--muted)}
+.qfoot .added{font-size:11px;color:var(--warn-ink);background:var(--warn-bg);border-radius:6px;padding:1px 6px;justify-self:start}
+.pqnext{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;justify-content:space-between;background:var(--surface);border:1.5px dashed var(--line);border-radius:var(--r);padding:16px 18px;font-size:14px;color:var(--muted)}
+.pqnext.hot{border-style:solid;border-color:var(--tick);background:var(--tick-bg);color:var(--tick-ink)}
+
+/* OSCE */
+.osum{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 20px}
+.osumtx{display:grid;gap:8px;min-width:0}
+.osum .big{font-family:var(--f-head);font-size:38px;font-weight:700;color:var(--deep);line-height:1;font-variant-numeric:tabular-nums}
+.osum .big small{font-size:17px;font-weight:600;color:var(--muted)}
+@media (max-width:480px){.osum{grid-template-columns:1fr}.osum .ring{display:none}.osum .big{font-size:32px}}
+.mine{background:var(--dug-bg);border:1.5px dashed var(--dug-line);border-radius:12px;padding:10px 14px;color:var(--dug);font-size:14px;line-height:1.55;display:grid;gap:5px}
+.mine .lab{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dug)}
+.mine .mh{font-weight:600;color:var(--dug)}
+.mine.keyline{font-size:13px}
+.hist{margin:0;padding:0;list-style:none;display:grid}
+.hist li{display:grid;grid-template-columns:minmax(0,36%) minmax(0,1fr);gap:12px;padding:7px 0;border-top:1px dashed var(--dug-line)}
+.hist li:first-child{border-top:0}
+.hist li b{font-weight:600}
+@media (max-width:560px){.hist li{grid-template-columns:1fr;gap:1px}}
+.sysgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:12px}
+.sys{position:relative;display:grid;gap:6px;align-content:start;text-decoration:none;color:var(--ink);background:var(--surface);border:1.5px solid var(--c-line);border-radius:var(--r);padding:14px 16px 12px;box-shadow:0 4px 0 var(--c-line);transition:transform .15s,box-shadow .15s}
+.sys:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--c-line)}
+.sys .top{display:flex;align-items:center;gap:10px;padding-right:28px}
+.sys h3{font-size:17px;color:var(--c-ink)}
+.sys small{font-size:12.5px;color:var(--muted);line-height:1.35}
+.sys .most b{font-weight:500;color:var(--ink)}
+.meter2{height:8px;border-radius:99px;background:var(--c-soft);overflow:hidden;margin-top:4px}
+.meter2 i{display:block;height:100%;background:var(--c);border-radius:99px}
+.sys .dn{font-variant-numeric:tabular-nums}
+.sys .badge{position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:50%;background:var(--tick);display:grid;place-items:center}
+.sys.done{border-color:var(--tick);box-shadow:0 4px 0 color-mix(in srgb,var(--tick) 45%,var(--line))}
+.sys.done .meter2 i{background:var(--tick)}
+.strows{display:grid;gap:8px}
+.strow{display:grid;grid-template-columns:52px minmax(0,1fr) 30px;gap:12px;align-items:center;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:10px 14px;transition:border-color .15s}
+.strow:hover{border-color:var(--c)}
+.strow .mid{display:grid;gap:3px;min-width:0}
+.strow h4{font-family:var(--f-body);font-weight:500;font-size:15px;color:var(--ink);line-height:1.3}
+.strow .meta{font-size:11.5px;color:var(--faint)}
+.strow .yrs{margin-top:0}
+.sdot{width:28px;height:28px;border-radius:50%;border:2px solid var(--c-line);display:grid;place-items:center}
+.sdot svg{opacity:0}
+.strow.done{border-color:color-mix(in srgb,var(--tick) 50%,var(--line))}
+.strow.done .sdot{background:var(--tick);border-color:var(--tick)}
+.strow.done .sdot svg{opacity:1}
+.sthead{gap:10px}
+.strow2{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.yr.hotc{background:var(--hot-bg);color:var(--hot);font-weight:600}
+.beads{display:flex;flex-wrap:wrap;gap:6px}
+.bead{min-width:36px;height:30px;padding:0 10px;border-radius:99px;border:1.5px solid var(--c-line);background:var(--surface);font-family:var(--f-head);font-weight:600;font-size:13px;color:var(--c-ink);cursor:pointer}
+.bead.seen{background:var(--c-soft)}
+.bead[aria-current="step"]{background:var(--c);border-color:var(--c);color:#fff}
+.bead.fin{color:var(--tick)}
+.bead.fin[aria-current="step"]{background:var(--tick);border-color:var(--tick);color:#fff}
+.stpanel{display:grid;gap:14px;max-width:880px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;display:grid;gap:12px}
+.phead{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pnum{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--c-ink)}
+.qc{font-family:var(--f-head);font-size:12px;border-radius:7px;padding:1px 7px;background:var(--c-soft);color:var(--c-ink)}
+.qtitle{font-family:var(--f-head);font-weight:600;font-size:20px;color:var(--deep);line-height:1.3}
+.panel .scen{margin:0}
+.panel .ans{border-left:3px solid var(--c);padding:2px 0 2px 14px;display:grid;gap:6px;font-size:15px}
+.panel .ans p{margin:0}
+.panel .ans .lab{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--c-ink)}
+.panel .added{font-size:11px;color:var(--warn-ink);background:var(--warn-bg);border-radius:6px;padding:1px 6px;justify-self:start}
+.stfoot{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.stnav2{display:flex;gap:8px;align-items:center;max-width:880px}
+.stnav2 .sp{flex:1;background:none;padding:0}
+.lecl{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.lecchip{font-size:12.5px;border-radius:99px;padding:3px 11px;background:var(--c-soft);color:var(--c-ink);text-decoration:none;border:1px solid var(--c-line)}
+.donebanner{display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center;background:var(--tick-bg);color:var(--tick-ink);border:1.5px solid var(--tick);border-radius:16px;padding:12px 14px}
+.donebanner>svg{width:36px;height:36px;background:var(--tick);border-radius:50%;padding:8px;box-sizing:border-box}
+.donebanner b{display:block;font-family:var(--f-head);font-size:18px}
+.donebanner span{font-size:13.5px}
+
+/* flashcards */
+.fclv{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px}
+.fclv>div{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 15px}
+.fclv p{margin:5px 0 0;font-size:13.5px;color:var(--muted)}
+.lv{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:2px 8px;white-space:nowrap}
+.lv1{background:color-mix(in srgb,#3b6fd8 16%,var(--surface));color:var(--deep)}
+.lv2{background:var(--hot-bg);color:var(--hot)}
+.lv3{background:color-mix(in srgb,#7a5cf0 18%,var(--surface));color:color-mix(in srgb,#7a5cf0 70%,var(--ink))}
+.fcsum{grid-template-columns:minmax(0,1fr) auto}
+.duebox{display:grid;justify-items:center;background:var(--warn-bg);color:var(--warn-ink);border-radius:16px;padding:10px 18px}
+.duebox b{font-family:var(--f-head);font-size:30px;line-height:1}
+.duebox span{font-size:12px}
+.pill.due{background:var(--warn-bg);color:var(--warn-ink);border:1px solid var(--warn-line)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg .chip small{opacity:.75;font-size:11.5px}
+.seg .chip[aria-pressed="true"]{background:var(--c);border-color:var(--c);color:#fff}
+.fcstats{display:flex;flex-wrap:wrap;gap:6px}
+.fcstats .sp{background:var(--surface)}
+.fcstats .sp.ok{background:var(--tick-bg)} .fcstats .sp.due{background:var(--warn-bg)}
+#fcSess{display:grid;gap:12px;max-width:780px;scroll-margin-top:70px}
+.sessbar{height:6px;border-radius:99px;background:var(--pale);overflow:hidden}
+.sessbar i{display:block;height:100%;background:var(--c,var(--main));border-radius:99px;transition:width .3s}
+.sessinfo{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--muted)}
+.flash{background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--c);border-radius:22px;min-height:230px;padding:18px 22px 20px;display:grid;gap:14px;align-content:start;box-shadow:0 14px 30px -22px rgba(20,40,80,.55)}
+.flash .ctx{font-size:12px;color:var(--faint)}
+.flash .front{font-size:18px;line-height:1.5;color:var(--ink)}
+.flash .front .stem{font-size:16px;white-space:pre-line}
+.flash .back{border-top:2px dashed var(--line);padding-top:14px;font-size:16px;line-height:1.6;color:var(--ink)}
+.flash img{max-width:100%;border-radius:10px;border:1px solid var(--line);background:#fff;margin-top:8px}
+.flash .fo{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:5px;font-size:15px}
+.flash .fans{color:var(--tick-ink);background:var(--tick-bg);border-radius:10px;padding:8px 12px}
+.flash .fex{font-size:14.5px;margin-top:10px}
+.flipbtn{justify-self:stretch;justify-content:center;padding:13px 16px;font-size:17px}
+.rate{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.rate button{display:grid;gap:1px;justify-items:center;border-radius:14px;border:1.5px solid;background:var(--surface);padding:9px 4px;font-family:var(--f-head);font-weight:600;font-size:15.5px;cursor:pointer}
+.rate small{font-family:var(--f-body);font-weight:400;font-size:11px;opacity:.85}
+.rate .r1{border-color:var(--wrong);color:var(--wrong)}
+.rate .r2{border-color:#cf8a12;color:#b47600}
+.rate .r3{border-color:var(--tick);color:var(--tick)}
+.rate .r4{border-color:var(--main);color:var(--main)}
+.rate button:hover{background:var(--surface-2)}
+.donepanel{max-width:780px}
+.lecfoot .btn{background:var(--surface)}
+.lecfoot .btn.primary{background:var(--c,var(--main))}
+
+@media (prefers-reduced-motion:reduce){
+  .tool,.ekg path,.ekg circle{animation:none}
+  .ekg path{stroke-dashoffset:0}
+  .ekg circle{display:none}
+  .bigbtn,.track i,.tk,.tk svg,.toast{transition:none}
+}
+</style>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="#home" aria-label="SURG453 Study Hub home">
+      <svg width="30" height="20" viewBox="0 0 30 20" aria-hidden="true"><path d="M1 11 H8 L10.5 3 L14 17 L16.5 8 L18 11 H29" fill="none" style="stroke:var(--main)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>SURG453</span>
+    </a>
+    <nav class="tabs" aria-label="Sections">
+      <a href="#home" data-tab="home">Home</a>
+      <a href="#study" data-tab="study">Study</a>
+      <a href="#past" data-tab="past">Gifts</a>
+      <a href="#osce" data-tab="osce">OSCE</a>
+      <a href="#fc" data-tab="fc"><span class="lg">Flashcards</span><span class="sm">Cards</span></a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- HOME -->
+<section class="view" id="v-home">
+  <div class="hero">
+    <h1><small>General Surgery · 5th year · KSU</small>SURG453<br>Study Hub</h1>
+    <p>Every lecture, every gift, every OSCE station and a flashcard deck for each lecture, in one place.</p>
+    <div class="bigbtns">
+      <a class="bigbtn" href="#study" data-c="gs">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="5" y="5" width="11" height="24" rx="2.5" style="fill:var(--surface);stroke:var(--c)" stroke-width="2"/><rect x="18" y="5" width="11" height="24" rx="2.5" style="fill:var(--surface);stroke:var(--c)" stroke-width="2"/><path d="M8 11h5M8 15h5M21 11h5M21 15h5M21 19h3" style="stroke:var(--c)" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <b>Study</b><small>Lectures with slides, doctor's notes and every gift point in red</small>
+      </a>
+      <a class="bigbtn" href="#past" data-c="ugi">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="6" y="9" width="22" height="19" rx="3" style="fill:var(--surface);stroke:var(--c)" stroke-width="2"/><path d="M6 15h22M17 9v19" style="stroke:var(--c)" stroke-width="2"/><path d="M17 9c-2-5-8-5-7-1 1 2 7 1 7 1zm0 0c2-5 8-5 7-1-1 2-7 1-7 1z" style="fill:var(--surface);stroke:var(--c)" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <b>Gifts</b><small>Answer, and the reason shows under every choice</small>
+      </a>
+      <a class="bigbtn" href="#osce" data-c="cr">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><path d="M9 5v9a6 6 0 0 0 12 0V5" fill="none" style="stroke:var(--c)" stroke-width="2.2" stroke-linecap="round"/><path d="M15 20v4a5 5 0 0 0 10 0v-3" fill="none" style="stroke:var(--c)" stroke-width="2.2"/><circle cx="25" cy="18" r="3.5" style="fill:var(--surface);stroke:var(--c)" stroke-width="2"/></svg>
+        <b>OSCE</b><small>Systems → stations → one step at a time</small>
+      </a>
+      <a class="bigbtn" href="#fc" data-c="thor">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="9" y="5" width="18" height="23" rx="3" transform="rotate(8 18 16)" style="fill:var(--c-soft);stroke:var(--c)" stroke-width="1.8"/><rect x="6" y="7" width="18" height="23" rx="3" style="fill:var(--surface);stroke:var(--c)" stroke-width="2"/><path d="M10 14h10M10 18h7" style="stroke:var(--c)" stroke-width="1.8" stroke-linecap="round"/><path d="M15 24.5l1.2-2.6 1.2 2.6" fill="none" style="stroke:var(--c)" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <b>Flashcards</b><small>Anki-style cards in three levels for every lecture</small>
+      </a>
+    </div>
+    <svg class="tool t1" width="88" height="88" viewBox="0 0 100 100" aria-hidden="true"><rect x="44" y="38" width="12" height="54" rx="5" style="fill:var(--tool-fill);stroke:var(--main)" stroke-width="2"/><line x1="50" y1="48" x2="50" y2="84" style="stroke:var(--main)" stroke-width="1.5" stroke-dasharray="3 4"/><path d="M45 38 L45 22 Q46 8 58 6 Q55 20 56 38 Z" style="fill:var(--tool-fill-2);stroke:var(--main)" stroke-width="2" stroke-linejoin="round"/></svg>
+    <svg class="tool t2" width="84" height="84" viewBox="0 0 100 100" aria-hidden="true"><path d="M14 60 Q14 22 50 20 Q86 22 86 60 Z" style="fill:var(--tool-fill);stroke:var(--main)" stroke-width="2.2" stroke-linejoin="round"/><rect x="10" y="58" width="80" height="12" rx="6" style="fill:var(--tool-fill-2);stroke:var(--main)" stroke-width="2.2"/><circle cx="34" cy="40" r="3" style="fill:var(--surface)"/><circle cx="52" cy="34" r="3" style="fill:var(--surface)"/><circle cx="68" cy="44" r="3" style="fill:var(--surface)"/><circle cx="44" cy="52" r="2.5" style="fill:var(--surface)"/><path d="M86 64 Q96 72 92 84" fill="none" style="stroke:var(--main)" stroke-width="2.2" stroke-linecap="round"/></svg>
+    <svg class="tool t3" width="76" height="76" viewBox="0 0 100 100" aria-hidden="true"><path d="M30 14 L52 80" style="stroke:var(--main)" stroke-width="5" stroke-linecap="round"/><path d="M70 14 L48 80" style="stroke:var(--light)" stroke-width="5" stroke-linecap="round"/><circle cx="27" cy="12" r="7" style="fill:var(--surface);stroke:var(--main)" stroke-width="3"/><circle cx="73" cy="12" r="7" style="fill:var(--surface);stroke:var(--light)" stroke-width="3"/></svg>
+    <svg class="tool t4" width="64" height="64" viewBox="0 0 100 100" aria-hidden="true"><path d="M20 62 A32 32 0 0 1 80 50" fill="none" style="stroke:var(--main)" stroke-width="5" stroke-linecap="round"/><path d="M80 50 l-3 -9" style="stroke:var(--main)" stroke-width="4" stroke-linecap="round"/><path d="M20 62 C 12 78, 34 86, 40 74 S 60 70, 62 86" fill="none" style="stroke:var(--light)" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1 5"/></svg>
+    <svg class="tool t5" width="66" height="66" viewBox="0 0 100 100" aria-hidden="true"><g transform="rotate(35 50 50)"><rect x="40" y="26" width="20" height="44" rx="4" style="fill:var(--tool-fill-2);stroke:var(--main)" stroke-width="2.2"/><rect x="42" y="46" width="16" height="22" rx="2" style="fill:var(--tool-fill)"/><path d="M44 34h6M44 40h8M44 46h6" style="stroke:var(--main)" stroke-width="1.6"/><path d="M50 70v20" style="stroke:var(--main)" stroke-width="2.4" stroke-linecap="round"/><path d="M50 26V12M40 12h20" style="stroke:var(--main)" stroke-width="3" stroke-linecap="round"/></g></svg>
+    <svg class="ekg" viewBox="0 0 900 62" preserveAspectRatio="none" aria-hidden="true"><path d="M0 36 H250 L270 36 L282 10 L296 56 L308 22 L320 36 H560 L580 36 L592 10 L606 56 L618 22 L630 36 H900"/><circle r="4"/></svg>
+  </div>
+
+  <div class="credit">
+    <div class="by">Done by Lama Alrushid<small>Any suggestions? Message me here.</small></div>
+    <a class="wa" href="https://wa.me/966554848526" target="_blank" rel="noopener">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M14 3.5C8 3.5 3.3 8 3.3 13.6c0 2 .6 3.8 1.6 5.4L3.6 24.5l5.7-1.4c1.4.7 3 1.1 4.7 1.1 6 0 10.7-4.5 10.7-10.1S20 3.5 14 3.5z" style="fill:var(--surface);stroke:var(--main)" stroke-width="1.8" stroke-linejoin="round"/><path d="M10.4 9.6c.3-.3.8-.3 1 .1l1 2c.1.3 0 .6-.2.8l-.6.6c.6 1.3 1.6 2.3 2.9 2.9l.6-.6c.2-.2.5-.3.8-.2l2 1c.4.2.4.7.1 1l-.8.8c-.6.6-1.6.7-2.4.3a10 10 0 0 1-5.2-5.2c-.4-.8-.3-1.8.3-2.4z" style="fill:var(--main)"/></svg>
+      <span>WhatsApp<small>0554848526</small></span>
+    </a>
+  </div>
+
+  <section class="exams" aria-label="Exam dates">
+    <h3>Exam dates</h3>
+    <div class="row">
+      <div class="ex" data-date="2026-12-06"><b>Midterm</b><span class="d">Sun 6 Dec 2026</span> <span class="left"></span><small>15 marks</small></div>
+      <div class="ex" data-date="2027-01-18"><b>Final written</b><span class="d">Mon 18 Jan 2027</span> <span class="left"></span><small>25 marks</small></div>
+      <div class="ex" data-date="2027-01-27"><b>OSCE</b><span class="d">Wed 27 Jan 2027</span> <span class="left"></span><small>40 marks</small></div>
+    </div>
+    <div class="grades">Marks: <b>OSCE 40</b> · <b>Final 25</b> · <b>Midterm 15</b> · Short cases 10 · Skills lab 5 · Long case 5</div>
+  </section>
+
+  <div class="overall" aria-label="Overall progress">
+    <div class="ring">
+      <svg width="84" height="84" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="34" fill="none" style="stroke:var(--pale)" stroke-width="10"/><circle id="ringArc" cx="42" cy="42" r="34" fill="none" style="stroke:var(--tick);transition:stroke-dashoffset .5s" stroke-width="10" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="213.6"/></svg>
+      <b id="ringPct">0%</b>
+    </div>
+    <div class="meters">
+      <div class="meter"><span>Studied</span><div class="track"><i id="mS" style="width:0"></i></div><span id="mSn">0</span></div>
+      <div class="meter"><span>Gifts done</span><div class="track blue"><i id="mQ" style="width:0"></i></div><span id="mQn">0</span></div>
+      <div class="meter"><span>OSCE stations</span><div class="track osce"><i id="mO" style="width:0"></i></div><span id="mOn">0</span></div>
+    </div>
+    <div class="save-state" id="saveState">Your ticks are saved on this device.</div>
+  </div>
+
+  <div class="sechead">
+    <h2>Checklist</h2>
+    <div class="mini"><button type="button" data-all="open" data-scope="checklist">Open all</button><button type="button" data-all="close" data-scope="checklist">Close all</button></div>
+    <p>Same order as the course list. Ticks fill in by themselves when you finish a lecture or all of its questions; you can also tap them.</p>
+  </div>
+  <div class="speclist" id="checklist"></div>
+</section>
+
+<!-- STUDY INDEX -->
+<section class="view" id="v-study" hidden>
+  <div class="sechead">
+    <h1 style="font-size:34px">Study</h1>
+    <div class="mini"><button type="button" data-all="open" data-scope="studyIdx">Open all</button><button type="button" data-all="close" data-scope="studyIdx">Close all</button></div>
+    <p>Lectures are numbered inside each specialty. Tap a specialty to hide it.</p>
+  </div>
+  <div class="key" aria-label="Colour key">
+    <span style="color:var(--slide)"><i style="background:var(--slide)"></i>Doctor's slides</span>
+    <span style="color:var(--note)"><i style="background:var(--note)"></i>Doctor's spoken notes</span>
+    <span style="color:var(--hot)"><i style="background:var(--hot)"></i>Came in the gifts / high-yield</span>
+    <span style="color:var(--dug)"><i style="background:var(--dug)"></i>Aldughaither summary (folded at the end)</span>
+  </div>
+  <div class="idx" id="studyIdx"></div>
+</section>
+
+<!-- LECTURE -->
+<section class="view" id="v-lec" hidden></section>
+
+<!-- PAST QUESTIONS -->
+<section class="view" id="v-past" hidden>
+  <div class="pqbar" id="pqBar">
+    <div class="pqbar-top">
+      <button type="button" class="btn small tocbtn" id="pqTocBtn" aria-controls="pqSide" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" style="stroke:currentColor" stroke-width="2" stroke-linecap="round"/></svg>Lectures</button>
+      <h1>Gifts</h1>
+      <div class="score" aria-live="polite"><span class="sp ok"><b id="scOk">0</b><span class="w">correct</span><span class="i" aria-hidden="true">✓</span></span><span class="sp bad"><b id="scBad">0</b><span class="w">wrong</span><span class="i" aria-hidden="true">✗</span></span><span class="sp"><b id="scAns">0</b>/&nbsp;<span id="scTot">0</span><span class="w">&nbsp;answered</span></span></div>
+    </div>
+    <div class="filters" role="group" aria-label="Filter questions">
+      <button class="chip" type="button" data-f="all" aria-pressed="true">All</button>
+      <button class="chip" type="button" data-f="mid" aria-pressed="false">Midterm</button>
+      <button class="chip" type="button" data-f="final" aria-pressed="false">Final</button>
+      <select id="fYear" aria-label="Year"><option value="all">All years</option></select>
+      <button class="chip" type="button" id="fWrong" aria-pressed="false">My wrong answers</button>
+    </div>
+  </div>
+  <div class="pqgrid">
+    <aside class="pqside" id="pqSide" aria-label="Lectures"></aside>
+    <div class="pqmain" id="pqMain"></div>
+  </div>
+  <div class="scrim" id="pqScrim" hidden></div>
+</section>
+
+<!-- OSCE -->
+<section class="view" id="v-osce" hidden><div class="view" id="osceMain"></div></section>
+
+<!-- FLASHCARDS -->
+<section class="view" id="v-fc" hidden><div class="view" id="fcMain"></div></section>
+
+<footer>SURG453 Study Hub · King Saud University · Done by Lama Alrushid. Sources: doctors' slides and notes (Alessa, Alomar, Alsalamah), GS gifts (Albargan), Aldughaither's CURRENT Made Easy, AlOmar's Ultimate OSCE Guide and Aldayel's OSCE merge 427–442. Grey boxes marked 'my explanation' and dashed boxes marked 'added' are not from these sources.</footer>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ===== META is written by the build script ===== */
+const META = /*META*/{"lec":{"preop":{"doctor":"Dr. Rafif E. Mattar (2026 slides) \u00b7 Dr. Abobotain (notes)","ready":true,"v":"37638a","words":3441,"dug":true},"safety":{"doctor":"Dr. Alqahtani","ready":true,"v":"61dd66","words":974,"dug":false},"day":{"doctor":"Dr. Hamad Alsubaie","ready":true,"v":"f82ae7","words":757,"dug":true},"procedures":{"doctor":"Dr. Omamah Almousa","ready":true,"v":"bef010","words":1584,"dug":false},"oncology":{"doctor":"Dr. Sulaiman Alshammari","ready":true,"v":"c53a72","words":2090,"dug":false},"infections":{"doctor":"Dr. Musaad AlHamzah","ready":true,"v":"cd645a","words":1697,"dug":true},"fluids":{"doctor":"Dr. AbdulAziz AlKanhal","ready":true,"v":"a92360","words":2288,"dug":true},"skin":{"doctor":"Dr. Alqattan","ready":true,"v":"7d8756","words":1912,"dug":false},"benign-breast":{"doctor":"Dr. Basmah Alhassan","ready":true,"v":"c9d9d6","words":1229,"dug":true},"breast-ca":{"doctor":"Prof. Alsaif","ready":true,"v":"eb324c","words":820,"dug":false},"thyroid":{"doctor":"Dr. Hind Idrees","ready":true,"v":"30bb05","words":1101,"dug":true},"parathyroid":{"doctor":"Dr. Nuha Saleh","ready":true,"v":"c05e72","words":453,"dug":true},"adrenal":{"doctor":"Dr. Awad Alqahtani","ready":true,"v":"3a8436","words":777,"dug":true},"pancreatitis":{"doctor":"Dr. Hamad","ready":true,"v":"8a2943","words":1043,"dug":true},"panc-mass":{"doctor":"Dr. Abdullah Aloraini","ready":true,"v":"494f11","words":808,"dug":true},"spleen":{"doctor":"Dr. Abdullah Aloraini","ready":true,"v":"989aed","words":1234,"dug":true},"gallstones":{"doctor":"Dr. Abdullah Aloraini","ready":true,"v":"a538d2","words":1038,"dug":true},"liver":{"doctor":"Dr. Hamad","ready":true,"v":"1a0187","words":702,"dug":false},"transplant":{"doctor":"Dr. Abdullah Aloraini","ready":true,"v":"e81557","words":1226,"dug":true},"gastric-ca":{"doctor":"Dr. Hussam Alamri","ready":true,"v":"b62657","words":1423,"dug":true},"pud":{"doctor":"Dr. Fahad Bamehriz","ready":true,"v":"c7d2e3","words":1719,"dug":true},"obesity":{"doctor":"Dr. Hamad","ready":true,"v":"52f396","words":947,"dug":true},"esophagus":{"doctor":"Dr. Suha Kaaki","ready":true,"v":"c575e7","words":2430,"dug":false},"acute-abdomen":{"doctor":"Dr. AbdulAziz AlKanhal (SURG 453 lecture) \u00b7 Dr. Reem Alyahya (previous lecture)","ready":true,"v":"f60bc4","words":4354,"dug":true},"lgib":{"doctor":"Dr. Alhassan","ready":true,"v":"b3871c","words":843,"dug":false},"hernia":{"doctor":"Dr. Alnamy","ready":true,"v":"7e8eef","words":1144,"dug":true},"crc":{"doctor":"Prof. Khayal AlKhayal","ready":true,"v":"872750","words":1303,"dug":true},"ibd":{"doctor":"Dr. Altrauki","ready":true,"v":"850d97","words":1022,"dug":true},"anorectal":{"doctor":"Prof. Ahmad Al-Zubaidi","ready":true,"v":"f1cb77","words":2029,"dug":true},"trauma":{"doctor":"Dr. Reem Alyahya","ready":true,"v":"001a36","words":2745,"dug":true},"burn":{"doctor":"Dr. Hisham Alghamdi","ready":true,"v":"42caaa","words":1207,"dug":true},"head-injury":{"doctor":"Prof. Sherif Elwatidy (slides) \u00b7 Dr. Aldakkan (lecture notes)","ready":true,"v":"adde67","words":1354,"dug":true},"tumor-mx":{"doctor":"Dr. Sara Alsulaimani","ready":true,"v":"ce5b9b","words":1517,"dug":false},"tumor-loc":{"doctor":"Dr. Sara Alsulaimani","ready":true,"v":"ef11cc","words":2653,"dug":false},"chest-trauma":{"doctor":"Prof. Waseem Hajjar","ready":true,"v":"46ff89","words":2977,"dug":true},"chest-tube":{"doctor":"Dr. Saleh Alnasser","ready":true,"v":"c225f8","words":2226,"dug":false},"lung-ca":{"doctor":"Dr. Suha Kaaki","ready":true,"v":"544c85","words":1181,"dug":false},"mediastinum":{"doctor":"Dr. Alaa Ibrahim Alghamdi","ready":true,"v":"f5782a","words":1881,"dug":false},"venous":{"doctor":"Dr. Sultan AlSheikh (slides) \u00b7 Dr. Qayser (notes)","ready":true,"v":"accb69","words":2363,"dug":false},"pad":{"doctor":"Dr. Sultan AlSheikh","ready":true,"v":"40ae1c","words":1247,"dug":false},"aneurysm":{"doctor":"Dr. Sultan AlSheikh","ready":true,"v":"b0af14","words":1071,"dug":false},"vasc-emerg":{"doctor":"Prof. Abdulmajeed Altoijry","ready":true,"v":"a7563f","words":1910,"dug":false},"peds-problems":{"doctor":"Prof. Tariq Altokhais","ready":true,"v":"f5fbff","words":1830,"dug":false},"peds-emerg":{"doctor":"Dr. Yasser AlFraih","ready":true,"v":"aadc43","words":2950,"dug":false},"hydro":{"doctor":"Dr. Ibrahim Abunohaiah (original slides by Dr. Fahad Alyami & Prof. Hamdan Alhazmi)","ready":true,"v":"5da76a","words":1495,"dug":false},"uro-invest":{"doctor":"Dr. Ibrahim Abunohaiah","ready":true,"v":"a2fe92","words":1531,"dug":false},"luts":{"doctor":"Dr. Ibrahim Abunohaiah","ready":true,"v":"f87206","words":1435,"dug":false},"hand":{"doctor":"Dr. Alqattan (unified 453 slides)","ready":true,"v":"6cfc0d","words":1685,"dug":false},"cleft":{"doctor":"Dr. Alqattan (unified 453 slides)","ready":true,"v":"e3b13c","words":1054,"dug":false},"sick":{"ready":true,"doctor":"","v":"b26705","words":2429,"dug":true},"complications":{"ready":true,"doctor":"(Written handout, 2026 \u2014 no presenter named)","v":"d23892","words":3351,"dug":true},"abg":{"ready":true,"doctor":"Dr. Abdullah Alsakka (workshop slides)","v":"66678b","words":1872,"dug":true},"weight":{"ready":true,"doctor":"Tutorial \u2014 Book Ch. 46 (Current Surgical Diagnosis & Treatment, pp. 1230\u20131238)","v":"6b3c05","words":708,"dug":true},"ihd":{"ready":true,"doctor":"(Division of Cardiac Surgery, KSUMC \u2014 slide set \"Presentation and management of cardiac surgical diseases\")","v":"981665","words":1794,"dug":false},"aorta":{"ready":true,"doctor":"(Division of Cardiac Surgery, KSUMC \u2014 slide set \"Presentation and management of cardiac surgical diseases\")","v":"9d001c","words":400,"dug":false},"cardiac-rad":{"ready":true,"doctor":"(No slides or notes were provided for this topic)","v":"55a5ad","words":300,"dug":false},"nutrition":{"ready":true,"doctor":"(Gift file only \u2014 no slides or notes this year)","v":"93d874","words":772,"dug":false},"lap":{"ready":true,"doctor":"(Gift file only \u2014 no slides or notes this year)","v":"3aef35","words":636,"dug":false}},"pq":{"preop":{"n":59,"mid":54,"final":5,"ids":["59047473","367068d9","851f89f3","d1b744e5","ac3c9ae3","b2f5fbad","f3204f96","deb931a2","28208477","6bea4a62","4a62a2ab","20796e43","8cb939bd","f34ce288","017557c2","6ff1e4d1","b9be8d62","1f1cac1b","55eb99dc","edf5789a","a3c0ef08","3e4b4b1a","9d1eb79f","31f039b4","36b0a9c1","904e45a5","e9ca28e4","6f059745","7304f670","08e58cdf","e3d28b7f","55ff2d71","a4346e3f","369ef4db","ad1b573b","706d6fca","e01f9d06","d16252e8","3a63cd25","9c14676f","99c9bfe2","967e3c36","ed6bb3c9","52d5c73a","ad9757e5","863d188e","5b9591af","87dfc955","da97208e","44b72ab6","adaeb996","cfea3d0f","eda7ab33","3f5a8144","2f37f42d","a7e628cf","7a622791","77228595","599694df"],"ans":["D","A","D","A","A","C","C","B","B","A","C","D","C","A","C","D","C","B","A","D","B","C","B","A","A","D","D","A","A","A","C","C","B","C","A","D","A","C","A","A","B","A","C","B","A","B","B","A","B","C","B","A","A","B","B","B","A","D","C"],"v":"d90384","expl":59},"safety":{"n":18,"mid":14,"final":4,"ids":["6bea4a62","4a62a2ab","edf5789a","d16e0636","f7ec2379","36b0a9c1","a371418b","a4346e3f","10f6bf23","99c9bfe2","95095ea1","6965cc11","f91f2732","cfea3d0f","eda7ab33","8b392059","e1cbc41a","1ba84a50"],"ans":["A","C","D","A","B","A","C","B","D","B","A","B","B","A","A","B","B","B"],"v":"8f7f40","expl":18},"day":{"n":10,"mid":10,"final":0,"ids":["572f4036","50fa1e10","3a0dd15c","9ac3c758","dd9df5aa","55ff2d71","44b72ab6","7c3e441d","397f2a48","02722658"],"ans":["B","D","D","B","C","C","C","C","A","D"],"v":"6c26bd","expl":10},"procedures":{"n":72,"mid":58,"final":17,"ids":["90e0f6c8","1732c5ee","aebef2cf","b7a0b947","a48be24a","8ad5e077","d05de999","567d9492","df87a11d","86c631bb","ffbc023a","f3888b17","ee988f41","549b8f80","a371418b","e747414a","1b8726e3","9c30f367","25a7e4ca","0e336a1a","0d0293f7","8cebf944","76484ff2","cd03e011","d9398211","6c884622","33b58fb0","89339825","12033bcc","24f33357","2aafc5bd","c38890c9","e4e674e4","d344f2d4","5d833a66","8d92e439","95a3d475","02827498","daed5ae4","fe6233b3","aa7a8be8","90e5672e","de0052de","7533f75b","59013d55","2427b024","ce837c7c","5882ec7f","0dfefe8d","587c5394","8fddf6dd","934bd45b","f91481fe","1bf90ace","4713bd1c","ef7708e5","e8bac8b9","ce7b0154","fe5fa557","2105997c","f6f165df","e07feb89","58d67c3e","c1a8aa0a","4534ff03","0e86c218","33e7a27b","bd78b5e2","0b453351","a3ebff08","16cb85fc","27b95f84"],"ans":["B","A","A","A","A","B","C","D","B","B","D","A","D","B","C","B","D","A","B","B","B","A","D","B","C","B","B","B","A","A","C","D","A","A","C","A","B","A","A","A","C","B","A","D","B","A","A",null,"A","A","B","B","B","B","D","C","B","C","D","B","A","C","C","D","A","A","C","A","A","D","A","D"],"v":"4b2d95","expl":72},"oncology":{"n":64,"mid":56,"final":9,"ids":["40fe6951","8c63d40c","1e86a93c","19147c86","b1eaa529","69fb1b31","3fd6ff23","22c265b6","2066fbde","77d8697c","28976305","4d1e7ded","eff045a3","b1727ebc","23387670","faec2b97","da3e09e8","e60fb34d","0e9c60ec","4cbe73d1","160a9264","7b84848c","d21e4aff","c8d7c656","8579c519","e188822c","25d3d43f","94a001db","bc6d5dc1","0984314d","6ac5558c","8cb935bb","9d3c24ff","380ed069","6f29de13","f79021ca","2eec1eb5","1f9e21d1","69cb24ec","724659ad","da18df72","83eb8ded","756808fa","22b707e2","dda85673","4827a0c6","2b79d24b","5abb09cd","668bd1b8","6ecf331b","afbe9631","8d8e9171","c01f5563","076af966","3ca7a0b4","ff933a7f","00283509","9b76f3e4","827c8f6e","844c2be2","d176f5c4","cdef885d","cdf8a1f0","419b54fd"],"ans":["C","B","B","A","A","A","B","A","A","A","A","D","A","C","D","A","A","D","B","A","B","B","A","C","A","A","B","A","D","B","C","A","B","A","B","D","B","D","B","D","A","C","B","E","C","A","A","B","A",null,"A",null,"A","A","A","A","B","A",null,"A","B","B","A","C"],"v":"4feb4b","expl":64},"infections":{"n":74,"mid":66,"final":8,"ids":["b261072f","26e1c5b6","2fe36490","44ddd668","0a054059","3d7bb55d","9e8a3a45","6e457ddb","a096f7a7","86959ba0","9ae6fa3c","58d4df0c","e2029c6d","90f6c85e","11d85649","1a4e857a","6fa9ecd6","4d528c80","64ed4855","3db419ea","9571e0fc","903d61e5","0f0fcfb1","9d1eb79f","2c7ed5f6","9e4ed1e2","171831b8","a9516947","275135f6","0225d102","7d023e3a","08e58cdf","a371418b","06e69215","c74d6d0e","185889fd","e17828c7","a853a5b9","806747ad","d16252e8","ac30b916","18724019","ceef527e","1ff0950a","6990b418","7b31d74b","3bb2b7dc","81050e07","bf5c3628","28bb78e0","8c9709ff","2625e69e","a3f3f5fd","3c2cd017","0e7eaec8","3e4e0fae","3e6abd9e","e43b4b31","2881b69c","56164b23","2bf6f999","7b158f61","62baf18a","fd8824d4","05b93a1d","6dbd0a7d","05914492","a56b2018","e45b45b3","3cbcea6d","076a6e3f","af2bffa1","f3afb9ec","b471a775"],"ans":["A","C","D","A","A","B","B","C","B","C","C","A","B","A","A","B","A","B","B","A","A","B","C","B","B","B","A","C","D","D","A","A","C","B","D","A","A","D","A","C","B","C","D","C","B","A","A","D","C","C","A","D","C","D","A","A","B","A","D","D","D","A","B","D","D","B","A","C","D","B","A","D","A","B"],"v":"a274c3","expl":74},"fluids":{"n":97,"mid":96,"final":2,"ids":["afe767e1","b9bac3b3","91829791","d12a19b3","7a24b5c5","e8d447a3","0ba589eb","48d77adf","8a28f8c1","9f174150","c651e0a7","d1026c8c","37ff6d88","000ce880","d12b7936","399be01e","308daa7d","b439a65e","23c5dbd9","d7557843","d62231ab","781d0740","4135494b","41d321ba","da69e64d","f80ac1ec","4a2ad93b","39f5330d","5fe97dbc","9e32e6ac","2a05e74f","93af5150","5d674b93","bbe13437","5f9a9535","bfbdd4ac","76c265dd","a8b3627e","ca08c514","e47d1627","7ec65e38","97507fb5","344dd3e4","f8240cf1","aaa60cec","9dc00065","16bc8471","44955269","a99b6eb3","05c85984","8983c74f","187c7cdb","f07d7826","5cfbf44e","3237897a","48e7a343","f2675cd4","84bc4193","293fd8d6","8ee39146","fd113bfe","61d4f363","99733ca4","bbccf9d3","fcb16164","0bdd988e","93fb7d05","4fd80d58","34d8c3e8","dcde5f2a","225f659b","1599abfd","0a5ceb6e","72e0fc23","a10f479c","eca037a6","c578cc48","9a2860c7","d3d79e4f","03c418b0","f0ccc2df","6fb5e521","68ec52d3","b129854d","8e7a6ec6","a6bc0b56","88935d2f","6e6d9a18","7db56961","af3d5d0d","9fce2de8","90a80dd0","1d22b035","bc0a064d","5abed4a0","9d4a6309","5df35cb4"],"ans":["B","A","C","A","A","A","A","B","C","C","D","A","B","A","B","A","A","D","B","B","D","A","A","A","A","A","B","AD","C","D","C","B","C","D","C","B","A","A","B","C","C","A","A","C","D","D","B","B","B","B","C","C","B","C","C","B","B","C","B","C","C","B","C","C","B","B","C","D","B","B","A","D","C","C","C","C","B","C","B","D","B","A","A","D","C","D","A","C","B","A","A","B","D","A","A","A","A"],"v":"13e7a5","expl":97},"sick":{"n":112,"mid":104,"final":9,"ids":["0a054059","bec51e7a","f9714708","46d8407c","d5b23d71","e0d82c0d","9c645636","a096f7a7","9ae6fa3c","6788143a","db7c1c4c","ac5db51e","90f6c85e","37ff6d88","6fa9ecd6","4d528c80","308daa7d","d906cca0","aebef2cf","c9fc123d","9d696b4d","fa6b38d0","cd5eab64","2c7ed5f6","dbcece4e","a83f9e46","8b64a8dc","93d453c2","f80ac1ec","f4056da5","c78de22a","275135f6","567d9492","9a747f3e","6c97ffc6","93af5150","df87a11d","843d3a1a","5d674b93","5246c6c2","4d9f7c42","737f99a8","207b9241","bd5e24c2","18724019","cac4db04","cff68c9b","65b80a24","c38890c9","cfadb747","15dac033","2e4f32a0","7b31d74b","0e31a6bc","9dc00065","16bc8471","8983c74f","31c3a0a3","70f6df31","d9bf5772","2625e69e","48e7a343","a8578902","8c9709ff","934bd45b","a3f3f5fd","3c2cd017","8ee39146","f91481fe","32a62a61","b5ad4d73","53e6177e","93fb7d05","4fd80d58","34d8c3e8","6944cbf7","1599abfd","608c5634","aa04837e","56164b23","3a1bb5d9","a10f479c","dbb3a0ba","177f2b35","9a2860c7","d3d79e4f","f016ae18","f9556ed5","6fb5e521","6dbd0a7d","fd7c89dd","b129854d","2e8c8781","05914492","ce7b0154","a56b2018","fea3f69a","a6bc0b56","56bb41ce","6641ae12","d75efe39","88935d2f","7f276a17","d54d67bf","af3d5d0d","b064635f","0b453351","1d22b035","a3ebff08","984d5959","df784892","8d5be253"],"ans":["A","A","A","C","A","B","C","B","C","B","C","B","A","B","A","B","A","A","A","C","A","A","A","B","B","D","C","C","A","C","B","D","D","A","D","B","B","C","C","B","C","C","A","A","C","B","B","A","D","C","C","A","A","D","D","B","C","B","D","A","D","B","C","A","B","C","D","C","B","C","A","A","C","D","B","B","D","A","D","D","D","C","B","B","C","B","C","B","A","B","D","D","C","A","C","C","A","D","B","B","B","A","D","B","A","C","A","D","D","C","B","AD"],"v":"f91b85","expl":112},"complications":{"n":150,"mid":115,"final":39,"ids":["ac3c9ae3","b261072f","2fe36490","44ddd668","d1b744e5","5fe37d02","f9714708","6e457ddb","46813326","e0d82c0d","9c645636","deb931a2","0ba589eb","a096f7a7","86959ba0","9ae6fa3c","e571c82f","553bc956","58d4df0c","ac5db51e","b9be8d62","11d85649","1a4e857a","3fed1a79","6fa9ecd6","4d528c80","d12b7936","ccc11f2d","c167e55e","70e48f61","49376525","9571e0fc","903d61e5","c5af010c","d7557843","c9fc123d","ec298615","d62231ab","0d17f20d","0f0fcfb1","cd5eab64","36f0e327","9d1eb79f","8533b983","9e4ed1e2","171831b8","b9fde1d4","4b537968","33b6ec0b","267a828d","93d453c2","a9ac7dfb","4a2ad93b","275135f6","567d9492","88acc0b5","2a05e74f","33246668","7d023e3a","aae01045","7f36327c","d8779c2a","71cb7965","6f059745","7304f670","ffbc023a","08e58cdf","4d9f7c42","3dfc1864","5d6ba496","957b8f49","ec85e0e8","d2310c03","207b9241","e4fc1c78","76484ff2","988ce4fb","185889fd","151d10ca","2f046ad2","0680a06c","a5d170ad","d9398211","e01f9d06","806747ad","89339825","12033bcc","3727f209","ac30b916","18724019","e1417e83","119506b4","7613d675","3d693f06","c38890c9","ba9e40c2","f49e0f13","4d79c978","15dac033","364f0513","d7ecf727","04bbf24c","c49dcf03","02c2d95d","0984314d","7533f75b","c62ca9d5","44955269","81050e07","02722658","bf5c3628","84bc4193","8c9709ff","293fd8d6","3c2cd017","e0f407e4","34d8c3e8","e422ad5b","6944cbf7","1599abfd","0a5ceb6e","aa04837e","3a1bb5d9","a10f479c","2bf6f999","7b158f61","f0ccc2df","89504efa","fd7c89dd","05914492","a56b2018","fea3f69a","d75efe39","e45b45b3","3cbcea6d","7db56961","bd44b9df","648a89f3","a4176af0","5d600494","90a80dd0","b2e9b10b","ed804b44","a3ebff08","b3d9a54f","984d5959","f3afb9ec","bc0a064d","d993b854","3c25c7bf"],"ans":["A","A","D","A","A","B","A","C","A","B","C","B","A","B","C","C","A","C","A","B","C","A","B","A","A","B","B","A",null,null,"A","A","B","B","B","C","A","D","B","C","A","A","B","A","B","A","C","A","C","C","C","A","B","D","D","A","C","A","A","B","D","C","D","A","A","D","A","C","A","B","C","C","A","A","B","D","D","A","B","B","C","D","C","A","A","B","A","B","B","C","B","D","C","C","D","C","C","C","C","D","C","A","C","D","B","D","B","B","D","D","C","C","A","B","D","A","B","B","B","D","C","D","D","C","D","A","B","C","D","A","C","A","B","D","B","B","A","D","C","D","B","A","B","D","A","C","A","A","A","A"],"v":"8b4cb7","expl":150},"skin":{"n":30,"mid":13,"final":24,"ids":["46813326","3fed1a79","3999b515","0d17f20d","4b537968","39ad52cd","e674b9b3","8ad5e077","0984314d","549b8f80","20b213ed","d2310c03","a0614e25","a5d170ad","7613d675","ad9757e5","67a304b4","aa7a8be8","90e5672e","2beb75e7","1cdb3185","2ce06105","0e7eaec8","9c22f153","648a89f3","5d600494","aab4ecd8","a3d0e98f","7c5cbe55","55432fe3"],"ans":["A","A","AD","B","A","A","B","B","B","B","A","A","C","D","C","A","A","C","B","A","B","B","A","B","D","D","B","C","B","A"],"v":"c0b22b","expl":30},"benign-breast":{"n":27,"mid":3,"final":26,"ids":["1c8450ba","bff533d0","c0616f67","69fa99d3","35908bea","6fda88cf","443b94ef","53adc4c0","ebc13650","c86f987d","959f9151","3fafa17a","ac31a1c4","8c9775d1","153c0cf1","71d9cff0","7f14a436","beef4f66","bd3439bd","3450ff4c","ffca6919","bf08be65","ecbbbd59","23665ffa","8edccee0","600c9dee","8d8e9171"],"ans":["D","C","C","A","A","A","B","D","A","C","A","A","A","D","C","A","C","C","C","D","A","C","C","B","A","B",null],"v":"3fc741","expl":27},"breast-ca":{"n":22,"mid":4,"final":19,"ids":["80b14207","92ed6894","cbc8dc5a","1e86a93c","53adc4c0","dd658a8e","e56ec8ea","9e4a0ece","b1cff0d1","f7ccbd7c","cfb5a91a","7f14a436","beef4f66","b1727ebc","bd3439bd","180df329","de2c0184","ea8e51a2","27f7f20a","821d4512","1f9e21d1","afbe9631"],"ans":["A","C","A","B","D","B",null,"B","D","A","C","C","C","C","C","A","A","C","D","C","D","A"],"v":"c00559","expl":22},"thyroid":{"n":31,"mid":14,"final":24,"ids":["e0d82c0d","0ba589eb","701b86af","d12b7936","a4176af0","49376525","fa4e402e","cb6e14f6","fd557ba9","377452a6","25a8175c","904e45a5","7304f670","be3f0dd7","3a462d2d","4db2e9e5","546b6756","e4fc1c78","5efd83e8","faec2b97","71675d56","6ac5558c","c62ca9d5","bca57e7f","ca4a85a6","391e1589","90a80dd0","0df2c68c","b1598d41","9d0076e3","4f7c2544"],"ans":["B","A","C","B","C","A","C","C","B","C","C","D","A","B","C","C","A","B","C","A","C","C","B","B","A","C","B","A","A","B","A"],"v":"b47a44","expl":31},"parathyroid":{"n":20,"mid":6,"final":17,"ids":["0ba589eb","8a23137d","721fa20d","d41324cf","17a6dfb0","d12b7936","49376525","454e197c","781d0740","377452a6","7b1977eb","e4fc1c78","5efd83e8","5320449a","c205b2d1","3bc697a3","9e53c801","c62ca9d5","380ed069","90a80dd0"],"ans":["A","A","B","C","B","B","A","A","A","C","A","B","C","C","C","B","B","B","A","B"],"v":"a3fceb","expl":20},"adrenal":{"n":5,"mid":1,"final":4,"ids":["7917c374","2ad9eac5","eae9e165","9f0c92ff","12ddc21d"],"ans":["B","B","A",null,"A"],"v":"47252e","expl":5},"pancreatitis":{"n":32,"mid":10,"final":25,"ids":["5e59fd49","553bc956","fbdf1973","cb5f211a","bd69cc91","59a6a3ef","21d00e22","ebbb529d","ee059547","4c3f461c","2e72f571","a33ae383","ac66c0f7","8ae0ae7a","19bd317d","31ded20f","8a1fb0ea","93af5150","038c248b","9ec505b1","3adb2ddf","7fc56dbc","8c8b2c8d","725ede77","535f0779","5aafa808","20f3deae","39506e13","31c3a0a3","1f611b54","080d51c1","d42e565b"],"ans":["A","C","A","A","A","A","C","A","A","A","A","B","B","A","A","B","B","B","A","C","C","C","A","A","D","C","A","C","B","B","D","A"],"v":"8dd69e","expl":32},"panc-mass":{"n":10,"mid":2,"final":9,"ids":["d1495c00","a24992bf","186ad988","a6c1d359","99b62f5b","07cbc4d6","160a9264","a89c8c45","b2c047d6","53293d02"],"ans":["A","B","C","A","A","B","B","D","A","A"],"v":"132faa","expl":10},"spleen":{"n":25,"mid":11,"final":17,"ids":["02619054","26e1c5b6","a5f28fb7","05392f06","27cc63c8","f15b120a","74b206ba","dc339b5e","0225d102","7d023e3a","70f3498d","efcea0b1","6f173260","0b10d137","ad1b573b","0524c039","727e9b16","863d188e","535f0779","9a2860c7","c248841e","c362de62","2c2c5896","9a3f715c","69eb92b6"],"ans":["C","C","B","A","C","C","A","A","D","A","C","A","B","C","A","A","C","B","D","C","C","C","B","B","C"],"v":"c45973","expl":25},"gallstones":{"n":35,"mid":18,"final":27,"ids":["5e59fd49","b98c0d09","47dad828","6a1c278d","553bc956","cb5f211a","36bc1620","4c3f461c","f7da49f2","b4acbcd8","a9a0af03","416b35c7","231b29df","186ad988","8cca88da","9ec505b1","15e46d62","3748b2e2","1b10a895","f8240cf1","36edd89b","e88f5423","99ba3bea","78efd1ba","eeffd2d3","3ccebb68","bd44b9df","53293d02","e3f49f81","918071c5","ba6667aa","16cb85fc","71c14a20","7301c930","4a74db92"],"ans":["A","B","A","B","C","A","D","A","A","C","C","C","A","C","C","C","B","B","B","C","A","B","C","B","B","D","A","A","C","B","A","A","B","A","A"],"v":"a97996","expl":35},"liver":{"n":19,"mid":6,"final":15,"ids":["a8dec050","60ab5ead","94d4389d","98e30d21","f72f3b5e","4d1e7ded","bc9daa4c","e17887a3","3046a6a5","bdfe416b","9f34990b","893b64a8","0f3d5f06","076af966","c01f5563","3ca7a0b4","ff933a7f","6134be4e","c55d2451"],"ans":["B","A","C",null,"B","D","C","A","A","B","D","A",null,"A","A","A","A","A","A"],"v":"dc88d9","expl":19},"transplant":{"n":26,"mid":25,"final":3,"ids":["2017be68","e2e74f1a","2bda677e","24a16ba0","2c712e7f","4d1e7ded","bf326a37","da1f0cde","59366746","3444fefa","ae553834","4441e6a6","a5d70cbe","0a0bc28d","48fa2ec5","410139a2","9366125e","6a93ee4d","7e66eb49","ce1401e3","86aa4f32","4fc5d64e","675b2171","04447864","cce4dec6","9d11ffd8"],"ans":["B","A","A","B","D","D","B","A","A","A","C","B","A","A","A","A","C","C","B",null,"B","A","A","C","A","A"],"v":"93476d","expl":26},"gastric-ca":{"n":11,"mid":3,"final":9,"ids":["4e41e583","d6ccc8bc","fac2c19a","dc09b6af","da561b5f","9c1199ff","3d8c36a2","0b430516","6f29de13","b2cc2f73","7a622791"],"ans":["A","C",null,"C","C","A","A","A","B","D","A"],"v":"2c369a","expl":10},"pud":{"n":29,"mid":14,"final":23,"ids":["d79acc50","d4d2cd9e","5b7032ed","3409d848","d1495c00","18faf079","57699548","2dfd3a1d","0585a79e","22130a9a","a24992bf","78822768","fcd1bad8","c55df5e3","c3336143","cd5eab64","9a747f3e","968ad394","c188d5ef","51242dcb","d39e8916","a4f32a10","dcde5f2a","781873c8","cf525fb1","90a50d78","4d2d377d","8fc7ecf8","bd20b552"],"ans":["B","D","B","A","A","A","A","B","C","B","B",null,null,"D","A","A","A","D","B","B","C","C","B",null,"D","B","C","D","C"],"v":"d854a4","expl":26},"obesity":{"n":24,"mid":11,"final":17,"ids":["2460254e","1b57ad40","15dac033","84759764","430f48d5","c61ffdd5","72431e44","da95a16e","90c3c714","92d339a9","f756cb9b","3a7c27ff","119506b4","18724019","3c3cd9c7","9e53c801","44b72ab6","f49e0f13","2dfd3a1d","a4f3c128","ffbe78c3","277964f6","bd44b9df","7202e9c0"],"ans":[null,"C","C","C","B","B","A","D","B","A","B","D","D","C","A","B","C","C","B","C","A","D","A","B"],"v":"cd78a9","expl":22},"esophagus":{"n":39,"mid":13,"final":31,"ids":["8d5ead0b","d8dcbeae","872cadd9","9c06f207","32249977","f3dc34ce","27cc63c8","4c6cc521","c5af010c","cdbc03c8","0530d8b8","9ee20645","74b206ba","80dad25b","0225d102","c5fac050","233922b1","b030dcb5","70f3498d","b686c0bb","efcea0b1","152e4109","5c74704a","e84400d7","276fec2b","3b78e199","8d45860b","ef599fc6","3f5a8144","d8f94bac","c362de62","22b707e2","e2ec0ed6","cdf8a1f0","419b54fd","d176f5c4","2c2c5896","9a3f715c","69eb92b6"],"ans":["B","B","C","A",null,"A","C","D","B","A","A","A","A","B","D","C","A","C","C","A","A","A","B","A","B","B","A","B","B","B","C","E","C","A","C","B","B","B","C"],"v":"97ca43","expl":39},"acute-abdomen":{"n":200,"mid":108,"final":101,"ids":["b98c0d09","47dad828","e284b18f","98577737","df155c2a","0bf00c71","ee0e4d04","9407c4b1","68567f93","5275f263","c7d1798d","6cfdb2ce","deaceb66","6be75f7d","36bc1620","a33ae383","6f72ee7f","6b349423","b69dd474","feb0021d","03e8b10d","b4acbcd8","b270b04b","a6c8ec1b","6b80d843","3f47d6da","5f16799b","9ec505b1","8065c7f0","1b10a895","2d7246b1","1208405a","90a42590","d9de8814","11968aa8","b5652b25","5d97de31","44ca767a","43905352","22e4deaa","8c8b2c8d","5aafa808","e88f5423","cd79cdfc","cb0be43f","f02df8ae","e9e7a430","0a9a5b6a","90232067","a5732e97","ada80257","76871599","781873c8","629eb576","1fb7cc2b","78efd1ba","20f3deae","8f4f56d6","3ccebb68","7a6b901f","3e488f46","dc7a3f10","04efaaa0","7f7f92b0","a9a0af03","d0d23c20","66f84fc3","e02a9e34","04a7a8e9","96961259","ef1bcf95","da9f59e0","7ff55027","7c6f3942","529aee5c","3b82119f","3e1eba30","84ce2e83","d429cfdd","3931766d","625f9609","bbe2961c","9af733ef","53c34bc4","8a1fb0ea","97652d19","98855952","98e69491","ac66c0f7","c55df5e3","988ce4fb","19488ab0","97ffe7dc","3a1c0fb1","ca97837e","3e4e0fae","f79021ca","6a1c278d","af25d3cc","4e82de32","408a8466","aadedd2b","dfeb9b5d","b11761cc","b4b39859","038c248b","151d10ca","e269d43a","25d3d43f","1e7c863d","aa4c3abd","0c626144","e61e36e3","3d023a9e","edb7774b","9c645636","57699548","4c3f461c","2e72f571","1a4e857a","04931063","6d1ac86f","3d3bef6d","92c264b4","808f4ea2","3fd6ff23","ec298615","2fe3d704","19bd317d","aabc06a8","62eda540","a140fd0d","8533b983","9e4ed1e2","dbcece4e","15e46d62","656a1f43","ee988f41","c762a9de","f0acacf5","3748b2e2","3727f209","99e1d56d","e60fb34d","f49e0f13","149fb2ac","95a3d475","02827498","fe6233b3","15ff9571","f8240cf1","d9e72b5c","dd341c66","8bc3e28f","f07d7826","99ba3bea","bf5c3628","fd70f597","43bb520f","830e0add","21bc32f8","c7508a22","419de64c","f63449b8","77daa784","cc9262fc","ef7708e5","79735a74","b5864aab","fc67ae6e","0dad4e97","b77601f3","fc06c02b","c0a8e538","29c3aa0e","9282e33c","d4319143","418387bd","82b75dbb","c7d19ada","09efe9a0","22d9e581","746c74f3","4248115d","476adf6b","918071c5","d53ee55a","ba6667aa","f47345f5","2b186d8f","4036997b","b2ce3555","27307922","982fdcae","0d06af7f","8f194143","410b0c44","6157f1ca","7eab3fcd","0019d32f"],"ans":["B","A","A","C","C","C","B","D","C","D","A",null,null,null,"D","B",null,"A","B","B","B","C","C",null,"A","A","A","C","B","B","A","B","B","C","A","C","C","C","A","B","A","C","B","B","D","B","A","A",null,"A","B","C",null,"C","D","B","A","C","D","D","A","D","C","C","C","C","D","B","B","D","C","B","D","A","A","B","C","D","A","A","A","A","A","A","B","D","D","B","B","D","D","A","B","B","C","A","D","B","B","B","A","A","B","A","A","A","B",null,"B","B","C","D","A","A","D","C","A","A","A","B","B","A","A","B","B","B","A","B","A","A","B","A","A","B","B","B","B","D","C","B","B","B","B","D","C","A","B","A","A","C","C","D","A","C","B","C","C","B","D","C","B","A","B","D","C","C","C","C","C","D","A","D","D","C","A","C","A","A","D","A","B","B","A","A","B","B","C","A","A","B","D","C","A","B","B","B","A","A","C","A"],"v":"c28467","expl":192},"lgib":{"n":24,"mid":13,"final":12,"ids":["0671b217","fcb3ffed","50e0c136","ae3b7f8c","0e9c60ec","bc6d5dc1","ccb147d3","419de64c","3e7703b3","43bb520f","62aa79c3","82409c43","f63449b8","13477fc1","8c7cb72d","8d7ee3d7","ad2df800","d380c8b1","83d245c8","418387bd","a1c7294a","b03c1383","09913d57","b5525b28"],"ans":["B",null,"D","B","B","C","A","B","C","D","B","A","D","A","A","A","B","A","AB","A","A","B","D","C"],"v":"dfa727","expl":23},"hernia":{"n":36,"mid":12,"final":31,"ids":["b059c109","59345e8c","63079360","6b9bc54c","33034e45","336051c5","04dac4ba","6d1ac86f","77738ea9","272d6872","833ca5d1","8d45f2d4","88acc0b5","1dc66a0c","957081df","1aeedd3f","88280e05","fffac78e","e666094b","c357728e","b2e06980","cb7ca42e","6d5b05f2","d9e72b5c","3f60014e","4f3453eb","e7992581","449965af","2105997c","07ca0046","ecd8593b","176287ab","03dbad97","2b186d8f","3c3da768","337b01ee"],"ans":["A",null,"D","A","A","B","A","A","C","A","A","A","A","D","B","AB","B","A","A","B","C","B","A","D","C","C","B","A","B","B","A","A","A","B","A",null],"v":"8b6067","expl":34},"crc":{"n":29,"mid":14,"final":21,"ids":["5e17c5b8","5bc47d87","8c63d40c","f67e91a2","b1eaa529","6a41e74b","2d0f2d27","6bb106aa","c511b6c5","50e0c136","3fd6ff23","b223567e","b5eda9a4","cbe1c751","9a42d94a","c38a4ccb","e60fb34d","23387670","ca569a5b","0e9c60ec","d21e4aff","94a001db","8cb935bb","3bd1b8e5","ddd2e0f8","d677fa3a","5440c429","69cb24ec","a4a4ee18"],"ans":["B","C","B","B","A","B","B",null,null,"D","B","D","D","C","A","B","D","D","B","B","A","A","A","C","A","D","D","B","B"],"v":"153134","expl":27},"ibd":{"n":26,"mid":7,"final":23,"ids":["89e1b9cf","719a2184","f8a385a8","25fad594","6a41e74b","7e13af43","d6bc394b","cf5a4717","b439a65e","8533b983","8ed4dd87","cbdcd632","3b1989f8","b5eda9a4","b97dbb84","82e0f8a0","4da0843c","3e790013","a46b6568","6df92a88","6dc9da7e","47f2fb59","83d245c8","5440c429","71b4b4fc","e09f88e5"],"ans":["C","A","A",null,"B",null,null,"A","D","A","A","A","C","D","B","A","A","C","D","A","A","C","AB","D","C","C"],"v":"b84a8e","expl":23},"anorectal":{"n":15,"mid":7,"final":13,"ids":["be187283","50e0c136","cbdcd632","36175d67","dc12829e","a89e0801","562d8eb5","f30e17fc","02a6ae2e","78d88be3","13477fc1","ffc9d005","83d245c8","8a4bf20d","915f2f51"],"ans":["A","D","A","A","A","B","B","A","C","B","A","C","AB","B","B"],"v":"a24759","expl":15},"trauma":{"n":188,"mid":169,"final":19,"ids":["910df5e9","02619054","23fdeaff","d5c1c217","e6f7ba8e","cc755682","7a24b5c5","ca665d2a","bec51e7a","479ddadd","22e80742","d5b23d71","9c645636","b881fe7f","bdd1139b","83f8d1e2","4a62a2ab","9ae6fa3c","333f6d62","fe38740e","0821c1d3","802405e7","2c068f3e","eec55dd3","31750318","6af07ee8","ac5db51e","90f6c85e","54565f4a","a5f28fb7","1fcfe592","0d592b0e","d8bef34d","37ff6d88","4d5c5be9","e6089dc1","a8199192","cedaaf35","fcd6da93","90e0f6c8","4e255aa9","d6c43cb0","f24d4052","301c950c","34abd92f","80bb1f5a","f776c268","eac864c3","f15b120a","5ff771fa","d507822f","fa6b38d0","bf1e837e","979aba3f","c731c80c","f674f69b","dc339b5e","921e6af7","b344c1f2","a83f9e46","f80ac1ec","19a2e0a0","f4056da5","c78de22a","f1d52ebd","efec240f","493944fd","84bcdbbd","567d9492","9a747f3e","a48b0761","6c97ffc6","df87a11d","7d023e3a","36b0a9c1","843d3a1a","0f921941","5d674b93","5246c6c2","e747414a","bf0d4ae9","8c616295","8cebf944","c0088d91","6c884622","5c94f392","a853a5b9","afe5846b","727e9b16","aba28150","1e5fba9d","cac4db04","eb1b3f0f","7620a10e","44533955","c38890c9","e4e674e4","d344f2d4","8d92e439","2e4f32a0","0524c039","8ad64599","59e6f27e","7b31d74b","ce837c7c","16bc8471","3f9b1f24","9667fcfb","a99b6eb3","8983c74f","70f6df31","dad8e92b","587c5394","8fddf6dd","55869fea","48e7a343","a8578902","934bd45b","6ddc1b37","2625e69e","a3f3f5fd","3c2cd017","8ee39146","f91481fe","97b86b9f","3bd3ee5c","32a62a61","2c8b4c60","ec7729c5","1bf90ace","53e6177e","93fb7d05","4fd80d58","34d8c3e8","3cc7c542","6944cbf7","d0e70689","aa04837e","56164b23","3a1bb5d9","a10f479c","539d9095","dbb3a0ba","177f2b35","1b277705","ef7708e5","bed622a0","9a2860c7","d3d79e4f","e8bac8b9","5a39a8de","d28f4457","f016ae18","f177153a","77e7d5c2","a4191df3","e2c70717","b129854d","c2e5ee2e","2e8c8781","05914492","ce7b0154","a56b2018","fea3f69a","a6bc0b56","56bb41ce","6641ae12","88935d2f","eaa82e30","003cfe29","f518caec","4534ff03","70c5d788","3b8f2081","33e7a27b","bd78b5e2","0b453351","494ff5fb","bc0a064d","04e0c639","ab9256bc","5b83ffdf","31450f04","a00fd025","2dad277d","cc4ec0f3","df784892","a1a360c5"],"ans":["C","C","C","D","B","C","A","C","A","B","A","A","C","A","D","C","C","C","A","C","B","B","B","B","C","B","B","A","B","B","A","A","B","B","A","A","A",null,null,"B","A","D","A","A","C","A","A","C","C","A","B","A","C","A","B","C","A","C","A","D","A","C","C","B","C","B","D","D","D","A","C","D","B","A","A","C","A","C","B","B","C","A","A","C","B","CB","D","D","C","A","D","B","D","C","B","D","A","A","A","A","A","A","C","A","A","B","B","D","B","C","D","D","A","B","A","B","C","B","A","D","C","D","C","B","A","A","C","A","B","B","A","C","D","B","D","B","C","D","D","D","C","B","B","B","A","C","B","C","B","B","B","B","C","C","C","B","B","D","B","C","A","C","C","A","D","B","B","A","C","D","E","A","C","A","C","A","A","A","A","D","A","A","A","A","A","B","B","A"],"v":"dff57c","expl":185},"burn":{"n":58,"mid":42,"final":17,"ids":["b9bac3b3","fee7376e","72ae9b0d","0a054059","e8d447a3","1021a2cb","994726cc","9f174150","c651e0a7","4f379c5f","a9050b68","a41f7365","2ee4ebdb","4cf722d3","bc2f3a03","4135494b","41d321ba","9fe4ab36","8b6338ec","da69e64d","fec45ae8","93cec84c","bbe13437","c297008a","94af9426","e674b9b3","d3b8479d","298fbd46","0997d624","88eb7f4d","c0088d91","a6762685","76c265dd","3fe6964b","11796a55","9a12e7c1","e5041fdf","dc8b3d97","344dd3e4","95644106","1cdb3185","70c87f15","a3136bf2","18094ec2","9fe3d3f9","f785b84b","4d2d377d","546856b3","b8d5d4a6","00522e34","827c8f6e","13395c39","a60536a8","692ee48d","a73fa571","b079c212","44a2d131","3841cfcf"],"ans":["A","B","A","A","A","C","D","C","D","A","C","C","A","A","C","A","A","C","A","A","C","C","D","A","B","B","C","C","B","A","C","D","A","A","C","C","A","B","A","D","B","A","A","C","A","C","C","C","A","A",null,"C","C","A","B",null,"A","A"],"v":"a92ead","expl":57},"head-injury":{"n":57,"mid":32,"final":27,"ids":["d37284be","0d592b0e","d8bef34d","a8199192","5546cd63","8cd883ca","98030ac6","fa6b38d0","15d5ee67","fa4adfb2","989ecc4a","6838f14b","0f921941","ffaaf3e1","8c616295","4d8fce6c","d2f23ffc","17a7ca5f","cac4db04","a915a3a1","2e4f32a0","a8c4d230","54f24742","7879a4a8","c4eb1f44","3f9b1f24","a99b6eb3","d7654607","1f0db006","55869fea","f5acb653","934bd45b","e372cc1c","3bd3ee5c","2c8b4c60","ec7729c5","d0e70689","1b277705","5a39a8de","f016ae18","f177153a","77e7d5c2","e2c70717","d3d8896a","eaa82e30","41f3ba75","cb35dd3a","70c5d788","3b8f2081","04e0c639","ab9256bc","5b83ffdf","31450f04","a00fd025","2dad277d","cc4ec0f3","8e39ca46"],"ans":["A","A","B","A","A","D","B","A","D","D","C","A","A","A","A","A","B","C","B","A","A","A","A","B","A","B","B","A","D","A","A","B","D","A","A","B","C","A","B","C","C","C","B","B","C","D","C","C","A","D","A","A","A","A","A","B","A"],"v":"c08b8c","expl":57},"tumor-mx":{"n":16,"mid":2,"final":15,"ids":["443b94ef","d919f7bb","714b4acf","1beb6283","4d16ab42","e372f94a","fa1ca074","824f0e5b","349be5fd","4d8fce6c","1a1de9dd","1f0db006","5f70869d","3bd3ee5c","ae8d365c","d3d8896a"],"ans":["B","C","A","C","B","B","D","C","D","A","B","D","A","A","A","B"],"v":"21141a","expl":16},"tumor-loc":{"n":17,"mid":3,"final":17,"ids":["fe38740e","56bb41ce","9e1773e1","5fbd9ca3","947e5ef9","d05de999","8fa7e436","a3155b79","cfa2d16a","3f419d23","96297b74","2380aaa3","6a2fe37e","d336b45f","c8d97d85","3f25cd1e","18bdabbb"],"ans":["C","B","A","C","A","C","C","A","B","A","C","A","A","C","B","C","B"],"v":"cb66f3","expl":17},"chest-trauma":{"n":48,"mid":31,"final":20,"ids":["910df5e9","cc755682","bec51e7a","22e80742","bdd1139b","aed35388","cb2393f5","f3b369b5","3fd435b6","0f5d6801","4d5c5be9","7579ebbd","f24d4052","d507822f","979aba3f","305161d6","8f89e597","1024d38e","f1d52ebd","567d9492","6c97ffc6","e747414a","8cb247af","8cebf944","6c884622","89339825","1e5fba9d","73f285e2","8d928c17","8d92e439","e4e674e4","ce837c7c","9667fcfb","56710765","70f6df31","cc52f87a","f939d02f","e819b908","3cc7c542","bed622a0","e8bac8b9","d28f4457","a4191df3","ce7b0154","4c18cc5d","f07f20e8","f518caec","4534ff03"],"ans":["C","C","A","A","D","A","C","A","A","C","A","C","A","B","A","A","A","B","C","D","D","B","A","A","B","B","D","A","A","A","A","A","D","C","D","A","C","D","D","B","B","B","B","C","B","A","E","A"],"v":"f221a9","expl":48},"chest-tube":{"n":13,"mid":9,"final":10,"ids":["cc755682","0f5d6801","910f1808","57b46d58","9737f417","8cebf944","f1d52ebd","c5af010c","0ad88b34","e747414a","6c884622","8d92e439","56710765"],"ans":["C","C","C","B","A","A","C","B","D","B","B","A","C"],"v":"d3704b","expl":13},"lung-ca":{"n":10,"mid":1,"final":10,"ids":["40fe6951","19147c86","c1a0a2bb","ebdb2879","e5cb56c5","3d9975d0","4eb13f69","4b5d24df","010c561d","6d5cc6ad"],"ans":["C","A","A","A","D","C","A","D","B","A"],"v":"edf47f","expl":10},"mediastinum":{"n":19,"mid":0,"final":19,"ids":["090d390a","2bad8cc6","53c71214","1992fb54","f20343c6","94fd72ba","32249977","c254be38","a5fdfb3c","2475a430","1d04e265","7e8e8f46","60823309","25a8175c","b26666ba","cf8957ed","4d50a18f","096fc3e6","a72f746d"],"ans":["C","B","B","C","A","C",null,"B","B","A","A","A","A","C","B","C","D","B","B"],"v":"760e9a","expl":19},"venous":{"n":12,"mid":3,"final":11,"ids":["b0f0a493","7488677c","8b64a8dc","af463fcb","7ce373c0","97eea00f","484a804d","9b563b48","3431e82b","cfd03cd4","c89d805d","d75efe39"],"ans":["A","A","C","C","A","A","D","B","B","B","A","B"],"v":"555bfd","expl":12},"pad":{"n":14,"mid":3,"final":13,"ids":["cb6af390","2f38e2a4","3999b515","3eb49ee1","a13d5ba2","39ad52cd","4526ad55","5316b0b7","d54efcf9","13b87fb5","2d7dbb9a","c4af0031","08653b53","d21fab2f"],"ans":["A","D","AD","A","A","A","A","B","A","C","B","D","D",null],"v":"a7a159","expl":13},"aneurysm":{"n":10,"mid":2,"final":8,"ids":["afc93cf2","3669339a","b7565826","0bdcc0a5","67560d74","93ab4ffe","c917f1e6","68e4705a","b77601f3","b3d9a54f"],"ans":["D","D","A","A","B","A","D",null,"D","A"],"v":"d8c536","expl":9},"vasc-emerg":{"n":21,"mid":8,"final":16,"ids":["98e69491","e3242156","db7c1c4c","83f8d1e2","802405e7","f19785a5","891125cf","408a8466","98855952","04b915ec","3dfc1864","1b2c163a","33c37f1a","8ad64599","e5e45ab0","f3648338","02cff4dc","3e7703b3","6ddc1b37","fc67ae6e","6f3ea200"],"ans":["B","C","C","C","B","D","C","A","D","B","A","A","A","A","B","A","A","C","A","D","A"],"v":"29f9f7","expl":21},"peds-problems":{"n":30,"mid":4,"final":28,"ids":["0d9bc02c","1aac247a","6b9bc54c","336051c5","04dac4ba","80ca4d4c","833ca5d1","1dc66a0c","24ecfaf1","4d7fdc18","fffac78e","5fc678bf","75bca6ac","86f3ca4e","9fff1a8d","527c9574","546b6756","5542df60","0c4db11f","b2e06980","cb7ca42e","3f60014e","2489e204","e3062dce","4f3453eb","78d88be3","449965af","cef82b39","9dacedad","2465b576"],"ans":["A","C","A","B","A","C","A","D","D","B","A","B","B","B","D","A","A","B","C","C","B","C","D","B","C","B","A","C","A",null],"v":"650f69","expl":29},"peds-emerg":{"n":26,"mid":4,"final":25,"ids":["0747061a","dfac3930","ed2585ab","eb3629d6","23576aa8","26c215ad","1f06c885","3d00547b","f2cbe8bc","5cc429d0","63a15972","ea6fe256","004a9443","2cf3c9de","d74156ea","108e8b7f","8698ea91","43d590c1","ef6d659c","e0f407e4","91f52c5d","49ec5f2d","d972ace8","746c74f3","6d4d8192","0f2c3c06"],"ans":["B","B","C",null,"B","C","A","D","A","A","C","A","B","C","A","D","C","A","A","A","A","A","D","A","B","A"],"v":"ac1fe0","expl":25},"hydro":{"n":7,"mid":1,"final":6,"ids":["6e957f28","b4ef4907","f5cbf04e","fb318511","066643c8","a169ecf9","f135b9bd"],"ans":["A","A","C","B","B","B","B"],"v":"297ea9","expl":7},"uro-invest":{"n":22,"mid":0,"final":22,"ids":["a32607d1","010ac765","ba4cac36","4a2deb8c","92ad922f","8e7e311b","d2007741","b7315f21","d6866242","74032759","87d24bb2","d7bf5597","04bbf24c","aa827966","2fa52716","59e6f27e","79bb8174","44ee55b9","661e2c7e","003cfe29","156acdea","8076639a"],"ans":["C","B","B","C","A","A","D","D","C","C","D","C","A","A","C","C","B","A","C","D","C","B"],"v":"c682f6","expl":22},"luts":{"n":23,"mid":10,"final":16,"ids":["928080a8","62484026","27025412","dd9f17d1","a8867e89","6a04e5d5","b454fac9","e0451ff2","5a830338","1ff0950a","84e1c89f","7a411bdc","3ffc9e0d","e52d129d","d7423380","b4e93c2a","1d86ce39","d805385a","23ce4d63","ef448925","94ce7578","61683dba","a4825903"],"ans":["D","B","D","A","A","C","B","B","B","C","B","C","C","B","D","C","A",null,"B","A","A","C","B"],"v":"6b6085","expl":22},"hand":{"n":20,"mid":1,"final":20,"ids":["71f719d2","b6e2ab7b","c0acabe4","d7a6d8eb","6c77f028","8fa7e436","385599f1","4bf6e493","e60f103b","96297b74","9489e6b5","301a1b11","5c4e5307","9b8fb906","d6b2fa67","95644106","00cc30c3","18bdabbb","dfa84f61","ebba902f"],"ans":["A","A","C","A","B","C","D","C","B","C","A","B","A","B","D","D","D","B","A","B"],"v":"82b060","expl":20},"cleft":{"n":7,"mid":0,"final":7,"ids":["ce06881c","9943d723","4f9298a3","616101db","2e60ae11","25068b77","3a4d5a1d"],"ans":["C","B","B","D","A","A","A"],"v":"70cd80","expl":7},"nutrition":{"n":24,"mid":16,"final":10,"ids":["48d77adf","e571c82f","719a2184","a33ae383","9571e0fc","267a828d","2db0513e","275135f6","2a05e74f","c297008a","92d339a9","3a7c27ff","a5d170ad","d5e5478b","9e53c801","25068b77","cff02b23","1f611b54","3f5a8144","fbb1c96e","d01fcc7a","7a622791","4face9ed","7f723a0f"],"ans":["B","A","A","B","A","C","D","D","C","A","A","D","D","B","B","A","D","B","B","A","B","A","A","C"],"v":"6ba8ba","expl":24},"lap":{"n":23,"mid":23,"final":1,"ids":["f762a39b","256cb4f1","d5e0f41a","13866e79","33246668","39be0938","91a2fcd1","c098720f","e3d28b7f","0ca03791","cf83615d","679b05bc","f798624a","4d351ff5","d6daf1af","554bd627","93a71d2b","52e88354","f91f2732","4980b21d","241306cf","10a6f0d6","02722658"],"ans":["C","A","B","A","A","A","B","A","C","B","C","B","A","A","D","A","A","A","B","C","C","C","D"],"v":"d461cb","expl":22},"abg":{"n":37,"mid":34,"final":5,"ids":["d12a19b3","db7c1c4c","399be01e","23c5dbd9","d7557843","f776c268","4a2ad93b","5d674b93","5f9a9535","bfbdd4ac","a8b3627e","e47d1627","8ad64599","aaa60cec","c49dcf03","16bc8471","9667fcfb","a99b6eb3","05c85984","187c7cdb","1f0db006","84bc4193","293fd8d6","8ee39146","99733ca4","0bdd988e","1599abfd","dcde5f2a","a10f479c","2bf6f999","c578cc48","03c418b0","6fb5e521","b129854d","af3d5d0d","1d22b035","bc0a064d"],"ans":["A","C","A","B","B","A","B","C","C","B","A","C","A","D","C","B","D","B","B","C","D","C","B","C","C","B","D","B","C","D","B","D","A","D","A","D","A"],"v":"ca0a5e","expl":37},"ihd":{"n":7,"mid":0,"final":7,"ids":["7528770d","bc0a42ab","9268997a","c3e41573","d48a4ecf","770de9a7","1005934f"],"ans":["B","D","D","C","A","B","C"],"v":"7c9734","expl":6}},"osce":[{"k":"trauma","name":"Trauma","c":"em","v":"2624a7","cases":[{"id":"1.1","title":"Primary & secondary survey \u2014 unconscious RTA patient (ATLS)","count":4,"seen":["430A","Archive","438B","439F"],"src":"","n":8},{"id":"1.2","title":"Cervical spine injury \u2014 C5\u2013C6 dislocation","count":3,"seen":["Archive","436F","438A"],"src":"","n":7},{"id":"1.6","title":"Rest station \u2014 bonus MCQs","count":2,"seen":["442A","442B"],"src":"Aldayel","n":4},{"id":"1.3","title":"Blunt abdominal trauma \u2014 seat-belt sign & splenic injury","count":1,"seen":["442A"],"src":"","n":5},{"id":"1.4","title":"Pelvic fracture \u2014 \"open-book\"","count":1,"seen":["441F"],"src":"","n":1},{"id":"1.5","title":"Aseptic technique, septic work-up & central line","count":1,"seen":["435F"],"src":"","n":3}]},{"k":"uppergi","name":"Upper GI","c":"ugi","v":"a12443","cases":[{"id":"2.2","title":"Perforated peptic ulcer","count":8,"seen":["Old exam","Archive","435","436F","437A","438F","439A","439B"],"src":"","n":9},{"id":"2.1","title":"Upper GI bleeding \u2014 haematemesis / variceal bleeding","count":7,"seen":["430A","Archive \u00d72","436A","436F","438A","439A"],"src":"","n":8},{"id":"2.3","title":"Obesity \u2014 history taking","count":1,"seen":["435F"],"src":"","n":1},{"id":"2.4","title":"Gastro-oesophageal reflux disease (GERD)","count":1,"seen":["442F"],"src":"","n":9}]},{"k":"hepatobili","name":"Hepatobiliary & Pancreas","c":"hpb","v":"0ce2ca","cases":[{"id":"3.1","title":"Acute cholecystitis","count":4,"seen":["430F","Archive","435F","439B"],"src":"","n":9},{"id":"3.6","title":"Head-of-pancreas cancer","count":4,"seen":["430A","430F","Old exam","Archive"],"src":"","n":9},{"id":"3.3","title":"Acute cholangitis","count":3,"seen":["436A","437A","438A"],"src":"","n":5},{"id":"3.4","title":"Acute gallstone (biliary) pancreatitis","count":3,"seen":["Archive","441A","442F"],"src":"","n":9},{"id":"3.2","title":"Obstructive jaundice \u2014 CBD stone (ERCP station)","count":2,"seen":["Archive","435"],"src":"","n":14},{"id":"3.5","title":"Pancreatic pseudocyst","count":2,"seen":["442A","442B"],"src":"","n":7},{"id":"3.7","title":"Hepatocellular carcinoma on cirrhosis","count":2,"seen":["435F","438F"],"src":"","n":9},{"id":"3.8","title":"Hepatic haemangioma","count":1,"seen":["439F"],"src":"","n":6}]},{"k":"colorectal","name":"Colorectal","c":"cr","v":"f2bc14","cases":[{"id":"4.1","title":"Colorectal cancer (right colon \u00b7 left colon \u00b7 rectum)","count":6,"seen":["430F","Archive \u00d72","435","436F","439A"],"src":"","n":19},{"id":"4.5","title":"Anal fissure","count":5,"seen":["Archive","435F","436A","438A","441A"],"src":"","n":8},{"id":"4.8","title":"Adhesive small-bowel obstruction","count":5,"seen":["430A","430F","Old exam","Archive","441F"],"src":"","n":10},{"id":"4.3","title":"Bloody diarrhoea (IBD) & lower GI bleeding","count":3,"seen":["Old exam","Archive","435"],"src":"","n":7},{"id":"4.4","title":"Sigmoid volvulus","count":3,"seen":["Archive","438B","439F"],"src":"","n":5},{"id":"4.6","title":"Anal fistula","count":3,"seen":["437A","438F","439B"],"src":"","n":7},{"id":"4.9","title":"Diverticulitis","count":3,"seen":["442A","442B","442F"],"src":"","n":4},{"id":"4.7","title":"Acute appendicitis (adult)","count":2,"seen":["Archive","441A"],"src":"","n":11},{"id":"4.2","title":"Stoma","count":1,"seen":["Archive"],"src":"","n":5}]},{"k":"generalsur","name":"General Surgery \u2014 Hernia","c":"gs","v":"0d732c","cases":[{"id":"5.1","title":"Inguinal hernia (adult)","count":3,"seen":["435F","442A","442F"],"src":"","n":5}]},{"k":"breast","name":"Breast","c":"be","v":"5b7fbf","cases":[{"id":"6.1","title":"Breast cancer \u2014 lump \u2192 triple assessment \u2192 management","count":6,"seen":["Archive","436F","437A","438A","441A","441F"],"src":"","n":10},{"id":"6.2","title":"Breast examination","count":2,"seen":["430F","Archive"],"src":"","n":1},{"id":"6.5","title":"Breast abscess / lactational mastitis","count":2,"seen":["438B","442B"],"src":"","n":5},{"id":"6.3","title":"Fibroadenoma","count":1,"seen":["439A"],"src":"","n":4},{"id":"6.4","title":"Nipple discharge","count":1,"seen":["438F"],"src":"","n":5},{"id":"6.6","title":"Inflammatory breast cancer","count":1,"seen":["439B"],"src":"","n":4}]},{"k":"endocrine","name":"Endocrine","c":"be","v":"07513f","cases":[{"id":"7.2","title":"Thyroid nodule / neck swelling","count":6,"seen":["430A","Old exam","Archive \u00d72","436A","441F"],"src":"","n":11},{"id":"7.1","title":"Multinodular goitre","count":3,"seen":["Archive","436A","442F"],"src":"","n":12},{"id":"7.3","title":"Thyroid examination","count":1,"seen":["Archive"],"src":"","n":1},{"id":"7.4","title":"Primary hyperparathyroidism","count":1,"seen":["435"],"src":"","n":4},{"id":"7.5","title":"Phaeochromocytoma / adrenal mass","count":1,"seen":["439F"],"src":"","n":6},{"id":"7.6","title":"Graves' disease","count":1,"seen":["Older files"],"src":"Aldayel","n":4},{"id":"7.7","title":"Medullary thyroid cancer & MEN2","count":1,"seen":["Older files"],"src":"Aldayel","n":4}]},{"k":"vascular","name":"Vascular","c":"vasc","v":"9c487f","cases":[{"id":"8.1","title":"Carotid artery stenosis","count":4,"seen":["Archive","436F","437A","438A"],"src":"","n":6},{"id":"8.2","title":"Varicose veins / chronic venous insufficiency","count":4,"seen":["Archive","435F","438F","442A"],"src":"","n":10},{"id":"8.3","title":"Chronic limb-threatening ischaemia (rest pain)","count":4,"seen":["Old exam","439A","441F","442B"],"src":"","n":11},{"id":"8.4","title":"Intermittent claudication \u2014 aorto-iliac disease (Leriche)","count":4,"seen":["430A","430F","Archive","442F"],"src":"","n":8},{"id":"8.5","title":"Abdominal aortic aneurysm","count":3,"seen":["Archive","436A","439F"],"src":"","n":5},{"id":"8.6","title":"Acute limb ischaemia","count":2,"seen":["Archive","435"],"src":"","n":5},{"id":"8.7","title":"Diabetic foot / ulcer examination","count":2,"seen":["426","441A"],"src":"","n":2},{"id":"8.8","title":"Chronic mesenteric (bowel) ischaemia","count":1,"seen":["439B"],"src":"","n":3},{"id":"8.9","title":"Lymphoedema","count":1,"seen":["438B"],"src":"Aldayel","n":4}]},{"k":"cardiacsur","name":"Cardiac Surgery","c":"card","v":"e228d4","cases":[{"id":"9.1","title":"Chest pain \u2014 myocardial infarction / IHD & CABG","count":4,"seen":["437A","438B","439B","439F"],"src":"","n":13},{"id":"9.5","title":"Thoracic aorta \u2014 aortic regurgitation, ascending aneurysm & dissection","count":3,"seen":["438F","439A","441F"],"src":"","n":11},{"id":"9.2","title":"Aortic stenosis","count":1,"seen":["441A"],"src":"","n":5},{"id":"9.6","title":"Aortic intramural haematoma (CT)","count":1,"seen":["438A"],"src":"","n":3},{"id":"9.7","title":"Post-CABG mediastinitis","count":1,"seen":["439B"],"src":"","n":2},{"id":"9.3","title":"Mitral stenosis","count":0,"seen":[],"src":"","n":6},{"id":"9.4","title":"Prosthetic heart valves","count":0,"seen":[],"src":"","n":3}]},{"k":"thoracicsu","name":"Thoracic Surgery","c":"thor","v":"901927","cases":[{"id":"10.2","title":"Lung cancer","count":9,"seen":["Old exam","Archive \u00d73","435","436A","437A","438F","441F"],"src":"","n":8},{"id":"10.6","title":"Pneumothorax \u2014 spontaneous & tension","count":6,"seen":["Archive \u00d72","435","438B","441A","442B"],"src":"","n":9},{"id":"10.3","title":"Achalasia","count":4,"seen":["430F","436F","438A","439A"],"src":"","n":5},{"id":"10.4","title":"Oesophageal cancer & dysphagia","count":4,"seen":["430A","Archive \u00d72","435F"],"src":"","n":8},{"id":"10.7","title":"Chest tube & underwater-seal drain","count":4,"seen":["Archive","435","441A","442B"],"src":"","n":4},{"id":"10.1","title":"Anterior mediastinal mass (thymoma / germ-cell tumour)","count":3,"seen":["Archive","439F","442A"],"src":"","n":8},{"id":"10.5","title":"Haemothorax","count":1,"seen":["Archive"],"src":"","n":5},{"id":"10.8","title":"Flail chest","count":1,"seen":["Archive"],"src":"","n":2},{"id":"10.9","title":"Pneumonia \u2192 empyema","count":1,"seen":["Archive"],"src":"","n":7}]},{"k":"neurosurge","name":"Neurosurgery","c":"neuro","v":"11f4fd","cases":[{"id":"11.1","title":"Extradural (epidural) haematoma","count":8,"seen":["430A","Archive \u00d72","436A","437A","438F","439B","441A"],"src":"","n":10},{"id":"11.4","title":"Ring-enhancing brain lesion \u2014 tumour / metastases / abscess","count":6,"seen":["427","Archive","435","438B","439A","442B"],"src":"","n":9},{"id":"11.2","title":"Acute subdural haematoma","count":5,"seen":["Archive","437A","441A","441F","442F"],"src":"","n":7},{"id":"11.3","title":"Subarachnoid haemorrhage","count":5,"seen":["Archive","436A","437A","441A","442A"],"src":"","n":5},{"id":"11.5","title":"Meningioma","count":2,"seen":["436A","437A"],"src":"","n":2},{"id":"11.9","title":"Spinal cord compression \u2014 lung-cancer metastases (lower- limb exam)","count":2,"seen":["430F","Old exam"],"src":"","n":4},{"id":"11.6","title":"Pituitary adenoma","count":1,"seen":["Archive"],"src":"","n":4},{"id":"11.7","title":"Base-of-skull fracture","count":1,"seen":["427"],"src":"","n":1},{"id":"11.8","title":"Spinal cord injury \u2014 Brown-S\u00e9quard (stab wound)","count":1,"seen":["Archive"],"src":"","n":6},{"id":"11.10","title":"Motor examination \u2014 hemiparesis","count":1,"seen":["Archive"],"src":"","n":1},{"id":"11.11","title":"Cervical spondylotic myelopathy","count":1,"seen":["442F"],"src":"","n":7}]},{"k":"urology","name":"Urology","c":"uro","v":"c510db","cases":[{"id":"12.1","title":"Urolithiasis \u2014 renal & ureteric stones (flank pain)","count":16,"seen":["430A","Archive \u00d76","435","436F","437A","438A","438F","439B","439F","441A","441F"],"src":"","n":12},{"id":"12.9","title":"Foley catheter","count":3,"seen":["Archive","436A","442F"],"src":"","n":3},{"id":"12.2","title":"Ureteropelvic junction obstruction (antenatal hydronephrosis)","count":2,"seen":["442A","442B"],"src":"","n":5},{"id":"12.5","title":"Bladder cancer (transitional cell carcinoma)","count":2,"seen":["Archive","438B"],"src":"","n":5},{"id":"12.7","title":"Urethral injury (pelvic fracture)","count":2,"seen":["430F","Archive"],"src":"","n":5},{"id":"12.8","title":"Acute scrotum \u2014 testicular torsion","count":2,"seen":["Archive","436A"],"src":"","n":4},{"id":"12.12","title":"Digital rectal (prostate) examination","count":2,"seen":["427\u2013434","Older files"],"src":"Aldayel","n":1},{"id":"12.3","title":"Posterior urethral valves","count":1,"seen":["Archive"],"src":"","n":5},{"id":"12.4","title":"Vesico-ureteric reflux (MCUG picture)","count":1,"seen":["435F"],"src":"","n":1},{"id":"12.6","title":"Renal cell carcinoma","count":1,"seen":["Old exam"],"src":"","n":5},{"id":"12.10","title":"Cystitis \u2014 urinalysis","count":1,"seen":["Archive"],"src":"","n":1},{"id":"12.11","title":"Benign prostatic hyperplasia","count":1,"seen":["439A"],"src":"","n":3}]},{"k":"pediatrics","name":"Pediatric Surgery","c":"peds","v":"9f90fe","cases":[{"id":"13.1","title":"Intussusception","count":8,"seen":["430F","Archive","436F","437A","438B","441A","442A","442B"],"src":"","n":11},{"id":"13.6","title":"Inguinal hernia (paediatric) \u2014 reducible \u00b7 irreducible \u00b7 strangulated","count":5,"seen":["427","Old exam","Archive \u00d72","438A"],"src":"","n":7},{"id":"13.2","title":"Malrotation & midgut volvulus (bilious vomiting)","count":4,"seen":["Archive \u00d72","438F","441F"],"src":"","n":11},{"id":"13.4","title":"Undescended testis (cryptorchidism)","count":3,"seen":["430A","Archive","435"],"src":"","n":5},{"id":"13.3","title":"Infantile hypertrophic pyloric stenosis","count":2,"seen":["439B","439F"],"src":"","n":6},{"id":"13.5","title":"Hydrocele (vs inguinal hernia)","count":2,"seen":["Archive","439A"],"src":"","n":7},{"id":"13.7","title":"Acute appendicitis (child)","count":1,"seen":["Archive"],"src":"","n":7},{"id":"13.8","title":"Foreign-body ingestion","count":1,"seen":["Archive"],"src":"","n":4}]},{"k":"plasticsur","name":"Plastic Surgery","c":"plastic","v":"bec00c","cases":[{"id":"14.1","title":"Cleft lip & palate","count":6,"seen":["430F","Archive","436F","437A","439A","442F"],"src":"","n":11},{"id":"14.8","title":"Hypertrophic scar & keloid","count":5,"seen":["Archive \u00d72","436A","438A","439B"],"src":"","n":9},{"id":"14.7","title":"Burns (thermal, inhalation & chemical)","count":4,"seen":["Archive \u00d72","441F","442B"],"src":"","n":13},{"id":"14.2","title":"Basal cell carcinoma & skin cancer","count":3,"seen":["Archive \u00d72","435F"],"src":"","n":13},{"id":"14.6","title":"Carpal tunnel syndrome","count":3,"seen":["438F","439F","442A"],"src":"","n":8},{"id":"14.9","title":"Wound healing \u2014 primary vs secondary closure (laceration)","count":3,"seen":["435","438B","441A"],"src":"","n":6},{"id":"14.3","title":"Melanoma","count":1,"seen":["Archive"],"src":"","n":5},{"id":"14.4","title":"Peripheral nerve injuries","count":1,"seen":["Old exam"],"src":"","n":4},{"id":"14.5","title":"Erb's palsy","count":1,"seen":["430A"],"src":"","n":5}]}],"years":[442,441,439,438,437,436,435,434,433,432,431,430,429,428,427,426],"fc":{"abg":{"c1":29,"c2":21,"c3":37,"v":"61c5fb"},"acute-abdomen":{"c1":191,"c2":78,"c3":200,"v":"b879c9"},"adrenal":{"c1":12,"c2":4,"c3":5,"v":"7873e9"},"aneurysm":{"c1":83,"c2":10,"c3":9,"v":"d01fab"},"anorectal":{"c1":102,"c2":14,"c3":15,"v":"a6bde5"},"aorta":{"c1":7,"c2":0,"c3":0,"v":"a95229"},"benign-breast":{"c1":27,"c2":15,"c3":26,"v":"155cf2"},"breast-ca":{"c1":41,"c2":19,"c3":21,"v":"0bf377"},"burn":{"c1":30,"c2":19,"c3":58,"v":"49eaee"},"cardiac-rad":{"c1":7,"c2":0,"c3":0,"v":"f50118"},"chest-trauma":{"c1":37,"c2":33,"c3":48,"v":"c997d6"},"chest-tube":{"c1":65,"c2":13,"c3":13,"v":"0db654"},"cleft":{"c1":31,"c2":7,"c3":7,"v":"e3ff5c"},"complications":{"c1":129,"c2":65,"c3":146,"v":"1a2d44"},"crc":{"c1":35,"c2":22,"c3":29,"v":"d2291f"},"day":{"c1":5,"c2":3,"c3":10,"v":"290a09"},"esophagus":{"c1":83,"c2":33,"c3":39,"v":"40e0bf"},"fluids":{"c1":48,"c2":40,"c3":94,"v":"5a53dc"},"gallstones":{"c1":30,"c2":19,"c3":33,"v":"3b4be3"},"gastric-ca":{"c1":43,"c2":10,"c3":11,"v":"df32f5"},"hand":{"c1":66,"c2":20,"c3":20,"v":"46b43c"},"head-injury":{"c1":65,"c2":18,"c3":57,"v":"6575c6"},"hernia":{"c1":40,"c2":27,"c3":36,"v":"6539b9"},"hydro":{"c1":86,"c2":8,"c3":7,"v":"876580"},"ibd":{"c1":21,"c2":22,"c3":26,"v":"5f9ca1"},"ihd":{"c1":64,"c2":6,"c3":7,"v":"d173e6"},"infections":{"c1":28,"c2":43,"c3":73,"v":"7a87a9"},"lap":{"c1":0,"c2":21,"c3":23,"v":"d021ef"},"lgib":{"c1":55,"c2":17,"c3":24,"v":"d0f852"},"liver":{"c1":36,"c2":15,"c3":18,"v":"22350d"},"lung-ca":{"c1":47,"c2":10,"c3":10,"v":"01eea0"},"luts":{"c1":40,"c2":21,"c3":23,"v":"785c67"},"mediastinum":{"c1":38,"c2":19,"c3":19,"v":"11522e"},"nutrition":{"c1":0,"c2":24,"c3":24,"v":"ef6b2c"},"obesity":{"c1":56,"c2":23,"c3":24,"v":"07ad4d"},"oncology":{"c1":162,"c2":19,"c3":61,"v":"53b484"},"pad":{"c1":72,"c2":11,"c3":14,"v":"3e1184"},"panc-mass":{"c1":59,"c2":8,"c3":10,"v":"2accb5"},"pancreatitis":{"c1":33,"c2":23,"c3":32,"v":"c46c90"},"parathyroid":{"c1":10,"c2":10,"c3":20,"v":"2ea900"},"peds-emerg":{"c1":86,"c2":24,"c3":26,"v":"b8e524"},"peds-problems":{"c1":52,"c2":29,"c3":30,"v":"e3a3dc"},"preop":{"c1":51,"c2":21,"c3":57,"v":"02f37b"},"procedures":{"c1":37,"c2":26,"c3":70,"v":"518b4e"},"pud":{"c1":59,"c2":26,"c3":29,"v":"b00253"},"safety":{"c1":24,"c2":5,"c3":18,"v":"f876ec"},"sick":{"c1":19,"c2":55,"c3":110,"v":"35d02f"},"skin":{"c1":149,"c2":21,"c3":29,"v":"893179"},"spleen":{"c1":25,"c2":20,"c3":24,"v":"11ece6"},"thyroid":{"c1":64,"c2":22,"c3":29,"v":"f45c09"},"transplant":{"c1":34,"c2":16,"c3":26,"v":"519c64"},"trauma":{"c1":64,"c2":68,"c3":187,"v":"e51cc5"},"tumor-loc":{"c1":104,"c2":28,"c3":17,"v":"1e1bd8"},"tumor-mx":{"c1":70,"c2":15,"c3":16,"v":"60f7ef"},"uro-invest":{"c1":65,"c2":22,"c3":22,"v":"0d3764"},"vasc-emerg":{"c1":53,"c2":20,"c3":20,"v":"34f148"},"venous":{"c1":92,"c2":12,"c3":12,"v":"420a02"},"weight":{"c1":88,"c2":5,"c3":0,"v":"15d800"}}}/*END*/;
+
+const SPECS = [
+  {id:"gs", name:"General Surgery: Principles & Perioperative Care", groups:[
+    ["Mid",[["preop","Pre-operative Assessment"],["safety","Patient Safety and Invasive Procedures"],["day","Day Surgery"],["procedures","Practical Procedures & Investigation of Surgical Patients"],["oncology","Surgical Oncology"],["infections","Surgical Infections"],["fluids","Fluids and Electrolytes"],["sick","Approach to Sick Surgical Patients"]]],
+    ["Final",[["complications","Surgical Complications"]]],
+    ["Tutorial",[["abg","ABG + Electrolytes"],["skin","Skin & Soft Tissue + Wound Healing"]]]]},
+  {id:"be", name:"Breast & Endocrine Surgery", groups:[
+    ["Final",[["benign-breast","Benign Breast Diseases"],["breast-ca","Breast Cancer"],["thyroid","Thyroid and Parathyroid Diseases"],["parathyroid","Parathyroid Diseases"],["adrenal","Adrenal Diseases and Mass"]]]]},
+  {id:"hpb", name:"Hepatobiliary, Pancreatic & Splenic Surgery (HPB)", groups:[
+    ["Final",[["pancreatitis","Acute and Chronic Pancreatitis"],["panc-mass","Pancreatic Masses"],["spleen","Splenic Disorders and Portal Hypertension"],["gallstones","Gallstones and Obstruction"],["liver","Liver Masses"],["transplant","Transplant Surgery"]]]]},
+  {id:"ugi", name:"Upper GI & Bariatric Surgery", groups:[
+    ["Final",[["gastric-ca","Gastric Cancer"],["pud","Peptic Ulcer"],["obesity","Obesity"],["esophagus","Esophageal Diseases (Benign and Malignant)"]]],
+    ["Tutorial",[["weight","Surgical Weight Management (Book Ch. 46, pp. 1230–1238)"]]]]},
+  {id:"cr", name:"Colorectal & Abdominal Surgery", groups:[
+    ["Mid",[["acute-abdomen","Acute Abdomen"],["lgib","Lower GI Bleeding"]]],
+    ["Final",[["hernia","Hernias"],["crc","Colorectal Cancer"],["ibd","Inflammatory Bowel Disease (IBD)"],["anorectal","Anorectal Disease"]]]]},
+  {id:"em", name:"Emergency", groups:[["Mid",[["trauma","Trauma"],["burn","Burn"]]]]},
+  {id:"neuro", name:"Neurosurgery", groups:[
+    ["Mid",[["head-injury","Traumatic Head Injury and Intracranial Bleeding"]]],
+    ["Final",[["tumor-mx","Management of Intracranial Tumors"],["tumor-loc","Localization of Intracranial Tumors"]]]]},
+  {id:"thor", name:"Thoracic Surgery", groups:[
+    ["Mid",[["chest-trauma","Chest Trauma"]]],
+    ["Final",[["chest-tube","Chest Tube Management"],["lung-ca","Lung Tumors and Lung Cancer"],["mediastinum","Mediastinal Pathology"]]]]},
+  {id:"vasc", name:"Vascular Surgery", groups:[["Tutorial",[["venous","Venous Disease"],["pad","Peripheral Artery Disease (PAD)"],["aneurysm","Aortic Aneurysms"],["vasc-emerg","Vascular Emergencies"]]]]},
+  {id:"card", name:"Cardiac Surgery", groups:[["Tutorial",[["ihd","Ischemic Heart Disease (IHD) and Valvular Heart Disease"],["aorta","Diseases of Aorta"],["cardiac-rad","Radiological Examinations of the Heart"]]]]},
+  {id:"peds", name:"Pediatric Surgery", groups:[["Tutorial",[["peds-problems","Common Pediatric Problems"],["peds-emerg","Common Pediatric Emergencies"]]]]},
+  {id:"uro", name:"Urology", groups:[["Tutorial",[["hydro","Antenatal Hydronephrosis and Common Congenital Genitourinary Disorders"],["uro-invest","Presentation & Investigation of Urological Problems and Renal Colic"],["luts","LUTS, BPH, UTI"]]]]},
+  {id:"plastic", name:"Plastic & Hand Surgery", groups:[["Tutorial",[["hand","Hand"],["cleft","Cleft Lip"]]]]},
+  {id:"extra", name:"Extra (gift files outside the lecture list)", groups:[["Gifts only",[["nutrition","Nutrition"],["lap","Principles of Laparoscopic Surgery"]]]]}
+];
+
+const GAPS = {};
+const setGap=(ids,short,long)=>ids.forEach(i=>GAPS[i]={short,long});
+setGap(["safety","day","lgib","thyroid","parathyroid","hernia","pancreatitis","gallstones","liver","obesity"],"No slides","There are no slides for this lecture in the Drive. This page is built from the doctor's notes and the Aldughaither summary.");
+setGap(["complications"],"Handout, no slides","This year the lecture came as a 20-page written handout (Nov 2026), not slides. Part A is the handout; Part B is every gift, grouped by complication; the Aldughaither summary is at the end.");
+setGap(["pad","aneurysm"],"No slides","There are no slides for this lecture. This page is built from the lecture notes and every gift (Aldughaither has no chapter for it).");
+setGap(["esophagus","tumor-loc","tumor-mx","chest-tube","lung-ca","mediastinum","venous","vasc-emerg","peds-problems","peds-emerg","hydro","uro-invest","luts","hand","cleft"],"No Aldughaither chapter","Aldughaither's summary has no chapter for this lecture, so the page has no grey summary section.");
+setGap(["preop"],"New slides (Nov 2026)","Updated to Dr. Rafif Mattar's new 2026 slides and their speaker notes. Dr. Abobotain's notes and the old slides' points are kept, marked \"2025 slide\".");
+setGap(["abg"],"Workshop slides only","No lecture notes were found. This page is built from the acid–base workshop slides and every acid–base or electrolyte question in the gifts.");
+setGap(["ihd","aorta"],"Slides only","Cardiac Surgery has one slide file and no doctor's notes or gift file. The 7 cardiac questions found in the Final question bank are on the IHD & valves page; the aortic slides are on the Aorta page.");
+setGap(["cardiac-rad"],"No material","No slides, notes or gifts were found for this lecture. The page collects the imaging content of the cardiac slide file plus a short added orientation. Send the slides if you get them.");
+setGap(["breast-ca"],"No slides","The breast slide file covers benign breast disease only. This page is built from the doctor's notes and every gift.");
+setGap(["sick"],"Case-based","This lecture was taught as clinical cases. The page is built from the 453 case-based lecture file and every gift on the topic.");
+GAPS["acute-abdomen"]={short:"New lecture this year",long:"This year's lecture (Dr. AlKanhal, 2026–27) differs from last year's (Dr. Reem). The new slides and new notes are the main content. Dr. Reem's points (haemorrhagic causes, gallstone ileus, Meckel's, pregnancy, the ICU patient) are kept as extra, because the past gifts come from her lecture."};
+setGap(["nutrition","lap"],"Gifts only","This topic is not in the lecture list. Only its gift file exists, so it lives under Extra.");
+
+const LECS=[];
+SPECS.forEach(s=>{let k=0; s.groups.forEach(([exam,items])=>items.forEach(([id,title])=>LECS.push({id,title,exam,spec:s,num:++k})));});
+const byId=Object.fromEntries(LECS.map(l=>[l.id,l]));
+const TOTAL=LECS.length;
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ===== state: ticks + answers (account storage + device backup) ===== */
+const LS="surg453-state-v2";
+let S={ticks:{},answers:{},osce:{},fc:{}};
+try{ const raw=JSON.parse(localStorage.getItem(LS)||"null"); if(raw) S={ticks:raw.ticks||{},answers:raw.answers||{},osce:raw.osce||{},fc:raw.fc||{}}; else { const old=JSON.parse(localStorage.getItem("surg453-ticks-v1")||"null"); if(old) S.ticks=old; } }catch(e){}
+let dbDoc=null, fcDoc=null, writing=false, pending=false, saveTimer=null, fcDirty=false;
+const SAVED_MSG="Your ticks, answers, OSCE stations and flashcards are saved to your account, so they follow you to any device.";
+function saveLocal(){ try{ localStorage.setItem(LS,JSON.stringify(S)); }catch(e){} }
+function setSaveState(t){ const el=document.getElementById("saveState"); if(el) el.textContent=t; }
+async function pushRemote(){
+  if(!dbDoc) return;
+  if(writing){ pending=true; return; }
+  writing=true;
+  try{
+    await dbDoc.set({ticks:S.ticks,answers:S.answers,osce:S.osce,updatedAt:Date.now()});
+    if(fcDirty&&fcDoc){ fcDirty=false; await fcDoc.set({fc:S.fc,updatedAt:Date.now()}); }
+    setSaveState(SAVED_MSG); }
+  catch(e){ setSaveState("Saved on this device. (Couldn't reach your account just now.)"); }
+  writing=false;
+  if(pending){ pending=false; pushRemote(); }
+}
+function queueSave(fc){ if(fc) fcDirty=true; saveLocal(); clearTimeout(saveTimer); saveTimer=setTimeout(pushRemote,800); }
+(async()=>{
+  try{
+    if(!window.claude?.use) return;
+    const [db,user]=await Promise.all([claude.use("db"),claude.use("user")]);
+    if(!db||!user) return;
+    const id=await user.id(); if(!id) return;
+    const ref=db.doc("data/users/"+id+"/progress"), fref=db.doc("data/users/"+id+"/flashcards");
+    const [snap,fsnap]=await Promise.race([Promise.all([ref.get(),fref.get().catch(()=>null)]),new Promise((_,rej)=>setTimeout(()=>rej(0),10000))]);
+    dbDoc=ref; fcDoc=fref;
+    const d=snap&&snap.exists?snap.data():null, fd=fsnap&&fsnap.exists?fsnap.data():null;
+    if(d){ S.ticks={...S.ticks,...(d.ticks||{})}; S.answers={...S.answers,...(d.answers||{})}; S.osce={...S.osce,...(d.osce||{})}; }
+    if(fd&&fd.fc){ for(const [k,v] of Object.entries(fd.fc)){ const l=S.fc[k]; if(!l||(v[1]||0)>=(l[1]||0)) S.fc[k]=v; } }
+    if(d||fd){ saveLocal(); refreshAll(); }
+    if(!fd&&Object.keys(S.fc).length) fcDirty=true;
+    if((!d&&(Object.keys(S.ticks).length||Object.keys(S.answers).length||Object.keys(S.osce).length))||fcDirty) pushRemote();
+    setSaveState(SAVED_MSG);
+  }catch(e){}
+})();
+
+function toast(t){ const el=document.getElementById("toast"); el.textContent=t; el.classList.add("on"); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove("on"),2600); }
+function setTick(id,k,on,auto){
+  const key=id+":"+k; if(!!S.ticks[key]===on) return;
+  if(on) S.ticks[key]=1; else delete S.ticks[key];
+  syncTicks(); renderProgress(); queueSave();
+  if(auto) toast((k==="s"?"Marked as studied: ":"All gifts done: ")+byId[id].title+" ✓");
+}
+
+/* ===== remember open/closed sections ===== */
+let OPEN={}; try{ OPEN=JSON.parse(localStorage.getItem("surg453-open2")||"{}"); }catch(e){}
+function rememberOpen(scope,d){ d.addEventListener("toggle",()=>{ OPEN[scope+":"+d.dataset.k]=d.open; try{localStorage.setItem("surg453-open2",JSON.stringify(OPEN));}catch(e){} if(d.open&&d.dataset.lazy) d.dispatchEvent(new CustomEvent("lazyopen")); }); }
+function isOpen(scope,k,def){ const v=OPEN[scope+":"+k]; return v===undefined?def:v; }
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-all]"); if(!b) return;
+  const box=document.getElementById(b.dataset.scope);
+  box.querySelectorAll(":scope > details").forEach(d=>{ d.open=(b.dataset.all==="open"); });
+});
+
+/* ===== builders ===== */
+const CHECK='<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.4 5.7 10.4 11.6 3.6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function tickBtn(id,k){ const on=!!S.ticks[id+":"+k]; return `<button type="button" class="tk" data-id="${id}" data-k="${k}" aria-pressed="${on}" aria-label="${k==="s"?"Studied":"Gifts done"}: ${esc(byId[id].title)}">${CHECK}</button>`; }
+function tickLbl(id,k){ const on=!!S.ticks[id+":"+k]; return `<button type="button" class="tkl" data-id="${id}" data-k="${k}" aria-pressed="${on}"><span class="tk">${CHECK}</span>${k==="s"?"Studied":"Gifts done"}</button>`; }
+function specCount(s){ let n=0,t=0; s.groups.forEach(([,items])=>items.forEach(([id])=>{t+=2; if(S.ticks[id+":s"])n++; if(S.ticks[id+":q"])n++;})); return [n,t]; }
+
+function renderChecklist(){
+  const box=document.getElementById("checklist");
+  box.innerHTML=SPECS.map((s,si)=>{
+    const [n,t]=specCount(s);
+    return `<details class="spec" data-c="${s.id}" data-k="${s.id}"${isOpen("cl",s.id,true)?" open":""}>
+      <summary><span class="dot">${si+1}</span><h3>${esc(s.name)}</h3><span class="count"><span id="cnt-${s.id}">${n}/${t}</span><span class="chev"></span></span><div class="bar2"><i id="bar-${s.id}" style="width:${n/t*100}%"></i></div></summary>
+      <div class="cl"><div class="clhead"><span>Lecture</span><span>Studied</span><span>Gifts</span></div>
+      ${s.groups.map(([exam,items])=>`<div class="grp">${exam}</div>`+items.map(([id,title])=>{const l=byId[id],g=GAPS[id];
+        return `<div class="row"><a href="#l-${id}"><span class="num">${l.num}</span><span>${esc(title)}${g?`<span class="flag">${g.short}</span>`:""}</span></a>${tickBtn(id,"s")}${tickBtn(id,"q")}</div>`;}).join("")).join("")}
+      </div></details>`;
+  }).join("");
+  box.querySelectorAll(":scope > details").forEach(d=>rememberOpen("cl",d));
+}
+function renderProgress(){
+  let s=0,q=0; LECS.forEach(l=>{ if(S.ticks[l.id+":s"])s++; if(S.ticks[l.id+":q"])q++; });
+  const pct=Math.round((s+q)/(TOTAL*2)*100);
+  document.getElementById("mS").style.width=(s/TOTAL*100)+"%";
+  document.getElementById("mQ").style.width=(q/TOTAL*100)+"%";
+  document.getElementById("mSn").textContent=`${s} / ${TOTAL}`;
+  document.getElementById("mQn").textContent=`${q} / ${TOTAL}`;
+  document.querySelectorAll(".exams .ex").forEach(e=>{const t=new Date(e.dataset.date+"T08:00:00+03:00"),d=Math.ceil((t-Date.now())/864e5);e.querySelector(".left").textContent=d>1?d+" days left":d===1?"tomorrow":d===0?"today":"done";});
+  if(META.osce&&META.osce.length){ let od=0,on=0; META.osce.forEach(s=>s.cases.forEach(c=>{ on++; if(S.osce[s.k+"|"+c.id]) od++; })); document.getElementById("mO").style.width=(on?od/on*100:0)+"%"; document.getElementById("mOn").textContent=`${od} / ${on}`; }
+  document.getElementById("ringPct").textContent=pct+"%";
+  document.getElementById("ringArc").style.strokeDashoffset=213.6*(1-pct/100);
+  SPECS.forEach(sp=>{ const [n,t]=specCount(sp); const c=document.getElementById("cnt-"+sp.id); if(c){ c.textContent=`${n}/${t}`; document.getElementById("bar-"+sp.id).style.width=(n/t*100)+"%"; } });
+}
+function syncTicks(){ document.querySelectorAll(".tk[data-id],.tkl").forEach(b=>b.setAttribute("aria-pressed",!!S.ticks[b.dataset.id+":"+b.dataset.k])); }
+document.addEventListener("click",e=>{ const b=e.target.closest(".tk[data-id],.tkl"); if(!b) return; const key=b.dataset.id+":"+b.dataset.k; setTick(b.dataset.id,b.dataset.k,!S.ticks[key]); });
+
+/* ===== study ===== */
+function renderStudyIdx(){
+  const box=document.getElementById("studyIdx");
+  box.innerHTML=SPECS.map((s,si)=>`<details class="spec" data-c="${s.id}" data-k="${s.id}"${isOpen("st",s.id,true)?" open":""}><summary><span class="dot">${si+1}</span><h3>${esc(s.name)}</h3><span class="count"><span class="chev"></span></span></summary><ol>${
+    s.groups.flatMap(([exam,items])=>items.map(([id,title])=>{const l=byId[id],m=META.lec[id]||{};
+      return `<li><a href="#l-${id}" class="${S.ticks[id+":s"]?"done":""}"><span class="nb">${l.num}</span><span>${esc(title)}<small>${exam}${m.doctor?" · "+esc(m.doctor):""}</small></span><span class="pill ${m.ready?"ready":"todo"}">${m.ready?"Ready":"Soon"}</span></a></li>`;})).join("")
+  }</ol></details>`).join("");
+  box.querySelectorAll(":scope > details").forEach(d=>rememberOpen("st",d));
+}
+const cache={};
+async function getJSON(path){ if(cache[path]) return cache[path]; const r=await fetch(path); if(!r.ok) throw new Error(r.status); const j=await r.json(); cache[path]=j; return j; }
+
+let lecTimer=null, lecObserver=null;
+async function renderLecture(id){
+  const l=byId[id]; if(!l){ location.hash="study"; return; }
+  const i=LECS.indexOf(l), prev=LECS[i-1], next=LECS[i+1], g=GAPS[id], m=META.lec[id]||{}, pq=META.pq[id];
+  const v=document.getElementById("v-lec"); v.dataset.c=l.spec.id;
+  v.innerHTML=`
+    <div class="lechead">
+      <nav class="crumb"><a href="#study">Study</a><span>›</span><span>${esc(l.spec.name)}</span><span>›</span><span>${l.exam} · Lecture ${l.num}</span></nav>
+      ${m.doctor?`<div class="doc">${/^\(/.test(m.doctor)?esc(m.doctor.slice(1,-1)):"Presented by "+esc(m.doctor)}</div>`:""}
+      <h1>${esc(l.title)}</h1>
+      <div class="lecticks">${tickLbl(id,"s")}${tickLbl(id,"q")}</div>
+      ${m.ready?`<div class="pdfrow"><button type="button" class="btn small" data-pdf="${id}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8M4.5 7 8 10.5 11.5 7M3 13.5h10" fill="none" style="stroke:currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download as PDF</span></button>${pq?`<label class="pdfq"><input type="checkbox" id="pdfQs"> add the ${pq.n} gifts with answers</label>`:""}</div>`:""}
+      <div class="key"><span style="color:var(--slide)"><i style="background:var(--slide)"></i>Slides</span><span style="color:var(--note)"><i style="background:var(--note)"></i>Doctor's notes</span><span style="color:var(--hot)"><i style="background:var(--hot)"></i>Gifts / high-yield</span><span style="color:var(--dug)"><i style="background:var(--dug)"></i>Aldughaither</span></div>
+    </div>
+    ${g?`<div class="gap"><b>Source note.</b> ${g.long}</div>`:""}
+    <article class="article" id="lecBody"><div class="empty"><svg width="54" height="54" viewBox="0 0 100 100" aria-hidden="true"><rect x="44" y="38" width="12" height="54" rx="5" style="fill:var(--c-soft);stroke:var(--c)" stroke-width="2.4"/><path d="M45 38 L45 22 Q46 8 58 6 Q55 20 56 38 Z" style="fill:var(--surface);stroke:var(--c)" stroke-width="2.4" stroke-linejoin="round"/></svg><div>${m.ready?"Loading the lecture…":`<b style="color:var(--deep);font-weight:500">This lecture is being written.</b><br>It appears here as soon as its specialty is done.${pq?` Its ${pq.n} gifts are already in the Gifts tab.`:""}`}</div></div></article>
+    <details class="dugbox" id="dugBox"${m.dug?"":" hidden"}><summary>Aldughaither summary (tap to show)</summary><div><div class="dugkey"><span style="color:var(--dug)"><i style="background:var(--dug)"></i>Grey: already in the slides or notes above</span><span style="color:var(--dug-new)"><i style="background:var(--dug-new)"></i>Blue: extra information found only in Aldughaither</span></div><div id="dugBody"></div></div></details>
+    <div id="endMark"></div>
+    <div class="lecfoot">${pq?`<a class="btn primary" href="#q-${id}">Gifts for this lecture (${pq.n}) →</a>`:`<span class="src2">No gifts exist for this lecture.</span>`}${META.fc&&META.fc[id]?`<a class="btn" href="#f-${id}">Test yourself: flashcards (${META.fc[id].c1+META.fc[id].c2+META.fc[id].c3}) →</a>`:""}</div>
+    <nav class="pn">${prev?`<a href="#l-${prev.id}">← Previous<b>${esc(prev.title)}</b></a>`:"<span></span>"}${next?`<a href="#l-${next.id}" style="text-align:right">Next →<b>${esc(next.title)}</b></a>`:"<span></span>"}</nav>`;
+  if(m.ready){
+    try{
+      const d=await getJSON(`data/l/${id}.json?v=${m.v||1}`);
+      if(location.hash!=="#l-"+id) return;
+      document.getElementById("lecBody").innerHTML=d.html;
+      if(d.dug){ document.getElementById("dugBody").innerHTML=d.dug; document.getElementById("dugBox").hidden=false; }
+    }catch(e){ document.getElementById("lecBody").innerHTML=`<p>Couldn't load this lecture. Check your connection and open it again.</p>`; }
+  }
+  // auto-tick Studied: reached the end after reading for a while
+  clearTimeout(lecTimer); lecObserver&&lecObserver.disconnect();
+  if(m.ready){
+    const t0=Date.now(), minMs=Math.min(150000,Math.max(40000,(m.words||1500)*25));
+    lecObserver=new IntersectionObserver(es=>{ if(es.some(x=>x.isIntersecting)&&Date.now()-t0>minMs){ setTick(id,"s",true,true); lecObserver.disconnect(); } });
+    lecObserver.observe(document.getElementById("endMark"));
+  }
+}
+
+/* ===== gifts (sidebar of lectures · one lecture at a time · explanation under every option) ===== */
+let F={exam:"all",year:"all",wrong:false};
+const PQ={cur:null};
+const PQLECS=LECS.filter(l=>META.pq[l.id]);
+const lsGet=k=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } };
+const lsSet=(k,v)=>{ try{ localStorage.setItem(k,v); }catch(e){} };
+const isRight=(ans,x)=>!!ans&&!!x&&x.length===1&&ans.includes(x);
+function qVisible(q){ if(F.exam!=="all"&&!q.exam.includes(F.exam)) return false; if(F.year!=="all"&&!q.years.includes(+F.year)) return false; if(F.wrong){ const a=S.answers[q.id]; if(!a||a==="seen"||isRight(q.ans,a)) return false; } return true; }
+function lecProg(id){ const m=META.pq[id]; if(!m) return [0,0,0,0]; let a=0,c=0,w=0; m.ids.forEach((qid,ix)=>{ const x=S.answers[qid]; if(x){ a++; if(isRight(m.ans[ix],x)) c++; else if(x!=="seen") w++; } }); return [a,c,m.n,w]; }
+function globalScore(){ let a=0,c=0,w=0,n=0; PQLECS.forEach(l=>{ const [aa,cc,nn,ww]=lecProg(l.id); a+=aa; c+=cc; n+=nn; w+=ww; }); return {a,c,w,n}; }
+function updateScore(){
+  const g=globalScore();
+  const set=(i,t)=>{ const el=document.getElementById(i); if(el) el.textContent=t; };
+  set("scOk",g.c); set("scBad",g.w); set("scAns",g.a); set("scTot",g.n);
+  if(PQ.cur) updateLecScore(PQ.cur);
+}
+function updateLecScore(id){
+  const el=document.getElementById("lscore"); if(!el) return;
+  const [a,c,n,w]=lecProg(id);
+  el.innerHTML=`<span class="sp ok"><b>${c}</b> correct</span><span class="sp bad"><b>${w}</b> wrong</span><span class="sp"><b>${a}</b> / ${n} answered</span><span class="lbar"><i style="width:${n?a/n*100:0}%"></i></span>`;
+}
+function renderPQSide(){
+  const side=document.getElementById("pqSide");
+  side.innerHTML=`<div class="sidehd"><b>Lectures</b><button type="button" class="xbtn" data-tocclose aria-label="Close the lecture list">×</button></div>`+SPECS.map(s=>{
+    const ls=s.groups.flatMap(([,it])=>it.map(([id])=>id)).filter(id=>META.pq[id]); if(!ls.length) return "";
+    return `<div class="sgrp" data-c="${s.id}"><div class="side-spec"><i></i><span>${esc(s.name)}</span></div>${ls.map(id=>{ const l=byId[id]; const [a,,n]=lecProg(id);
+      return `<a class="side-lec${a===n?" done":""}" href="#q-${id}"${PQ.cur===id?' aria-current="true"':""}><span class="nb">${l.num}</span><span class="t">${esc(l.title)}</span><span class="pc" id="pc-${id}">${a}/${n}</span></a>`; }).join("")}</div>`;
+  }).join("");
+  const cur=side.querySelector('[aria-current="true"]');
+  if(cur){ const r=cur.getBoundingClientRect(), sr=side.getBoundingClientRect(); if(r.top<sr.top||r.bottom>sr.bottom) side.scrollTop=cur.offsetTop-side.clientHeight/3; }
+}
+function openToc(){ document.getElementById("pqSide").classList.add("open"); document.getElementById("pqScrim").hidden=false; document.getElementById("pqTocBtn").setAttribute("aria-expanded","true"); }
+function closeToc(){ const s=document.getElementById("pqSide"); if(!s) return; s.classList.remove("open"); document.getElementById("pqScrim").hidden=true; document.getElementById("pqTocBtn").setAttribute("aria-expanded","false"); }
+document.getElementById("pqTocBtn").addEventListener("click",openToc);
+document.getElementById("pqScrim").addEventListener("click",closeToc);
+document.addEventListener("click",e=>{ if(e.target.closest("[data-tocclose]")) closeToc(); });
+function pqOffset(){ const v=document.getElementById("v-past"), bar=document.getElementById("pqBar"), hd=document.querySelector(".bar"); if(v&&bar&&hd) v.style.setProperty("--pqtop",(hd.offsetHeight+bar.offsetHeight+18)+"px"); }
+window.addEventListener("resize",pqOffset);
+
+async function renderPQ(id){
+  if(!id||!META.pq[id]) id=lsGet("surg453-lastq");
+  if(!id||!META.pq[id]) id=PQLECS[0].id;
+  PQ.cur=id; lsSet("surg453-lastq",id);
+  const ys=document.getElementById("fYear"); if(ys.options.length===1) META.years.forEach(y=>ys.insertAdjacentHTML("beforeend",`<option value="${y}">${y}</option>`));
+  renderPQSide(); closeToc();
+  const l=byId[id], m=META.pq[id], i=PQLECS.findIndex(x=>x.id===id), nx=PQLECS[i+1];
+  const main=document.getElementById("pqMain"); main.dataset.c=l.spec.id;
+  main.innerHTML=`<header class="pqhead">
+      <nav class="crumb"><span>${esc(l.spec.name)}</span><span>›</span><span>${l.exam} · Lecture ${l.num}</span></nav>
+      <h2>${esc(l.title)}</h2>
+      <div class="pqmeta">${m.n} questions · ${m.mid} midterm · ${m.final} final</div>
+      <div class="lscore" id="lscore"></div>
+      <div class="pqlinks"><a class="btn small" href="#l-${id}">Open the lecture</a>${META.fc&&META.fc[id]?`<a class="btn small" href="#f-${id}">Flashcards</a>`:""}<button type="button" class="btn small" data-lreset="${id}">Clear my answers</button></div>
+    </header>
+    <div class="qs" id="qsList"><p class="src2">Loading questions…</p></div>
+    <div class="pqnext" id="pqNext">${nx?`<span>End of <b>${esc(l.title)}</b>.</span><a class="btn primary" data-c="${nx.spec.id}" href="#q-${nx.id}">Next lecture: ${esc(nx.title)} →</a>`:`<span>That was the last lecture with gifts.</span><a class="btn" href="#q-${PQLECS[0].id}">Back to the first lecture</a>`}</div>`;
+  updateScore(); pqOffset();
+  try{
+    const d=await getJSON(`data/q/${id}.json?v=${m.v||1}`);
+    if(PQ.cur!==id) return;
+    const shown=d.filter(qVisible);
+    document.getElementById("qsList").innerHTML=shown.length?shown.map(q=>qCard(q,id)).join(""):`<p class="emptybig">No questions in this lecture match the filter.</p>`;
+    const [a,,n]=lecProg(id); if(n&&a===n) document.getElementById("pqNext").classList.add("hot");
+    if(window.__qT){ const t=document.getElementById("qq-"+window.__qT); window.__qT=null; if(t){ t.classList.add("target"); requestAnimationFrame(()=>t.scrollIntoView({block:"center"})); } }
+  }catch(e){ document.getElementById("qsList").innerHTML=`<p class="src2">Couldn't load the questions. Check your connection and open the lecture again.</p>`; }
+}
+function qChips(q){ return [...q.exam.map(x=>`<span class="tag ${x}">${x==="mid"?"Midterm":"Final"}</span>`), q.year?`<span class="tag">${q.year}</span>`:"", q.rep>1?`<span class="tag rep">Repeated ×${q.rep}</span>`:""].join(""); }
+function qCard(q,lid){
+  const a=S.answers[q.id], open=!q.opts||q.opts.length<2;
+  const vd=a&&!open?(isRight(q.ans,a)?`<span class="vd ok">✓ Correct</span>`:`<span class="vd bad">✗ Wrong</span>`):"";
+  const imgs=(q.img||[]).map(src=>`<img src="${src}" alt="Image for question ${q.n}" loading="lazy">`).join("");
+  let body;
+  if(open) body=a?openAns(q,lid):`<div class="qactions"><button type="button" class="btn small" data-reveal="${q.id}" data-l="${lid}">Show the answer</button></div>`;
+  else if(!a) body=`<div class="opts">${q.opts.map(o=>`<button type="button" class="opt" data-q="${q.id}" data-k="${o.k}" data-l="${lid}"><span class="k">${o.k}</span><span>${esc(o.t)}</span><span class="mk"></span></button>`).join("")}</div>`;
+  else body=`<div class="opts">${q.opts.map(o=>optW(q,o,a)).join("")}</div>${qFoot(q,lid,"Try again")}`;
+  return `<article class="q" id="qq-${q.id}"><div class="qmeta"><span class="n">Q${q.n}</span>${qChips(q)}${vd}</div><p class="stem">${esc(q.stem)}</p>${imgs}${body}</article>`;
+}
+function sameIdea(a,b){ if(!b) return false; const W=t=>t.toLowerCase().replace(/<[^>]+>/g," ").match(/[a-z0-9]{4,}/g)||[]; const wa=W(a), wb=new Set(W(b)); if(!wa.length) return true; return wa.filter(w=>wb.has(w)).length/wa.length>=.5; }
+const stripCorrect=t=>(t||"").replace(/^Correct\b\.?\s*(\((source key|keyed)[^)]*\))?\s*[—:.-]?\s*/i,(m,x)=>x?x+" ":"").trim();
+function optW(q,o,a){
+  const isAns=isRight(q.ans,o.k), mine=o.k===a, why=(q.why||{})[o.k]||"";
+  const cls=isAns?"ok":mine?"bad":"dim";
+  const mk=isAns?(mine?"✓ Your answer":"✓ Answer"):mine?"✗ Your answer":"";
+  let txt="";
+  if(isAns){ const rest=stripCorrect(why), ex=q.expl||""; txt=ex+(rest&&!sameIdea(rest,ex)?(ex?`<span class="more">${rest}</span>`:rest):""); }
+  else txt=why;
+  return `<div class="optw ${cls}"><div class="orow"><span class="k">${o.k}</span><span>${esc(o.t)}</span><span class="mk">${mk}</span></div>${txt?`<div class="why">${txt}</div>`:""}</div>`;
+}
+function openAns(q,lid){ return `<div class="optw ok"><div class="orow"><span class="k">✓</span><span>${esc(q.ansText||q.srcNote||"See the explanation.")}</span><span class="mk">Answer</span></div>${q.expl?`<div class="why">${q.expl}</div>`:""}</div>${qFoot(q,lid,"Hide the answer")}`; }
+function qFoot(q,lid,label){
+  return `<div class="qfoot">${q.ansAdded?`<span class="added">The source had no answer key. This answer was added from the lecture and textbook.</span>`:""}${q.srcNote&&!(q.ansText==null&&!(q.opts&&q.opts.length>=2))?`<div class="src">From the gift file: ${esc(q.srcNote)}</div>`:""}${q.appears?`<div class="src">Appeared in: ${esc(q.appears)}</div>`:""}<div class="qactions"><button type="button" class="btn small" data-reset="${q.id}" data-l="${lid}">${label}</button></div></div>`;
+}
+async function qById(lid,qid){ const d=await getJSON(`data/q/${lid}.json?v=${META.pq[lid].v||1}`); return d.find(x=>x.id===qid); }
+function afterAnswer(lid){
+  const [a,,n]=lecProg(lid); updateScore();
+  const pc=document.getElementById("pc-"+lid); if(pc){ pc.textContent=`${a}/${n}`; pc.closest(".side-lec").classList.toggle("done",a===n); }
+  if(n&&a===n){ setTick(lid,"q",true,true); const nx=document.getElementById("pqNext"); if(nx) nx.classList.add("hot"); }
+}
+document.addEventListener("click",async e=>{
+  const o=e.target.closest(".opt[data-q]");
+  if(o){ const lid=o.dataset.l, q=await qById(lid,o.dataset.q); if(!q) return; S.answers[q.id]=o.dataset.k; queueSave(); document.getElementById("qq-"+q.id).outerHTML=qCard(q,lid); afterAnswer(lid); return; }
+  const r=e.target.closest("[data-reset]");
+  if(r){ const lid=r.dataset.l, q=await qById(lid,r.dataset.reset); delete S.answers[q.id]; queueSave(); document.getElementById("qq-"+q.id).outerHTML=qCard(q,lid); afterAnswer(lid); return; }
+  const rv=e.target.closest("[data-reveal]");
+  if(rv){ const lid=rv.dataset.l, q=await qById(lid,rv.dataset.reveal); S.answers[q.id]="seen"; queueSave(); document.getElementById("qq-"+q.id).outerHTML=qCard(q,lid); afterAnswer(lid); return; }
+  const lr=e.target.closest("[data-lreset]");
+  if(lr){ if(!lr.dataset.armed){ lr.dataset.armed=1; lr.textContent="Tap again to clear"; setTimeout(()=>{ if(lr.isConnected){ delete lr.dataset.armed; lr.textContent="Clear my answers"; } },3500); return; }
+    const id=lr.dataset.lreset; META.pq[id].ids.forEach(q=>delete S.answers[q]); queueSave(); renderPQ(id); toast("Answers cleared for "+byId[id].title); }
+});
+document.querySelectorAll(".chip[data-f]").forEach(c=>c.addEventListener("click",()=>{ F.exam=c.dataset.f; document.querySelectorAll(".chip[data-f]").forEach(x=>x.setAttribute("aria-pressed",x===c)); renderPQ(PQ.cur); }));
+document.getElementById("fYear").addEventListener("change",e=>{ F.year=e.target.value; renderPQ(PQ.cur); });
+document.getElementById("fWrong").addEventListener("click",e=>{ F.wrong=!F.wrong; e.currentTarget.setAttribute("aria-pressed",F.wrong); renderPQ(PQ.cur); });
+
+/* ===== OSCE: systems → stations → one station step by step ===== */
+function yrChip(y){ return `<span class="yr${/Archive|Old/.test(y)?" arch":""}">${esc(y)}</span>`; }
+const stDone=(k,cid)=>!!S.osce[k+"|"+cid];
+function sysProg(s){ const n=s.cases.length, d=s.cases.filter(c=>stDone(s.k,c.id)).length; return [d,n]; }
+function osceTotals(){ let d=0,n=0,sd=0; META.osce.forEach(s=>{ const [a,b]=sysProg(s); d+=a; n+=b; if(b&&a===b) sd++; }); return {d,n,sd,sn:META.osce.length}; }
+const MINE_LAB=`<span class="lab">My explanation — not from your sources</span>`;
+function renderOsceHome(){
+  const v=document.getElementById("osceMain"); v.removeAttribute("data-c"); const t=osceTotals();
+  v.innerHTML=`<div class="sechead"><h1 style="font-size:34px">OSCE</h1><p>Pick a system, then a station. Each station runs step by step: the case first, then one question at a time. Reveal what to say, then read why. Finish a station and it gets a tick.</p></div>
+    <div class="osum">
+      <div class="ring"><svg width="84" height="84" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="34" fill="none" style="stroke:var(--pale)" stroke-width="10"/><circle cx="42" cy="42" r="34" fill="none" style="stroke:var(--tick)" stroke-width="10" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="${213.6*(1-(t.n?t.d/t.n:0))}"/></svg><b>${t.n?Math.round(t.d/t.n*100):0}%</b></div>
+      <div class="osumtx"><div class="big">${t.sd}<small> / ${t.sn} systems completed</small></div>
+        <div class="meter"><span>Stations done</span><div class="track"><i style="width:${t.n?t.d/t.n*100:0}%"></i></div><span>${t.d} / ${t.n}</span></div></div>
+    </div>
+    <div class="mine keyline">${MINE_LAB}<span>Grey boxes like this one are my own explanations of why each point matters. Everything else on the OSCE pages is from AlOmar's guide and Aldayel's merge.</span></div>
+    <div class="sysgrid">${META.osce.map((s,si)=>{ const [d,n]=sysProg(s), top=s.cases[0];
+      return `<a class="sys${d===n?" done":""}" data-c="${s.c}" href="#o-${s.k}"><div class="top"><span class="dot">${si+1}</span><h3>${esc(s.name)}</h3></div>
+        <small>${n} station${n>1?"s":""} · ${s.cases.reduce((x,c)=>x+(c.n||0),0)} questions</small>
+        <small class="most">Most asked: <b>${esc(top.title)}</b>${top.count?` · ${top.count}×`:""}</small>
+        <div class="meter2"><i style="width:${n?d/n*100:0}%"></i></div><small class="dn">${d} / ${n} done</small>${d===n?`<span class="badge" aria-label="System completed">${CHECK}</span>`:""}</a>`; }).join("")}</div>`;
+}
+function renderSystem(k){
+  const s=META.osce.find(x=>x.k===k); if(!s){ location.hash="osce"; return; }
+  const si=META.osce.indexOf(s), [d,n]=sysProg(s), prev=META.osce[si-1], next=META.osce[si+1];
+  const v=document.getElementById("osceMain"); v.dataset.c=s.c;
+  v.innerHTML=`<div class="lechead"><nav class="crumb"><a href="#osce">OSCE</a><span>›</span><span>System ${si+1} of ${META.osce.length}</span></nav><h1>${esc(s.name)}</h1>
+      <div class="meter"><span>Stations done</span><div class="track"><i style="width:${n?d/n*100:0}%"></i></div><span>${d} / ${n}</span></div>
+      <p class="src2" style="margin:0">Most repeated stations first. The chips show the batch or sitting each station came in.</p></div>
+    <div class="strows">${s.cases.map((c,ci)=>{ const dn=stDone(k,c.id);
+      return `<a class="strow${dn?" done":""}" href="#o-${k}/${c.id}"><span class="cnt"><b>${c.count||"—"}${c.count?"×":""}</b><small>${c.count?"asked":"lecture"}</small></span>
+        <span class="mid"><h4>${esc(c.title)}</h4><span class="yrs">${(c.seen||[]).map(yrChip).join("")}${c.src?`<span class="yr arch">${esc(c.src)}</span>`:""}</span><span class="meta">Station ${ci+1} · ${c.n||"?"} questions</span></span>
+        <span class="sdot" aria-label="${dn?"Done":"Not done"}">${CHECK}</span></a>`; }).join("")}</div>
+    <nav class="pn">${prev?`<a href="#o-${prev.k}">← Previous system<b>${esc(prev.name)}</b></a>`:`<a href="#osce">← All systems<b>OSCE</b></a>`}${next?`<a href="#o-${next.k}" style="text-align:right">Next system →<b>${esc(next.name)}</b></a>`:"<span></span>"}</nav>`;
+}
+let ST=null;
+async function renderStation(k,cid){
+  const s=META.osce.find(x=>x.k===k); if(!s){ location.hash="osce"; return; }
+  const v=document.getElementById("osceMain"); v.dataset.c=s.c;
+  v.innerHTML=`<p class="src2">Loading the station…</p>`;
+  try{
+    const data=await getJSON(`data/o/${k}.json?v=${s.v||1}`);
+    const c=data.find(x=>x.id===cid); if(!c){ location.hash="o-"+k; return; }
+    if(location.hash!=="#o-"+k+"/"+cid) return;
+    ST={k,s,c,step:0,seen:new Set([0]),rev:new Set(),all:false};
+    drawStation();
+  }catch(e){ v.innerHTML=`<p class="src2">Couldn't load this station. Check your connection and open it again.</p>`; }
+}
+function figsHTML(imgs,alt){ const f=(imgs||[]).map(im=>`<figure><img src="${im.src}" alt="${esc(im.cap||alt||"")}" loading="lazy">${im.cap?`<figcaption>${esc(im.cap)}</figcaption>`:""}</figure>`).join(""); return f?`<div class="figs">${f}</div>`:""; }
+function lecLinks(c){ return (c.lec||[]).filter(id=>byId[id]).map(id=>`<a class="lecchip" data-c="${byId[id].spec.id}" href="#l-${id}">${esc(byId[id].title)}</a>`).join(""); }
+function stepCase(){
+  const c=ST.c;
+  return `<div class="panel">
+    <div class="phead"><span class="pnum">The case</span></div>
+    ${c.seen_note&&c.seen_note.length?`<div class="src2">${c.seen_note.map(esc).join(" · ")}</div>`:""}
+    ${c.scenario&&c.scenario.length?`<div class="scen">${c.scenario.map(p=>`<p>${esc(p)}</p>`).join("")}</div>`:`<div class="scen"><p>No written scenario: the examiner shows the picture or patient and asks the questions that follow.</p></div>`}
+    ${figsHTML(c.imgs,c.title)}
+    ${lecLinks(c)?`<div class="lecl"><span class="src2">Revise in the lecture:</span>${lecLinks(c)}</div>`:""}
+  </div>`;
+}
+function stepQ(ix){
+  const c=ST.c, q=c.qs[ix], n=c.qs.length, rev=ST.all||ST.rev.has(ix);
+  const tips=(c.tips||[]).filter(t=>t.q===ix).map(t=>`<div class="tipbox"><b>EXAM TIP</b>${esc(t.t)}</div>`).join("")+(c.notes||[]).filter(t=>t.q===ix).map(t=>`<div class="tipbox"><b>NOTE</b>${esc(t.t)}</div>`).join("");
+  const hist=q.hist&&q.hist.length?`<div class="mine">${MINE_LAB}<b class="mh">Why ask each point</b><ul class="hist">${q.hist.map(([a,b])=>`<li><b>${a}</b><span>${b}</span></li>`).join("")}</ul></div>`:"";
+  const why=q.why?`<div class="mine">${MINE_LAB}<span>${q.why}</span></div>`:"";
+  return `<div class="panel">
+    <div class="phead"><span class="pnum">Question ${ix+1} of ${n}</span>${q.count?`<span class="qc">asked ${q.count}×</span>`:""}</div>
+    <div class="qtitle">${esc(q.q)}</div>
+    ${figsHTML(q.imgs)}
+    ${rev?`<div class="ans"><span class="lab">What to say · from the sources</span>${q.a.map(p=>`<p>${esc(p)}</p>`).join("")}${q.added?`<span class="added">Answer added by the guide's author (not in the old files)</span>`:""}</div>${tips}${why}${hist}`
+      :`<div class="stfoot"><button type="button" class="btn primary" data-orev="${ix}">Show what to say</button><span class="src2">Say your answer out loud first.</span></div>`}
+  </div>`;
+}
+function stepDone(){
+  const c=ST.c, s=ST.s, si=s.cases.findIndex(x=>x.id===c.id), nx=s.cases[si+1];
+  return `<div class="panel">
+    <div class="donebanner">${CHECK}<div><b>Station complete</b><span>${esc(c.title)} is ticked. ${sysProg(s)[0]} of ${s.cases.length} stations done in ${esc(s.name)}.</span></div></div>
+    ${(c.extra||[]).length?`<div class="extra"><b>Extra (added by the compilers, never reported as asked)</b>${c.extra.map(x=>`<p><b>${esc(x.q)}</b><br>${x.a.map(esc).join("<br>")}</p>`).join("")}</div>`:""}
+    ${(c.bonus||[]).map(b=>`<div class="tipbox"><b>REST-STATION BONUS MCQ ${esc(b.tag)}</b>${esc(b.stem)}<br>${b.opts.map(esc).join("<br>")}<details><summary>Show answer</summary>${esc(b.ans)}</details></div>`).join("")}
+    ${(c.named||[]).length?`<div class="src2">${c.named.map(esc).join(" ")}</div>`:""}
+    ${lecLinks(c)?`<div class="lecl"><span class="src2">Revise in the lecture:</span>${lecLinks(c)}</div>`:""}
+    <div class="stfoot">${nx?`<a class="btn primary" href="#o-${ST.k}/${nx.id}">Next station: ${esc(nx.title)} →</a>`:`<a class="btn primary" href="#osce">All systems →</a>`}<a class="btn" href="#o-${ST.k}">Back to ${esc(s.name)}</a><button type="button" class="btn small" data-ostep="0">Do it again</button></div>
+  </div>`;
+}
+function drawStation(scroll){
+  const {k,s,c}=ST, n=c.qs.length, si=s.cases.findIndex(x=>x.id===c.id), dn=stDone(k,c.id);
+  const bead=(i,lab,cls="")=>`<button type="button" class="bead${cls}${ST.seen.has(i)||ST.all?" seen":""}" data-ostep="${i}"${!ST.all&&ST.step===i?' aria-current="step"':""}>${lab}</button>`;
+  const beads=[bead(0,"Case"),...c.qs.map((q,i)=>bead(i+1,"Q"+(i+1))),bead(n+1,"✓"," fin")].join("");
+  let panel;
+  if(ST.all) panel=stepCase()+c.qs.map((q,i)=>stepQ(i)).join("")+stepDone();
+  else panel=ST.step===0?stepCase():ST.step<=n?stepQ(ST.step-1):stepDone();
+  const nav=ST.all?"":`<div class="stnav2">${ST.step>0?`<button type="button" class="btn" data-ostep="${ST.step-1}">← Back</button>`:`<a class="btn" href="#o-${k}">← Stations</a>`}<span class="sp"></span>${ST.step<=n?`<button type="button" class="btn primary" data-ostep="${ST.step+1}">${ST.step===0?"Start →":ST.step===n?"Finish station ✓":"Next question →"}</button>`:""}</div>`;
+  const v=document.getElementById("osceMain");
+  v.innerHTML=`<div class="lechead sthead"><nav class="crumb"><a href="#osce">OSCE</a><span>›</span><a href="#o-${k}">${esc(s.name)}</a><span>›</span><span>Station ${si+1} of ${s.cases.length}</span></nav>
+      <h1>${esc(c.title)}</h1>
+      <div class="yrs">${c.count?`<span class="yr hotc">Asked ${c.count}×</span>`:""}${(c.seen||[]).map(yrChip).join("")}${c.src?`<span class="yr arch">${esc(c.src)}</span>`:""}</div>
+      <div class="strow2"><button type="button" class="tkl" data-osdone aria-pressed="${dn}"><span class="tk">${CHECK}</span>${dn?"Station done":"Mark as done"}</button><button type="button" class="btn small" data-osall>${ST.all?"Go step by step":"Show the whole station"}</button></div>
+      <div class="beads" aria-label="Station steps">${beads}</div></div>
+    <div id="stPanel" class="stpanel">${panel}</div>${nav}`;
+  if(scroll){ const p=document.getElementById("stPanel"), y=p.getBoundingClientRect().top+scrollY-80; if(scrollY>y) window.scrollTo({top:y}); }
+}
+function setOsce(k,cid,on){ const key=k+"|"+cid; if(!!S.osce[key]===on) return; if(on) S.osce[key]=1; else delete S.osce[key]; queueSave(); renderProgress(); }
+document.addEventListener("click",e=>{
+  if(!ST) return;
+  const st=e.target.closest("[data-ostep]");
+  if(st){ const i=+st.dataset.ostep, n=ST.c.qs.length; ST.all=false; ST.step=Math.max(0,Math.min(n+1,i)); ST.seen.add(ST.step);
+    if(ST.step===n+1&&!stDone(ST.k,ST.c.id)){ setOsce(ST.k,ST.c.id,true); toast("Station done: "+ST.c.title+" ✓"); const [d,m]=sysProg(ST.s); if(d===m) setTimeout(()=>toast("System completed: "+ST.s.name+" ✓"),2700); }
+    drawStation(true); return; }
+  const rv=e.target.closest("[data-orev]");
+  if(rv){ ST.rev.add(+rv.dataset.orev); drawStation(); return; }
+  if(e.target.closest("[data-osdone]")){ setOsce(ST.k,ST.c.id,!stDone(ST.k,ST.c.id)); drawStation(); return; }
+  if(e.target.closest("[data-osall]")){ ST.all=!ST.all; drawStation(true); return; }
+});
+
+/* ===== flashcards (Anki-style, three levels per lecture) ===== */
+const LV={1:["Level 1","Basics"],2:["Level 2","Exam points"],3:["Level 3","Clinical cases"]};
+const NEWMAX=20;
+const today=()=>Math.floor((Date.now()+108e5)/864e5);
+const lecIx=id=>LECS.findIndex(l=>l.id===id);
+const FCLECS=LECS.filter(l=>META.fc&&META.fc[l.id]);
+function fcAgg(){ const t=today(), agg={}; for(const s of Object.values(S.fc)){ const li=s[2]; if(li==null) continue; const a=agg[li]||(agg[li]={lr:0,due:0,seen:0}); a.seen++; if(s[0]>=1) a.lr++; if(s[1]<=t) a.due++; } return agg; }
+function fcTotal(id){ const m=META.fc[id]; return m?m.c1+m.c2+m.c3:0; }
+function renderFCHome(){
+  const v=document.getElementById("fcMain"); const agg=fcAgg();
+  let tot=0,lr=0,due=0; FCLECS.forEach(l=>{ tot+=fcTotal(l.id); const a=agg[lecIx(l.id)]; if(a){ lr+=a.lr; due+=a.due; } });
+  v.innerHTML=`<div class="sechead"><h1 style="font-size:34px">Flashcards</h1><p>Cards for every lecture in three levels. Read the front, answer in your head, flip, then rate how well you knew it. Cards you find hard come back sooner; easy ones come back later.</p></div>
+    <div class="fclv">
+      <div><span class="lv lv1">Level 1 · Basics</span><p>Definitions, classifications and comparison tables from the slides and notes.</p></div>
+      <div><span class="lv lv2">Level 2 · Exam points</span><p>Every red gift point: the situation on the front, the answer on the back.</p></div>
+      <div><span class="lv lv3">Level 3 · Clinical cases</span><p>Gift stems with the answer and its explanation.</p></div>
+    </div>
+    <div class="osum fcsum"><div class="osumtx"><div class="big">${lr}<small> / ${tot} cards learned</small></div>
+      <div class="meter"><span>Learned</span><div class="track"><i style="width:${tot?lr/tot*100:0}%"></i></div><span>${tot?Math.round(lr/tot*100):0}%</span></div></div>
+      <div class="duebox"><b>${due}</b><span>due today</span></div></div>
+    <div class="idx" id="fcIdx">${SPECS.map((s,si)=>{ const ls=s.groups.flatMap(([,it])=>it.map(([id])=>id)).filter(id=>META.fc&&META.fc[id]); if(!ls.length) return "";
+      return `<details class="spec" data-c="${s.id}" data-k="${s.id}"${isOpen("fc",s.id,true)?" open":""}><summary><span class="dot">${si+1}</span><h3>${esc(s.name)}</h3><span class="count"><span class="chev"></span></span></summary><ol>${ls.map(id=>{ const l=byId[id], m=META.fc[id], a=agg[lecIx(id)]||{lr:0,due:0}, t=fcTotal(id);
+        return `<li><a href="#f-${id}" class="${a.lr&&a.lr>=t?"done":""}"><span class="nb">${l.num}</span><span>${esc(l.title)}<small>L1 ${m.c1} · L2 ${m.c2} · L3 ${m.c3}</small></span><span class="pill ${a.due?"due":"ready"}">${a.due?a.due+" due":a.lr?a.lr+"/"+t:t+" cards"}</span></a></li>`; }).join("")}</ol></details>`; }).join("")}</div>`;
+  v.querySelectorAll("#fcIdx > details").forEach(d=>rememberOpen("fc",d));
+}
+async function deckCards(id){
+  const m=META.fc[id];
+  const [f,q]=await Promise.all([getJSON(`data/f/${id}.json?v=${m.v||1}`), META.pq[id]?getJSON(`data/q/${id}.json?v=${META.pq[id].v||1}`):Promise.resolve([])]);
+  const c3=q.filter(x=>(x.opts&&x.opts.length>=2&&x.ans)||(!(x.opts&&x.opts.length>=2)&&x.ansText)).map(x=>({id:"q"+x.id,l:3,q:x,c:"Gift"+(x.year?" · "+x.year:"")}));
+  return [...f.cards,...c3];
+}
+let FC=null;
+async function renderDeck(id){
+  const l=byId[id]; if(!l||!META.fc||!META.fc[id]){ location.hash="fc"; return; }
+  const v=document.getElementById("fcMain"); v.dataset.c=l.spec.id;
+  v.innerHTML=`<p class="src2">Loading the cards…</p>`;
+  try{
+    const cards=await deckCards(id); if(location.hash!=="#f-"+id) return;
+    let lv=lsGet("surg453-fclv")||"all"; if(lv!=="all"&&!cards.some(c=>String(c.l)===lv)) lv="all";
+    FC={id,cards,lv,sess:null}; drawDeck();
+  }catch(e){ v.innerHTML=`<p class="src2">Couldn't load the cards. Check your connection and open the deck again.</p>`; }
+}
+const lvCards=()=>FC.cards.filter(c=>FC.lv==="all"||String(c.l)===FC.lv);
+function deckStats(cs){ const t=today(); let nw=0,due=0,lr=0; cs.forEach(c=>{ const s=S.fc[c.id]; if(!s) nw++; else { if(s[1]<=t) due++; if(s[0]>=1) lr++; } }); return {nw,due,lr,n:cs.length}; }
+function drawDeck(){
+  const id=FC.id, l=byId[id], cs=lvCards(), st=deckStats(cs), nStudy=Math.min(st.nw,NEWMAX)+st.due;
+  const v=document.getElementById("fcMain");
+  v.innerHTML=`<div class="lechead"><nav class="crumb"><a href="#fc">Flashcards</a><span>›</span><span>${esc(l.spec.name)}</span><span>›</span><span>Lecture ${l.num}</span></nav><h1>${esc(l.title)}</h1>
+      <div class="seg" role="group" aria-label="Level">${["all","1","2","3"].map(x=>{ const n=x==="all"?FC.cards.length:FC.cards.filter(c=>String(c.l)===x).length; if(!n&&x!=="all") return "";
+        return `<button type="button" class="chip" data-lv="${x}" aria-pressed="${FC.lv===x}">${x==="all"?"All levels":LV[x][0]+" · "+LV[x][1]} <small>${n}</small></button>`; }).join("")}</div>
+      <div class="fcstats"><span class="sp">New <b>${st.nw}</b></span><span class="sp due">Due <b>${st.due}</b></span><span class="sp ok">Learned <b>${st.lr}</b> / ${st.n}</span></div>
+      <div class="stfoot"><button type="button" class="btn primary" data-fcstart="due"${nStudy?"":" disabled"}>${nStudy?`Study ${nStudy} card${nStudy>1?"s":""}`:"Nothing due now"}</button><button type="button" class="btn" data-fcstart="all">Review all ${st.n}</button><a class="btn small" href="#l-${id}">Open the lecture</a></div>
+    </div>
+    <div id="fcSess">${FC.sess?sessHTML():`<div class="emptybig"><b>Study</b> gives you the cards due today plus up to ${NEWMAX} new ones. <b>Review all</b> shuffles every card in the level you picked. Keys: space to flip, 1–4 to rate.</div>`}</div>`;
+}
+function startSess(mode){
+  const cs=lvCards(), t=today(); let q;
+  if(mode==="due"){ const due=cs.filter(c=>S.fc[c.id]&&S.fc[c.id][1]<=t); q=[...shuffle(due),...cs.filter(c=>!S.fc[c.id]).slice(0,NEWMAX)]; }
+  else q=shuffle(cs.slice());
+  FC.sess={q,i:0,flip:false,tally:[0,0,0,0],mode};
+  drawDeck(); document.getElementById("fcSess").scrollIntoView({block:"start",behavior:"smooth"});
+}
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function nextIv(iv,r){ if(r===1) return 0; if(r===2) return Math.max(1,Math.round(iv*1.2)); if(r===3) return iv?Math.max(iv+1,Math.round(iv*2.5)):2; return iv?Math.max(iv+2,Math.round(iv*3.5)):4; }
+const ivLab=iv=>iv===0?"again soon":iv===1?"1 day":iv<31?iv+" days":Math.round(iv/30)+" months";
+function cardFront(c){
+  if(c.l!==3) return c.f;
+  const q=c.q, open=!(q.opts&&q.opts.length>=2);
+  return `<div class="stem">${esc(q.stem)}</div>${(q.img||[]).map(s=>`<img src="${s}" alt="Image for this question">`).join("")}${open?"":`<ol class="fo">${q.opts.map(o=>`<li><b>${o.k}.</b> ${esc(o.t)}</li>`).join("")}</ol>`}`;
+}
+function cardBack(c){
+  if(c.l!==3) return c.b;
+  const q=c.q, open=!(q.opts&&q.opts.length>=2);
+  const ans=open?esc(q.ansText):q.opts.filter(o=>isRight(q.ans,o.k)).map(o=>`<b>${o.k}. ${esc(o.t)}</b>`).join("<br>");
+  return `<div class="fans">${ans}</div>${q.expl?`<div class="fex">${q.expl}</div>`:""}`;
+}
+function sessHTML(){
+  const s=FC.sess, l=byId[FC.id];
+  if(s.i>=s.q.length){
+    const i=FCLECS.findIndex(x=>x.id===FC.id), nx=FCLECS[i+1];
+    return `<div class="panel donepanel"><div class="donebanner">${CHECK}<div><b>Session done</b><span>${s.i} card${s.i===1?"":"s"} reviewed · Again ${s.tally[0]} · Hard ${s.tally[1]} · Good ${s.tally[2]} · Easy ${s.tally[3]}</span></div></div>
+      <div class="stfoot"><button type="button" class="btn" data-fcstart="all">Review all again</button>${nx?`<a class="btn primary" data-c="${nx.spec.id}" href="#f-${nx.id}">Next lecture: ${esc(nx.title)} →</a>`:""}<a class="btn small" href="#fc">All decks</a><a class="btn small" href="#l-${FC.id}">Open the lecture</a></div></div>`;
+  }
+  const c=s.q[s.i], cur=S.fc[c.id], iv0=cur?cur[0]:0, left=s.q.length-s.i;
+  return `<div class="sessbar"><i style="width:${s.i/s.q.length*100}%"></i></div>
+    <div class="sessinfo"><span>${left} card${left>1?"s":""} left</span><span class="lv lv${c.l}">${LV[c.l][0]} · ${LV[c.l][1]}</span></div>
+    <div class="flash" data-c="${l.spec.id}">${c.c?`<div class="ctx">${esc(c.c)}</div>`:""}<div class="front">${cardFront(c)}</div>${s.flip?`<div class="back">${cardBack(c)}</div>`:""}</div>
+    ${s.flip?`<div class="rate" role="group" aria-label="How well did you know it?">${[[1,"Again"],[2,"Hard"],[3,"Good"],[4,"Easy"]].map(([r,t])=>`<button type="button" class="r${r}" data-rate="${r}">${t}<small>${ivLab(nextIv(iv0,r))}</small></button>`).join("")}</div>`
+      :`<button type="button" class="btn primary flipbtn" data-fcflip>Show answer</button>`}`;
+}
+function drawSess(){ const el=document.getElementById("fcSess"); if(el) el.innerHTML=sessHTML(); }
+function rate(r){
+  const s=FC.sess, c=s.q[s.i], t=today(), cur=S.fc[c.id], iv=nextIv(cur?cur[0]:0,r);
+  S.fc[c.id]=[iv,t+iv,lecIx(FC.id)]; s.tally[r-1]++;
+  if(r===1) s.q.splice(Math.min(s.i+4,s.q.length),0,c);
+  s.i++; s.flip=false; queueSave(true); drawSess();
+  const fl=document.querySelector(".sessbar"); if(fl){ const y=fl.getBoundingClientRect().top+scrollY-80; if(scrollY>y) window.scrollTo({top:y}); }
+}
+document.addEventListener("click",e=>{
+  const lv=e.target.closest("[data-lv]"); if(lv&&FC){ FC.lv=lv.dataset.lv; lsSet("surg453-fclv",FC.lv); FC.sess=null; drawDeck(); return; }
+  const st=e.target.closest("[data-fcstart]"); if(st&&FC){ startSess(st.dataset.fcstart); return; }
+  if(e.target.closest("[data-fcflip]")&&FC&&FC.sess){ FC.sess.flip=true; drawSess(); return; }
+  const r=e.target.closest("[data-rate]"); if(r&&FC&&FC.sess){ rate(+r.dataset.rate); return; }
+});
+document.addEventListener("keydown",e=>{
+  if(!FC||!FC.sess||document.getElementById("v-fc").hidden||e.target.closest("input,select,textarea")) return;
+  const s=FC.sess; if(s.i>=s.q.length) return;
+  if(!s.flip&&(e.key===" "||e.key==="Enter")){ e.preventDefault(); s.flip=true; drawSess(); }
+  else if(s.flip&&/^[1-4]$/.test(e.key)){ e.preventDefault(); rate(+e.key); }
+});
+
+/* ===== PDF of a lecture (jsPDF, loaded only when asked) ===== */
+let DL=null; (async()=>{ try{ if(window.claude?.use) DL=await claude.use("downloads"); }catch(e){} })();
+const PC={slide:[20,26,36],note:[19,128,78],hot:[211,19,43],dug:[120,128,138],dugnew:[37,99,184],main:[59,111,216],warn:[122,82,0],deep:[23,58,122],muted:[93,107,128],line:[214,222,234]};
+const SPEC_HEX={gs:"#3b6fd8",be:"#d4579b",hpb:"#cf8a12",ugi:"#7a5cf0",cr:"#e2772d",em:"#c29a00",neuro:"#4954c8",thor:"#1f95cf",vasc:"#b14db9",card:"#9058d6",peds:"#ee8a55",uro:"#1997ae",plastic:"#c4529f",extra:"#64748b"};
+const hexRGB=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const mixW=(c,p)=>c.map(x=>Math.round(x*p+255*(1-p)));
+let pdfLibs=null;
+function loadScript(src){ return new Promise((res,rej)=>{ const s=document.createElement("script"); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s); }); }
+async function b64(url){ const r=await fetch(url); if(!r.ok) throw new Error(url); const u=new Uint8Array(await r.arrayBuffer()); let s=""; for(let i=0;i<u.length;i+=32768) s+=String.fromCharCode.apply(null,u.subarray(i,i+32768)); return btoa(s); }
+async function pdfLib(){
+  if(pdfLibs) return pdfLibs;
+  if(!window.jspdf) await loadScript("lib/jspdf.umd.min.js");
+  if(!window.jspdf_autotable&&!(window.jspdf&&window.jspdf.jsPDF.API.autoTable)) await loadScript("lib/jspdf.plugin.autotable.min.js");
+  const [r,b]=await Promise.all([b64("lib/DejaVuSans.ttf"),b64("lib/DejaVuSans-Bold.ttf")]);
+  return pdfLibs={r,b};
+}
+const FIX=s=>s.replace(/️/g,"").replace(/⭐/g,"★").replace(/✔/g,"✓").replace(/[​­⁠]/g,"").replace(/ /g," ");
+const INLINE=new Set(["B","STRONG","I","EM","SPAN","A","SUB","SUP","U","CODE","SMALL","MARK","BR","ABBR"]);
+async function imgData(src){
+  const im=new Image(); im.src=src; await im.decode();
+  const sc=Math.min(1,1400/Math.max(im.naturalWidth,im.naturalHeight));
+  const cv=document.createElement("canvas"); cv.width=Math.max(1,Math.round(im.naturalWidth*sc)); cv.height=Math.max(1,Math.round(im.naturalHeight*sc));
+  const g=cv.getContext("2d"); g.fillStyle="#fff"; g.fillRect(0,0,cv.width,cv.height); g.drawImage(im,0,0,cv.width,cv.height);
+  return {d:cv.toDataURL("image/jpeg",.86),w:im.naturalWidth,h:im.naturalHeight};
+}
+async function makePDF(id,withQs){
+  const {r,b}=await pdfLib(); const {jsPDF}=window.jspdf;
+  const l=byId[id], m=META.lec[id]||{}, g=GAPS[id];
+  const d=await getJSON(`data/l/${id}.json?v=${m.v||1}`);
+  const doc=new jsPDF({unit:"mm",format:"a4",compress:true});
+  doc.addFileToVFS("DV.ttf",r); doc.addFont("DV.ttf","DV","normal"); doc.addFileToVFS("DVB.ttf",b); doc.addFont("DVB.ttf","DV","bold");
+  const autoTable=(o)=>window.jspdf_autotable&&window.jspdf_autotable.autoTable?window.jspdf_autotable.autoTable(doc,o):doc.autoTable(o);
+  const PW=210,PH=297,ML=16,MT=16,MB=18,CW=PW-2*ML;
+  const SC=hexRGB(SPEC_HEX[l.spec.id]||"#3b6fd8"), SOFT=mixW(SC,.14), SINK=SC.map(x=>Math.round(x*.72));
+  let y=MT;
+  const pg=()=>doc.getCurrentPageInfo().pageNumber;
+  const ensure=h=>{ if(y+h>PH-MB){ doc.addPage(); y=MT; return true; } return false; };
+  const LH=1.42, mm=s=>s*0.3528;
+  function para(runs,x,w,size){
+    const words=[];
+    for(const ru of runs){ if(ru.nl){ words.push({nl:1}); continue; } for(const p of ru.t.split(/(\s+)/)){ if(!p) continue; if(/^\s+$/.test(p)){ if(words.length&&!words[words.length-1].nl) words[words.length-1].sp=1; continue; } words.push({t:p,b:ru.b,col:ru.col}); } }
+    if(!words.some(w=>w.t)) return;
+    doc.setFontSize(size); const lh=mm(size)*LH;
+    let line=[],lw=0;
+    const flush=()=>{ if(!line.length) return; ensure(lh); let cx=x; for(const wd of line){ doc.setFont("DV",wd.b?"bold":"normal"); doc.setTextColor(...wd.col); doc.text(wd.t,cx,y,{baseline:"top"}); cx+=wd.w+(wd.sp?wd.spw:0); } y+=lh; line=[]; lw=0; };
+    for(const wd of words){
+      if(wd.nl){ flush(); continue; }
+      doc.setFont("DV",wd.b?"bold":"normal"); wd.w=doc.getTextWidth(wd.t); wd.spw=doc.getTextWidth(" ");
+      while(wd.w>w){ let k=wd.t.length; while(k>1&&doc.getTextWidth(wd.t.slice(0,k))>w-lw) k--; if(k<=1&&line.length){ flush(); continue; } const head={...wd,t:wd.t.slice(0,k),sp:0}; head.w=doc.getTextWidth(head.t); line.push(head); flush(); wd.t=wd.t.slice(k); wd.w=doc.getTextWidth(wd.t); }
+      if(lw+wd.w>w&&line.length) flush();
+      line.push(wd); lw+=wd.w+(wd.sp?wd.spw:0);
+    }
+    flush();
+  }
+  function runsOf(node,st,out){
+    for(const ch of node.childNodes){
+      if(ch.nodeType===3){ const t=FIX(ch.nodeValue.replace(/\s+/g," ")); if(t) out.push({t,b:st.b,col:st.col}); continue; }
+      if(ch.nodeType!==1) continue;
+      const tg=ch.tagName, cl=ch.classList;
+      if(tg==="BR"){ out.push({nl:1}); continue; }
+      if(cl.contains("qref")||cl.contains("addtag")||!INLINE.has(tg)) continue;
+      const s={...st};
+      if(tg==="B"||tg==="STRONG") s.b=true;
+      if(cl.contains("n")) s.col=PC.note;
+      if(cl.contains("r")){ s.col=PC.hot; s.b=true; }
+      if(cl.contains("new")) s.col=PC.dugnew;
+      runsOf(ch,s,out);
+    }
+    return out;
+  }
+  function heading(t,size,col,rule,x,w){
+    t=FIX((t||"").replace(/\s+/g," ").trim()); if(!t) return;
+    y+=size>13?4:2.4; ensure(mm(size)*1.3+(size>11?26:16));
+    doc.setFont("DV","bold"); doc.setFontSize(size); doc.setTextColor(...col);
+    for(const ln of doc.splitTextToSize(t,w)){ ensure(mm(size)*1.3); doc.text(ln,x,y,{baseline:"top"}); y+=mm(size)*1.28; }
+    if(rule){ doc.setDrawColor(...col); doc.setLineWidth(.45); doc.line(x,y+.4,x+w,y+.4); y+=2.4; }
+    y+=1;
+  }
+  async function box(label,col,x,w,fn){
+    y+=1.2; ensure(12);
+    const p0=pg(), y0=y; y+=1.6;
+    if(label){ doc.setFont("DV","bold"); doc.setFontSize(7); doc.setTextColor(...col); doc.text(label.toUpperCase(),x+4.2,y,{baseline:"top"}); y+=3.6; }
+    await fn(x+4.2,w-5);
+    y+=1; const p1=pg(), y1=y;
+    doc.setFillColor(...col);
+    for(let p=p0;p<=p1;p++){ doc.setPage(p); const a=p===p0?y0:MT-2, z=p===p1?y1:PH-MB+1; if(z>a) doc.rect(x,a,0.9,z-a,"F"); }
+    doc.setPage(p1); y+=2;
+  }
+  async function image(src,x,w,cap,maxH=115){
+    try{ const im=await imgData(src); let iw=Math.min(w,im.w*25.4/120), ih=iw*im.h/im.w; if(ih>maxH){ ih=maxH; iw=ih*im.w/im.h; }
+      ensure(ih+(cap?6:2)); doc.addImage(im.d,"JPEG",x+(w-iw)/2,y,iw,ih); y+=ih+1.6;
+      if(cap){ para([{t:FIX(cap),b:false,col:PC.muted}],x,w,7.6); } y+=1.6;
+    }catch(e){}
+  }
+  async function imageRow(srcs,x,w,cols,maxH){
+    const gap=3, cw=(w-gap*(cols-1))/cols;
+    for(let i=0;i<srcs.length;i+=cols){
+      const ims=[]; for(const s of srcs.slice(i,i+cols)){ try{ ims.push(await imgData(s)); }catch(e){} }
+      if(!ims.length) continue;
+      const hs=ims.map(im=>Math.min(maxH,cw*im.h/im.w)), rh=Math.max(...hs);
+      ensure(rh+2);
+      ims.forEach((im,j)=>{ let ih=hs[j], iw=ih*im.w/im.h; if(iw>cw){ iw=cw; ih=iw*im.h/im.w; } doc.addImage(im.d,"JPEG",x+j*(cw+gap)+(cw-iw)/2,y,iw,ih); });
+      y+=rh+gap;
+    }
+  }
+  function cellText(td){
+    const c=td.cloneNode(true); c.querySelectorAll(".qref,.addtag").forEach(x=>x.remove());
+    c.querySelectorAll("br").forEach(x=>x.replaceWith("\n")); c.querySelectorAll("li").forEach(x=>{ x.prepend("• "); x.append("\n"); });
+    return FIX(c.textContent.replace(/[ \t]+/g," ").replace(/ *\n */g,"\n").replace(/\n{2,}/g,"\n").trim());
+  }
+  function share(td,sel){ const all=td.textContent.trim().length||1; let n=0; td.querySelectorAll(sel).forEach(x=>n+=x.textContent.trim().length); return n/all; }
+  async function table(tb,x,w,dcol){
+    const rows=[...tb.querySelectorAll("tr")]; if(!rows.length) return;
+    const head=[], body=[];
+    rows.forEach((tr,ri)=>{
+      const cells=[...tr.children].filter(c=>c.tagName==="TD"||c.tagName==="TH").map(td=>{
+        const o={content:cellText(td)}; if(td.colSpan>1) o.colSpan=td.colSpan; if(td.rowSpan>1) o.rowSpan=td.rowSpan;
+        const st={}; if(td.tagName==="TH") st.th=1;
+        if(td.classList.contains("r")||share(td,".r")>.5){ st.col=PC.hot; st.b=1; } else if(td.classList.contains("n")||share(td,".n")>.5) st.col=PC.note;
+        if(tr.classList.contains("new")) st.col=PC.dugnew;
+        o._st=st; return o; });
+      if(ri===0&&cells.length&&cells.every(c=>c._st.th)) head.push(cells); else body.push(cells);
+    });
+    ensure(14);
+    autoTable({startY:y,margin:{left:x,right:PW-x-w,top:MT,bottom:MB},tableWidth:w,head:head.length?head:undefined,body,theme:"grid",
+      styles:{font:"DV",fontStyle:"normal",fontSize:8.2,cellPadding:1.5,textColor:dcol,lineColor:PC.line,lineWidth:.2,overflow:"linebreak",valign:"top"},
+      headStyles:{font:"DV",fontStyle:"bold",fillColor:dcol===PC.dug?[236,238,241]:SOFT,textColor:dcol===PC.dug?PC.dug:SINK},
+      didParseCell:dd=>{ const st=dd.cell.raw&&dd.cell.raw._st; if(!st) return; if(st.col) dd.cell.styles.textColor=st.col; if(st.b) dd.cell.styles.fontStyle="bold"; if(st.th&&dd.section==="body"){ dd.cell.styles.fontStyle="bold"; dd.cell.styles.fillColor=dcol===PC.dug?[244,245,247]:mixW(SC,.08); } }});
+    y=doc.lastAutoTable.finalY+3;
+  }
+  async function walk(el,x,w,dcol,size,base){
+    base=base||{b:false}; let buf=[];
+    const flushBuf=()=>{ if(!buf.length) return; const wrap=document.createElement("span"); buf.forEach(n=>wrap.appendChild(n.cloneNode(true))); buf=[]; para(runsOf(wrap,{b:base.b,col:dcol},[]),x,w,size); };
+    for(const ch of [...el.childNodes]){
+      if(ch.nodeType===3){ if(ch.nodeValue.trim()||buf.length) buf.push(ch); continue; }
+      if(ch.nodeType!==1) continue;
+      const tg=ch.tagName, cl=ch.classList;
+      if(INLINE.has(tg)&&!(tg==="A"&&cl.contains("qref"))){ buf.push(ch); continue; }
+      if(cl.contains("qref")) continue;
+      flushBuf();
+      if(tg==="H1"||tg==="H2") heading(ch.textContent,dcol===PC.dug?12:14.5,dcol===PC.dug?PC.dug:SINK,dcol!==PC.dug,x,w);
+      else if(tg==="H3") heading(ch.textContent,dcol===PC.dug?11:12.2,dcol===PC.dug?PC.dug:PC.deep,false,x,w);
+      else if(/^H[4-6]$/.test(tg)) heading(ch.textContent,10.6,dcol===PC.dug?PC.dug:PC.deep,false,x,w);
+      else if(tg==="P"){
+        const col=cl.contains("n")?PC.note:cl.contains("new")?PC.dugnew:dcol;
+        if(cl.contains("n")) await box(null,PC.note,x,w,async(xx,ww)=>para(runsOf(ch,{b:base.b,col},[]),xx,ww,size));
+        else { para(runsOf(ch,{b:base.b,col},[]),x,w,size); y+=1; }
+        if(ch.querySelector("img")) for(const im of ch.querySelectorAll("img")) await image(im.src,x,w);
+      }
+      else if(tg==="UL"||tg==="OL") { await list(ch,x,w,dcol,size,0,base); y+=.8; }
+      else if(tg==="DIV"&&cl.contains("hy")) await box("High-yield",PC.hot,x,w,(xx,ww)=>walk(ch,xx,ww,PC.hot,size,base));
+      else if(tg==="DIV"&&cl.contains("dvb")) await box("Doctor vs book — follow the doctor",PC.warn,x,w,(xx,ww)=>walk(ch,xx,ww,PC.warn,size,base));
+      else if((tg==="DIV"||tg==="DETAILS")&&cl.contains("add")){
+        const lab=(ch.querySelector(":scope > summary")||ch.querySelector(":scope > .addtag")||{}).textContent||"Added explanation";
+        await box(lab.trim()||"Added explanation",PC.main,x,w,(xx,ww)=>walk(ch,xx,ww,PC.slide,size*.96,base));
+      }
+      else if(tg==="DIV"&&cl.contains("tbw")){ const t=ch.querySelector("table"); if(t) await table(t,x,w,dcol); }
+      else if(tg==="TABLE") await table(ch,x,w,dcol);
+      else if(tg==="FIGURE"){ const im=ch.querySelector("img"), fc=ch.querySelector("figcaption"); if(im) await image(im.src,x,w,fc?fc.textContent:""); }
+      else if(tg==="IMG") await image(ch.src,x,w);
+      else if(tg==="DIV"&&cl.contains("imgrow")){ const ims=[...ch.querySelectorAll("img")].map(i=>i.src); await imageRow(ims,x,w,Math.min(3,ims.length)||1,80); const caps=[...ch.querySelectorAll("figcaption")].map(c=>c.textContent.trim()).filter(Boolean); if(caps.length){ para([{t:FIX(caps.join(" · ")),b:false,col:PC.muted}],x,w,7.6); y+=1.5; } }
+      else if(tg==="DETAILS"&&cl.contains("gal")){ const sm=ch.querySelector("summary"); if(sm) para([{t:FIX(sm.textContent.trim()),b:true,col:PC.muted}],x,w,8.4); y+=1; await imageRow([...ch.querySelectorAll("img")].map(i=>i.src),x,w,4,42); }
+      else if(tg==="SUMMARY") { para(runsOf(ch,{b:true,col:dcol},[]),x,w,size); }
+      else if(tg==="SCRIPT"||tg==="STYLE"||tg==="SVG"||tg==="BUTTON") continue;
+      else await walk(ch,x,w,dcol,size,base);
+    }
+    flushBuf();
+  }
+  async function list(ul,x,w,dcol,size,lvl,base){
+    let n=0;
+    for(const li of [...ul.children]){
+      if(li.tagName!=="LI") continue; n++;
+      const cl=li.classList, col=cl.contains("n")?PC.note:cl.contains("r")?PC.hot:cl.contains("new")?PC.dugnew:dcol;
+      const bb={b:base.b||cl.contains("r")};
+      ensure(mm(size)*LH);
+      doc.setFont("DV","bold"); doc.setFontSize(size); doc.setTextColor(...(col===PC.slide?SC:col));
+      doc.text(ul.tagName==="OL"?n+".":lvl?"–":"•",x+.6,y,{baseline:"top"});
+      const ind=ul.tagName==="OL"?5:4;
+      await walk(li,x+ind,w-ind,col,size,bb);
+      y+=.5;
+    }
+  }
+  // ---- title block
+  doc.setFont("DV","bold"); doc.setFontSize(8); doc.setTextColor(...SC); doc.text(FIX(l.spec.name.toUpperCase()+" · "+l.exam.toUpperCase()+" · LECTURE "+l.num),ML,y,{baseline:"top"}); y+=5;
+  heading(l.title,20,PC.deep,false,ML,CW);
+  if(m.doctor){ para([{t:FIX(/^\(/.test(m.doctor)?m.doctor.slice(1,-1):"Presented by "+m.doctor),b:false,col:PC.muted}],ML,CW,9); y+=1.5; }
+  const key=[["Slides",PC.slide],["Doctor's notes",PC.note],["Gifts / high-yield",PC.hot],["Aldughaither: already covered",PC.dug],["Aldughaither: extra",PC.dugnew],["Added explanation",PC.main]];
+  let kx=ML; doc.setFontSize(7.6);
+  for(const [t,c] of key){ doc.setFont("DV","normal"); const tw=doc.getTextWidth(t)+8; if(kx+tw>ML+CW){ kx=ML; y+=4.6; } doc.setFillColor(...c); doc.rect(kx,y+.6,2.6,2.6,"F"); doc.setTextColor(...c); doc.text(t,kx+3.6,y,{baseline:"top"}); kx+=tw; }
+  y+=7;
+  if(g) await box("Source note",PC.warn,ML,CW,async(xx,ww)=>para([{t:FIX(g.long),b:false,col:PC.warn}],xx,ww,8.8));
+  doc.setDrawColor(...SC); doc.setLineWidth(.8); doc.line(ML,y,ML+CW,y); y+=3;
+  // ---- lecture body
+  const body=document.createElement("div"); body.innerHTML=d.html;
+  await walk(body,ML,CW,PC.slide,10);
+  // ---- Aldughaither
+  if(d.dug){
+    y+=4; ensure(30);
+    heading("Aldughaither summary",14,PC.dug,true,ML,CW);
+    para([{t:"Grey = already in the slides or notes above.  ",b:false,col:PC.dug},{t:"Blue = extra information found only in Aldughaither.",b:false,col:PC.dugnew}],ML,CW,8.4); y+=2;
+    const dg=document.createElement("div"); dg.innerHTML=d.dug;
+    await walk(dg,ML,CW,PC.dug,9.4);
+  }
+  // ---- gifts (optional)
+  if(withQs&&META.pq[id]){
+    const qs=await getJSON(`data/q/${id}.json?v=${META.pq[id].v||1}`);
+    doc.addPage(); y=MT;
+    heading(`Gifts (${qs.length})`,15,SINK,true,ML,CW);
+    para([{t:"The answer is marked ✓ in green. The line under each choice says why it is right or wrong.",b:false,col:PC.muted}],ML,CW,8.4); y+=2;
+    for(const q of qs){
+      ensure(22);
+      const tags=[q.exam.map(x=>x==="mid"?"Midterm":"Final").join(" + "),q.year,q.rep>1?"repeated ×"+q.rep:""].filter(Boolean).join(" · ");
+      para([{t:"Q"+q.n+"  ",b:true,col:SC},{t:tags,b:false,col:PC.muted}],ML,CW,8.6);
+      para([{t:FIX(q.stem),b:false,col:PC.slide}],ML,CW,9.6); y+=.6;
+      for(const s of (q.img||[])) await image(s,ML,CW,"",70);
+      if(q.opts&&q.opts.length>=2){
+        for(const o of q.opts){ const ok=isRight(q.ans,o.k);
+          para([{t:(ok?"✓ ":"   ")+o.k+". ",b:true,col:ok?PC.note:PC.slide},{t:FIX(o.t),b:ok,col:ok?PC.note:PC.slide}],ML+2,CW-2,9.4);
+          let wy=ok?(q.expl||"")+(stripCorrect((q.why||{})[o.k])&&!(q.expl||"").includes(stripCorrect((q.why||{})[o.k]))?" "+stripCorrect((q.why||{})[o.k]):""):(q.why||{})[o.k]||"";
+          if(wy){ const t=document.createElement("span"); t.innerHTML=wy; para([{t:FIX(t.textContent),b:false,col:ok?PC.note:PC.muted}],ML+8,CW-8,8.2); }
+          y+=.6;
+        }
+      } else {
+        para([{t:"Answer: ",b:true,col:PC.note},{t:FIX(q.ansText||q.srcNote||""),b:false,col:PC.note}],ML+2,CW-2,9.4);
+        if(q.expl){ const t=document.createElement("span"); t.innerHTML=q.expl; para([{t:FIX(t.textContent),b:false,col:PC.muted}],ML+8,CW-8,8.2); }
+      }
+      if(q.appears) para([{t:"Appeared in: "+FIX(q.appears),b:false,col:PC.muted}],ML,CW,7.6);
+      y+=1.6; ensure(3); doc.setDrawColor(...PC.line); doc.setLineWidth(.25); doc.line(ML,y,ML+CW,y); y+=3;
+    }
+  }
+  // ---- footers
+  const N=doc.getNumberOfPages();
+  for(let p=1;p<=N;p++){ doc.setPage(p); doc.setFont("DV","normal"); doc.setFontSize(7.4); doc.setTextColor(...PC.muted);
+    doc.text(FIX("SURG453 Study Hub · "+l.title),ML,PH-9); doc.text(p+" / "+N,PW-ML,PH-9,{align:"right"}); }
+  return doc.output("blob");
+}
+async function saveBlob(blob,name){
+  if(DL){ try{ await DL.save({filename:name,data:blob}); return "saved"; }catch(e){ if(e&&e.code==="declined") return "declined"; if(e&&e.code==="rate_limited") return "busy"; } }
+  const u=URL.createObjectURL(blob), a=document.createElement("a"); a.href=u; a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u),60000); return "saved";
+}
+document.addEventListener("click",async e=>{
+  const bt=e.target.closest("[data-pdf]"); if(!bt||bt.disabled) return;
+  const id=bt.dataset.pdf, withQs=!!document.getElementById("pdfQs")?.checked, lab=bt.querySelector("span");
+  bt.disabled=true; const old=lab.textContent; lab.textContent="Making the PDF…";
+  try{
+    const blob=await makePDF(id,withQs);
+    const res=await saveBlob(blob,`SURG453 - ${byId[id].title.replace(/[\\/:*?"<>|]+/g," ").replace(/\s+/g," ").trim()}${withQs?" (with gifts)":""}.pdf`);
+    toast(res==="saved"?"PDF ready ✓":res==="declined"?"Download cancelled.":"Another download is open. Try again in a moment.");
+  }catch(err){ console.error(err); toast("Couldn't make the PDF. Check your connection and try again."); }
+  bt.disabled=false; lab.textContent=old;
+});
+
+document.addEventListener("click",e=>{ const a=e.target.closest(".qref[data-qid]"); if(a) window.__qT=a.dataset.qid; });
+/* ===== routing ===== */
+const VIEWS=["home","study","lec","past","osce","fc"];
+function show(v,tab){
+  VIEWS.forEach(x=>document.getElementById("v-"+x).hidden=(x!==v));
+  document.querySelectorAll(".tabs a").forEach(a=>{ if(a.dataset.tab===tab) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+  if(v!=="osce") ST=null;
+  if(v!=="fc") FC=null;
+}
+function refreshAll(){
+  syncTicks(); renderProgress();
+  const h=decodeURIComponent(location.hash.slice(1));
+  if(h==="study") renderStudyIdx();
+  else if(h==="osce") renderOsceHome();
+  else if(h.startsWith("o-")&&!h.includes("/")) renderSystem(h.slice(2));
+  else if(h==="fc") renderFCHome();
+  else if(h==="past"||h.startsWith("q-")){ renderPQSide(); updateScore(); }
+}
+function route(){
+  const h=decodeURIComponent((location.hash||"#home").slice(1));
+  closeToc();
+  if(h.startsWith("l-")){ show("lec","study"); renderLecture(h.slice(2)); }
+  else if(h==="past"||h.startsWith("q-")){ show("past","past"); renderPQ(h==="past"?null:h.slice(2)); }
+  else if(h==="osce"){ show("osce","osce"); renderOsceHome(); }
+  else if(h.startsWith("o-")){ show("osce","osce"); const [k,cid]=h.slice(2).split("/"); if(cid) renderStation(k,cid); else renderSystem(k); }
+  else if(h==="fc"){ show("fc","fc"); renderFCHome(); }
+  else if(h.startsWith("f-")){ show("fc","fc"); renderDeck(h.slice(2)); }
+  else if(h==="study"){ renderStudyIdx(); show("study","study"); }
+  else { syncTicks(); renderProgress(); show("home","home"); }
+  window.scrollTo(0,0);
+}
+renderChecklist(); renderProgress();
+window.addEventListener("hashchange",route);
+route();
+</script>
+
+</body></html>
